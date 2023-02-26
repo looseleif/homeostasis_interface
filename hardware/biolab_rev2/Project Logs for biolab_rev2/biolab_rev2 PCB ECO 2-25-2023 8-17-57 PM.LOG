@@ -1,0 +1,7 @@
+Added Component: Designator=P?(HDR2X3)
+Add component (AddParameter): Name = "LatestRevisionDate"; Value = "17-Jul-2002"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "LatestRevisionNote"; Value = "Re-released for DXP Platform."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Publisher"; Value = "Altium Limited"; VariantName = "[No Variations]"
+Added Member To Class: ClassName=biolab_rev2 Member=Component P? Header 3X2
+Added Member To Class: ClassName=biolab_rev2 Member=Component S4 LEFT
+Added Room: Name=biolab_rev2

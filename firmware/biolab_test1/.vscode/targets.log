@@ -1,0 +1,293 @@
+make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 3.81
+# Copyright (C) 2006  Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.
+# There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+# This program built for i386-pc-mingw32
+ 
+
+# Make data base, printed on Mon Aug 22 00:40:01 2022
+
+# Variables
+
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# automatic
+?F = $(notdir $?)
+# environment
+CAMLIBS = C:\Program Files\darktable\lib\libgphoto2\2.5.27
+# makefile
+MAKEFLAGS = Rrqp
+# environment
+VSCODE_LOG_NATIVE = false
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# environment
+PLATFORMIO_IDE = 2.5.2
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# environment
+HOMEDRIVE = C:
+# automatic
+@F = $(notdir $@)
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# makefile
+CURDIR := c:/Users/Chase/Documents/personal/shreddedEmbedded/pioProjects/biolab_test1
+# default
+SHELL := C:/WinAVR-20100110/utils/bin/sh.exe
+# environment
+WINDIR = C:\WINDOWS
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
+# environment
+ONEDRIVE = C:\Users\Chase\OneDrive
+# environment
+PATHEXT = .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
+# makefile
+MAKEFILE_LIST := 
+# environment
+TMP = C:\Users\Chase\AppData\Local\Temp
+# environment
+VSCODE_VERBOSE_LOGGING = true
+# environment
+PROGRAMW6432 = C:\Program Files
+# environment
+PROGRAMDATA = C:\ProgramData
+# environment
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-5fd1e0f4-1de2-4b0e-9e9e-e399f6c797e0-sock
+# environment
+VSCODE_CWD = C:\Program Files\Microsoft VS Code
+# environment
+NO_PROXY = 127.0.0.1
+# environment
+COMMONPROGRAMW6432 = C:\Program Files\Common Files
+# environment
+PROCESSOR_ARCHITECTURE = x86
+# environment
+USERPROFILE = C:\Users\Chase
+# environment
+ALLUSERSPROFILE = C:\ProgramData
+# environment
+VSCODE_LOG_STACK = false
+# environment
+NUMBER_OF_PROCESSORS = 32
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# default
+.FEATURES := target-specific order-only second-expansion else-if archives
+# automatic
+%F = $(notdir $%)
+# environment
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_29640_FPRXDFLHUFXXOVYM
+# environment
+VSCODE_PIPE_LOGGING = true
+# environment
+COMPUTERNAME = LOOSELEIF
+# environment
+PROGRAMFILES = C:\Program Files (x86)
+# environment
+DRIVERDATA = C:\Windows\System32\Drivers\DriverData
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = undefined
+# environment
+AVR32_HOME = C:\WinAVR-20100110
+# environment
+USERNAME = Chase
+# environment
+PUBLIC = C:\Users\Public
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+VSCODE_CODE_CACHE_PATH = C:\Users\Chase\AppData\Roaming\Code\CachedData\4af164ea3a06f701fe3e89a2bcbb421d2026b68f
+# environment
+KINECT_TOOLKIT_DIR = C:\Program Files\Microsoft SDKs\Kinect\Developer Toolkit v1.8.0\
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# environment
+COMMONPROGRAMFILES = C:\Program Files (x86)\Common Files
+# environment
+LOGONSERVER = \\LOOSELEIF
+# environment
+KINECTSDK10_DIR = C:\Program Files\Microsoft SDKs\Kinect\v1.8\
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# environment
+USERDOMAIN = LOOSELEIF
+# environment
+PLATFORMIO_PATH = C:\Users\Chase\.platformio\python3;C:\WinAVR-20100110\bin;C:\WinAVR-20100110\utils\bin;C:\MinGW\bin;C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2021.10\bin;C:\Users\Chase\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\Chase\AppData\Local\Programs\Python\Python39\;C:\Users\Chase\AppData\Local\Microsoft\WindowsApps;C:\Users\Chase\AppData\Local\GitHubDesktop\bin;C:\Program Files (x86)\Nmap;C:\Program Files (x86)\GnuWin32\bin;C:\Program Files (x86)\xpack-openocd-0.11.0-2\bin;C:\Users\Chase\.dotnet\tools;C:\Users\Chase\AppData\Local\gitkraken\bin;C:\msys64\usr\bin;;C:\Users\Chase\AppData\Local\Microsoft\WindowsApps;C:\WinAVR-20100110\bin;C:\WinAVR-20100110\utils\bin;C:\MinGW\bin;C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2021.10\bin;C:\Users\Chase\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\Chase\AppData\Local\Programs\Python\Python39\;C:\Users\Chase\AppData\Local\Microsoft\WindowsApps;C:\Users\Chase\AppData\Local\GitHubDesktop\bin;C:\Program Files (x86)\Nmap;C:\Program Files (x86)\GnuWin32\bin;C:\Program Files (x86)\xpack-openocd-0.11.0-2\bin;C:\Users\Chase\.dotnet\tools;C:\Users\Chase\AppData\Local\gitkraken\bin;C:\msys64\usr\bin;;C:\Users\Chase\AppData\Local\Microsoft\WindowsApps
+# default
+MAKE = $(MAKE_COMMAND)
+# default
+MAKECMDGOALS := all
+# environment
+PATH = C:\WinAVR-20100110\bin;C:\WinAVR-20100110\utils\bin;C:\MinGW\bin;C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2021.10\bin;C:\Users\Chase\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\Chase\AppData\Local\Programs\Python\Python39\;C:\Users\Chase\AppData\Local\Microsoft\WindowsApps;C:\Users\Chase\AppData\Local\GitHubDesktop\bin;C:\Program Files (x86)\Nmap;C:\Program Files (x86)\GnuWin32\bin;C:\Program Files (x86)\xpack-openocd-0.11.0-2\bin;C:\Users\Chase\.dotnet\tools;C:\Users\Chase\AppData\Local\gitkraken\bin;C:\msys64\usr\bin;;%USERPROFILE%\AppData\Local\Microsoft\WindowsApps
+# environment
+MAGICK_HOME = C:\Program Files\darktable\lib\GraphicsMagick-1.3.36\modules-Q8\coders
+# environment
+JAVA_HOME = C:\Program Files\AdoptOpenJDK\jre-8.0.292.10-hotspot\
+# default
+MAKE_VERSION := 3.81
+# makefile
+.DEFAULT_GOAL := 
+# environment
+PROGRAMFILES(X86) = C:\Program Files (x86)
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# environment
+LOCALAPPDATA = C:\Users\Chase\AppData\Local
+# environment
+PSMODULEPATH = C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules
+# default
+MAKE_COMMAND := make.exe
+# environment
+PROCESSOR_ARCHITEW6432 = AMD64
+# default
+.VARIABLES := 
+# automatic
+*F = $(notdir $*)
+# environment
+PROCESSOR_IDENTIFIER = AMD64 Family 25 Model 33 Stepping 0, AuthenticAMD
+# environment
+OS = Windows_NT
+# environment
+VSCODE_IPC_HOOK = \\.\pipe\ea2f38388a69450fb30fb40f0c86bf26-1.68.0-main-sock
+# environment
+HOMEPATH = \Users\Chase
+# environment
+COMMONPROGRAMFILES(X86) = C:\Program Files (x86)\Common Files
+# environment
+PROMPT = $P$G
+# environment
+MFLAGS = -Rrqp
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+SYSTEMROOT = C:\WINDOWS
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# automatic
++F = $(notdir $+)
+# environment
+APPDATA = C:\Users\Chase\AppData\Roaming
+# environment
+TEMP = C:\Users\Chase\AppData\Local\Temp
+# environment
+COMSPEC = C:\WINDOWS\system32\cmd.exe
+# default
+MAKEFILES := 
+# automatic
+<F = $(notdir $<)
+# environment
+PLATFORMIO_CALLER = vscode
+# environment
+LC_ALL = C
+# environment
+IOLIBS = C:\Program Files\darktable\lib\libgphoto2_port\0.12.0
+# automatic
+^F = $(notdir $^)
+# environment
+FTSDK_DIR = C:\Program Files\Microsoft SDKs\Kinect\Developer Toolkit v1.8.0\
+# default
+SUFFIXES := 
+# environment
+SYSTEMDRIVE = C:
+# environment
+SESSIONNAME = Console
+# environment
+PROCESSOR_REVISION = 2100
+# environment
+MOZ_PLUGIN_PATH = C:\Program Files (x86)\Foxit Software\Foxit PDF Reader\plugins\
+# environment
+MAKELEVEL := 0
+# environment
+LANG = C
+# environment
+PROCESSOR_LEVEL = 25
+# environment
+VSCODE_PID = 29640
+# environment
+USERDOMAIN_ROAMINGPROFILE = LOOSELEIF
+# variable set hash-table stats:
+# Load=99/1024=10%, Rehash=0, Collisions=11/115=10%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (key c:/Users/Chase/Documents/personal/shreddedEmbedded/pioProjects/biolab_test1, mtime 1661119205): 11 files, no impossibilities.
+# C:\WinAVR-20100110\bin (key C:/WinAVR-20100110/bin, mtime 1661118985): 75 files, no impossibilities.
+# C:\WinAVR-20100110\utils\bin (key C:/WinAVR-20100110/utils/bin, mtime 1661118989): 99 files, no impossibilities so far.
+
+# 185 files, no impossibilities in 3 directories.
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+# Not a target:
+all:
+#  Command-line target.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has not been updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+makefile:
+#  A default, MAKEFILES, or -include/sinclude makefile.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has been updated.
+#  Failed to be updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+GNUmakefile:
+#  A default, MAKEFILES, or -include/sinclude makefile.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has been updated.
+#  Failed to be updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# files hash-table stats:
+# Load=5/1024=0%, Rehash=0, Collisions=0/16=0%
+# VPATH Search Paths
+
+# No `vpath' search paths.
+
+# No  
+make.exe: *** No rule to make target `all'.  Stop.
+
+general (`VPATH' variable) search path.
+
+# # of strings in strcache: 0
+# # of strcache buffers: 0
+# strcache size: total = 0 / max = 0 / min = 4096 / avg = 0
+# strcache free: total = 0 / max = 0 / min = 4096 / avg = 0
+
+# Finished Make data base on Mon Aug 22 00:40:01 2022
+
+ 
