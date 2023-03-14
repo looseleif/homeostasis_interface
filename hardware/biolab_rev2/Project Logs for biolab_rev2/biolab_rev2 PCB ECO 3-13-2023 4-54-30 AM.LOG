@@ -1,6 +1,0 @@
-Added Pin To Net: NetName=SCK Pin=P1-7
-Added Pin To Net: NetName=MOSI Pin=P1-8
-Added Pin To Net: NetName=MOSI Pin=U1-6
-Added Pin To Net: NetName=MISO Pin=U1-7
-Added Pin To Net: NetName=SCK Pin=U1-8
-Added Room: Name=biolab_rev2

@@ -1,0 +1,3 @@
+Removed Pin From Net: NetName=PWR_LED Pin=R1-1
+Added Pin To Net: NetName=GND Pin=R1-1
+Added Room: Name=biolab_rev2

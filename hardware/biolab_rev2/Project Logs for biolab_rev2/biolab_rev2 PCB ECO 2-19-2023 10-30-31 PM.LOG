@@ -1,7 +1,0 @@
-Change Component Designator: OldDesignator=J? NewDesignator=CON1
-Change Component Designator: OldDesignator=J? NewDesignator=CON2
-Change Component Designator: OldDesignator=J? NewDesignator=CON3
-Added Member To Class: ClassName=biolab_rev2 Member=Component CON1 USB1130-15-A_REVA
-Added Member To Class: ClassName=biolab_rev2 Member=Component CON2 USB1130-15-A_REVA
-Added Member To Class: ClassName=biolab_rev2 Member=Component J? DC-005
-Added Room: Name=biolab_rev2

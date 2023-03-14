@@ -1,7 +1,0 @@
-Removed Pin From Net: NetName=PWR_LED Pin=U1-19
-Removed Pin From Net: NetName=INIT_LED Pin=U1-20
-Removed Pin From Net: NetName=RUN_LED Pin=U1-21
-Added Pin To Net: NetName=INIT_LED Pin=U1-19
-Added Pin To Net: NetName=RUN_LED Pin=U1-20
-Added Pin To Net: NetName=PWR_LED Pin=U1-21
-Added Room: Name=biolab_rev2

@@ -1,0 +1,13 @@
+Change Component Comment : Designator=P? Old Comment=Header 3X2 New Comment=ISP
+Change Component Designator: OldDesignator=P? NewDesignator=P2
+Added Pin To Net: NetName=+5 Pin=P2-2
+Added Pin To Net: NetName=GND Pin=P2-6
+Added Pin To Net: NetName=MISO Pin=P2-1
+Added Net: Name=MISO
+Added Pin To Net: NetName=MOSI Pin=P2-4
+Added Net: Name=MOSI
+Added Pin To Net: NetName=RST Pin=P2-5
+Added Net: Name=RST
+Added Pin To Net: NetName=SCK Pin=P2-3
+Added Net: Name=SCK
+Added Room: Name=biolab_rev2
