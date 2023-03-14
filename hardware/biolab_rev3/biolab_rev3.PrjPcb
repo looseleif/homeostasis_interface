@@ -99,10 +99,6 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=IBUQNRPA
 
-[GeneratedDocument1]
-DocumentPath=Project Outputs for biolab_rev2\Design Rule Check - biolab_rev2.html
-DItemRevisionGUID=
-
 [Configuration1]
 Name=Sources
 ParameterCount=0
