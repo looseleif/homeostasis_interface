@@ -1,0 +1,6 @@
+Removed Pin From Net: NetName=CON3A Pin=U1-35
+Removed Pin From Net: NetName=CON3B Pin=U1-36
+Added Pin To Net: NetName=CON3A Pin=U1-24
+Added Pin To Net: NetName=CON3B Pin=U1-25
+Change Class Name : Old Net Name=biolab_rev2 New Net Name=biolab_rev3
+Added Room: Name=biolab_rev3

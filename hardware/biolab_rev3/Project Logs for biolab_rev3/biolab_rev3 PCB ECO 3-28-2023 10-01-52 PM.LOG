@@ -1,0 +1,7 @@
+Removed Pin From Net: NetName=STRIP_SIG Pin=U1-1
+Removed Pin From Net: NetName=CON1A Pin=U1-39
+Removed Pin From Net: NetName=CON1B Pin=U1-40
+Added Pin To Net: NetName=CON1A Pin=U1-1
+Added Pin To Net: NetName=CON1B Pin=U1-2
+Added Pin To Net: NetName=STRIP_SIG Pin=U1-40
+Added Room: Name=biolab_rev3

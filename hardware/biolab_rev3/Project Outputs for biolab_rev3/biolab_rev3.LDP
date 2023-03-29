@@ -1,0 +1,3 @@
+Layer Pairs Export File for PCB: C:\Users\Chase\Documents\personal-repos\homeostasis_interface\hardware\biolab_rev3\biolab_rev3.PcbDoc
+LayersSetName=Top_Bot_Thru_Holes|DrillFile=biolab_rev3.txt|DrillLayers=gtl,gbl
+LayersSetName=Top_Bot_Rect_Holes|DrillFile=biolab_rev3-rectholes.txt|DrillLayers=gtl,gbl

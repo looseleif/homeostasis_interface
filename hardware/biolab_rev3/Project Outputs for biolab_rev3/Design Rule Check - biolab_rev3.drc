@@ -1,0 +1,61 @@
+Protel Design System Design Rule Check
+PCB File : C:\Users\Chase\Documents\personal-repos\homeostasis_interface\hardware\biolab_rev3\biolab_rev3.PcbDoc
+Date     : 3/29/2023
+Time     : 12:29:40 AM
+
+Processing Rule : Clearance Constraint (Gap=10mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Short-Circuit Constraint (Allowed=No) (All),(All)
+Rule Violations :0
+
+Processing Rule : Un-Routed Net Constraint ( (All) )
+   Violation between Un-Routed Net Constraint: Net GND Between Arc (1469.312mil,5561.483mil) on Top Layer And Arc (3003.715mil,3021.541mil) on Bottom Layer 
+   Violation between Un-Routed Net Constraint: Net GND Between Pad P3-1(1290mil,4905mil) on Multi-Layer And Arc (3003.715mil,3021.541mil) on Bottom Layer 
+Rule Violations :2
+
+Processing Rule : Modified Polygon (Allow modified: No), (Allow shelved: No)
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=10mil) (Max=10mil) (Preferred=10mil) (All)
+Rule Violations :0
+
+Processing Rule : Power Plane Connect Rule(Relief Connect )(Expansion=20mil) (Conductor Width=10mil) (Air Gap=10mil) (Entries=4) (All)
+Rule Violations :0
+
+Processing Rule : Hole Size Constraint (Min=1mil) (Max=100mil) (All)
+   Violation between Hole Size Constraint: (137.795mil > 100mil) Pad J1-2(652.795mil,2891.024mil) on Multi-Layer Actual Rectangular Hole Width = 137.795mil
+   Violation between Hole Size Constraint: (118.11mil > 100mil) Pad J1-3(515mil,3080mil) on Multi-Layer Actual Rectangular Hole Width = 118.11mil
+   Violation between Hole Size Constraint: (118.11mil > 100mil) Pad J1-4(751.221mil,3080mil) on Multi-Layer Actual Rectangular Hole Width = 118.11mil
+   Violation between Hole Size Constraint: (120mil > 100mil) Via (1130mil,1300mil) from Top Layer to Bottom Layer Actual Hole Size = 120mil
+   Violation between Hole Size Constraint: (120mil > 100mil) Via (1130mil,4545mil) from Top Layer to Bottom Layer Actual Hole Size = 120mil
+   Violation between Hole Size Constraint: (120mil > 100mil) Via (4800mil,1300mil) from Top Layer to Bottom Layer Actual Hole Size = 120mil
+   Violation between Hole Size Constraint: (120mil > 100mil) Via (4800mil,4545mil) from Top Layer to Bottom Layer Actual Hole Size = 120mil
+Rule Violations :7
+
+Processing Rule : Hole To Hole Clearance (Gap=10mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Minimum Solder Mask Sliver (Gap=10mil) (All),(All)
+   Violation between Minimum Solder Mask Sliver Constraint: (9.709mil < 10mil) Between Pad R4-2(3855mil,4119.528mil) on Top Layer And Via (3900mil,4120mil) from Top Layer to Bottom Layer [Top Solder] Mask Sliver [9.709mil]
+   Violation between Minimum Solder Mask Sliver Constraint: (9.709mil < 10mil) Between Pad R5-2(3760mil,4119.528mil) on Top Layer And Via (3715mil,4120mil) from Top Layer to Bottom Layer [Top Solder] Mask Sliver [9.709mil]
+Rule Violations :2
+
+Processing Rule : Net Antennae (Tolerance=0mil) (All)
+   Violation between Net Antennae: Via (1130mil,1300mil) from Top Layer to Bottom Layer 
+   Violation between Net Antennae: Via (1130mil,4545mil) from Top Layer to Bottom Layer 
+   Violation between Net Antennae: Via (1605mil,1110mil) from Top Layer to Bottom Layer 
+   Violation between Net Antennae: Via (1605mil,2760mil) from Top Layer to Bottom Layer 
+   Violation between Net Antennae: Via (2805mil,1110mil) from Top Layer to Bottom Layer 
+   Violation between Net Antennae: Via (2805mil,2760mil) from Top Layer to Bottom Layer 
+   Violation between Net Antennae: Via (4800mil,1300mil) from Top Layer to Bottom Layer 
+   Violation between Net Antennae: Via (4800mil,4545mil) from Top Layer to Bottom Layer 
+Rule Violations :8
+
+Processing Rule : Height Constraint (Min=0mil) (Max=1000mil) (Prefered=500mil) (All)
+Rule Violations :0
+
+
+Violations Detected : 19
+Waived Violations : 0
+Time Elapsed        : 00:00:02

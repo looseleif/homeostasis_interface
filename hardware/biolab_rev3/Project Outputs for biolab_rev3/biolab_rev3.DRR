@@ -1,0 +1,22 @@
+----------------------------------------------------------------------------------------------------------------------------------
+NCDrill File Report For: biolab_rev3.PcbDoc   3/29/2023  12:32:12 AM
+----------------------------------------------------------------------------------------------------------------------------------
+
+Layer Pair : Top Layer to Bottom Layer
+ASCII RoundHoles File : biolab_rev3.TXT
+ASCII RectHoles File : biolab_rev3-RectHoles.TXT
+
+Tool       Hole Size               Hole Tolerance               Hole Type       Hole Count   Plated         Tool Travel
+----------------------------------------------------------------------------------------------------------------------------------
+T1      0.203mm (8mil)                                            Round             4         PTH        85.10mm (3.35inch)
+T2      0.8mm (31mil)                                             Rectangle         3         PTH        33.23mm (1.31inch)
+T3      0.9mm (35mil)                                             Round             25        PTH        241.30mm (9.50inch)
+T4      0.92mm (36mil)                                            Round             12        PTH        54.12mm (2.13inch)
+T5      0.991mm (39mil)                                           Round             40        PTH        175.26mm (6.90inch)
+T6      2.26mm (89mil)                                            Round             6         PTH        60.26mm (2.37inch)
+T7      2.54mm (100mil)                                           Round             4         PTH        102.87mm (4.05inch)
+T8      3.048mm (120mil)                                          Round             4         PTH        310.87mm (12.24inch)
+----------------------------------------------------------------------------------------------------------------------------------
+Totals                                                                              98
+
+Total Processing Time (hh:mm:ss) : 00:00:00

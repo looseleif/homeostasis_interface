@@ -1,0 +1,13 @@
+Output: NC Drill Files
+Type  : NC Drill
+From  : Project [biolab_rev3.PrjPcb]
+   Generated File[biolab_rev3.TXT]
+   Generated File[biolab_rev3-RectHoles.TXT]
+   Generated File[biolab_rev3.LDP]
+   Generated File[biolab_rev3.DRR]
+
+
+Files Generated   : 4
+Documents Printed : 0
+
+Finished Output Generation At 12:32:12 AM On 3/29/2023
