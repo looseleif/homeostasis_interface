@@ -1,18 +1,18 @@
 ------------------------------------------------------------------------------------------
-Gerber File Extension Report For: biolab_rev3.GBR   3/29/2023  12:31:47 AM
+Gerber File Extension Report For: biolab_rev3.GBR   4/10/2023  2:52:22 PM
 ------------------------------------------------------------------------------------------
 
 
 ------------------------------------------------------------------------------------------
 Layer Extension     Layer Description                      
 ------------------------------------------------------------------------------------------
-.GTO                Top Overlay                             
-.GTP                Top Paste                               
-.GTS                Top Solder                              
-.GTL                Top Layer                               
-.GBL                Bottom Layer                            
-.GBS                Bottom Solder                           
-.GBP                Bottom Paste                            
-.GBO                Bottom Overlay                          
-.GM                 Profile                                 
+.gbr                Top Overlay                             
+.gbr                Top Paste                               
+.gbr                Top Solder                              
+.gbr                Top Layer                               
+.gbr                Bottom Layer                            
+.gbr                Bottom Solder                           
+.gbr                Bottom Paste                            
+.gbr                Bottom Overlay                          
+.gbr                Profile                                 
 ------------------------------------------------------------------------------------------

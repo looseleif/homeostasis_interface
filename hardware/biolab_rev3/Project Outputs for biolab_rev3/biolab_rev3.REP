@@ -3,7 +3,7 @@ FileName = biolab_rev3.GBR
 AutoAperture = True
 *************************************************************
 Generating : Bottom Paste
-      File : biolab_rev3.GBP
+      File : biolab_rev3_Paste_Bot.gbr
 
     Adding Layer      : Bottom Paste
 
@@ -17,7 +17,7 @@ Used DCodes :
 
 *************************************************************
 Generating : Top Paste
-      File : biolab_rev3.GTP
+      File : biolab_rev3_Paste_Top.gbr
 
     Adding Layer      : Top Paste
 
@@ -42,7 +42,7 @@ Used DCodes :
 
 *************************************************************
 Generating : Bottom Solder
-      File : biolab_rev3.GBS
+      File : biolab_rev3_Soldermask_Bot.gbr
 
     Adding Layer      : Bottom Solder
 
@@ -68,7 +68,7 @@ Used DCodes :
 
 *************************************************************
 Generating : Top Solder
-      File : biolab_rev3.GTS
+      File : biolab_rev3_Soldermask_Top.gbr
 
     Adding Layer      : Top Solder
 
@@ -106,7 +106,7 @@ Used DCodes :
 
 *************************************************************
 Generating : Bottom Overlay
-      File : biolab_rev3.GBO
+      File : biolab_rev3_Legend_Bot.gbr
 
     Adding Layer      : Bottom Overlay
 
@@ -116,7 +116,7 @@ Used DCodes :
 
 *************************************************************
 Generating : Top Overlay
-      File : biolab_rev3.GTO
+      File : biolab_rev3_Legend_Top.gbr
 
     Adding Layer      : Top Overlay
 
@@ -132,7 +132,7 @@ Used DCodes :
 
 *************************************************************
 Generating : Bottom Layer
-      File : biolab_rev3.GBL
+      File : biolab_rev3_Copper_Signal_Bot.gbr
 
     Adding Layer      : Bottom Layer
 
@@ -157,7 +157,7 @@ Used DCodes :
 
 *************************************************************
 Generating : Top Layer
-      File : biolab_rev3.GTL
+      File : biolab_rev3_Copper_Signal_Top.gbr
 
     Adding Layer      : Top Layer
 
@@ -194,7 +194,7 @@ Used DCodes :
 
 *************************************************************
 Generating : Profile
-      File : biolab_rev3.GM
+      File : biolab_rev3_Profile.gbr
 
 
 Used DCodes :
