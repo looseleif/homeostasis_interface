@@ -171,11 +171,23 @@ void setup()   {
 
 int main(){
 
+  pinMode(D8, OUTPUT);
+  pinMode(D9, OUTPUT);
+
+  digitalWrite(D8,LOW);
+  digitalWrite(D9,LOW);
 
   init();
   setup();
 
   while(true){
+
+    delay(1000);
+    digitalWrite(D8,LOW);
+    digitalWrite(D9,HIGH);
+    delay(1000);
+    digitalWrite(D8,HIGH);
+    digitalWrite(D9,LOW);
 
     if(menu_ptr->system_state==welcome){
       if(!(menu_ptr->printed)){
@@ -242,9 +254,12 @@ int main(){
 
     }
 
+    
 
   }
     
+
+
   return 0;
 
 }

@@ -7,8 +7,8 @@
 #include <oled.h>
 #include <FastLED.h>
 
-#define DATA_PIN 23 //PC7
-#define NUM_LEDS 30
+#define DATA_PIN A7 //PC7
+#define NUM_LEDS 5
 class strip: public _device 
 {
 
