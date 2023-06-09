@@ -1,5 +1,48 @@
 #include <Arduino.h>
 
+#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SH110X.h>
+
+#define OLED_MOSI     D11
+#define OLED_CLK      D13
+#define OLED_DC       D6
+#define OLED_CS       D10
+#define OLED_RST      D7
+
+#define NUMFLAKES 10
+#define XPOS 0
+#define YPOS 1
+#define DELTAY 2
+
+
+#define LOGO16_GLCD_HEIGHT 16
+#define LOGO16_GLCD_WIDTH  16
+
+static const unsigned char PROGMEM logo16_glcd_bmp[] =
+{ B00000000, B11000000,
+  B00000001, B11000000,
+  B00000001, B11000000,
+  B00000011, B11100000,
+  B11110011, B11100000,
+  B11111110, B11111000,
+  B01111110, B11111111,
+  B00110011, B10011111,
+  B00011111, B11111100,
+  B00001101, B01110000,
+  B00011011, B10100000,
+  B00111111, B11100000,
+  B00111111, B11110000,
+  B01111100, B11110000,
+  B01110000, B01110000,
+  B00000000, B00110000
+};
+
+// Create the OLED display
+Adafruit_SH1107 display = Adafruit_SH1107(128, 128,OLED_MOSI, OLED_CLK, OLED_DC, OLED_RST, OLED_CS);
+
+
 #include <modules.h>
 
 #include <menu.h>
@@ -122,10 +165,10 @@ void setup()   {
 
   // PORT DATA DIRECTION
   
-  DDRA |= 0b00000000;
-  DDRB |= 0b00000000;
-  DDRC |= 0b00000000;
-  DDRD |= 0b00000000;
+  // DDRA |= 0b00000000;
+  // DDRB |= 0b00000000;
+  // DDRC |= 0b00000000;
+  // DDRD |= 0b00000000;
 
   DDRD &= ~_BV(DDD7);
   PORTD |= _BV(PORTD7);
@@ -169,25 +212,124 @@ void setup()   {
 
 }
 
+void testdrawline() {
+  for (int16_t i = 0; i < display.width(); i += 4) {
+    display.drawLine(0, 0, i, display.height() - 1, SH110X_WHITE);
+    display.display();
+    delay(1);
+  }
+  for (int16_t i = 0; i < display.height(); i += 4) {
+    display.drawLine(0, 0, display.width() - 1, i, SH110X_WHITE);
+    display.display();
+    delay(1);
+  }
+  delay(250);
+
+  display.clearDisplay();
+  for (int16_t i = 0; i < display.width(); i += 4) {
+    display.drawLine(0, display.height() - 1, i, 0, SH110X_WHITE);
+    display.display();
+    delay(1);
+  }
+  for (int16_t i = display.height() - 1; i >= 0; i -= 4) {
+    display.drawLine(0, display.height() - 1, display.width() - 1, i, SH110X_WHITE);
+    display.display();
+    delay(1);
+  }
+  delay(250);
+
+  display.clearDisplay();
+  for (int16_t i = display.width() - 1; i >= 0; i -= 4) {
+    display.drawLine(display.width() - 1, display.height() - 1, i, 0, SH110X_WHITE);
+    display.display();
+    delay(1);
+  }
+  for (int16_t i = display.height() - 1; i >= 0; i -= 4) {
+    display.drawLine(display.width() - 1, display.height() - 1, 0, i, SH110X_WHITE);
+    display.display();
+    delay(1);
+  }
+  delay(250);
+
+  display.clearDisplay();
+  for (int16_t i = 0; i < display.height(); i += 4) {
+    display.drawLine(display.width() - 1, 0, 0, i, SH110X_WHITE);
+    display.display();
+    delay(1);
+  }
+  for (int16_t i = 0; i < display.width(); i += 4) {
+    display.drawLine(display.width() - 1, 0, i, display.height() - 1, SH110X_WHITE);
+    display.display();
+    delay(1);
+  }
+  delay(250);
+}
+
+void testdrawrect(void) {
+    display.drawRect(0, 0, 50, 25, SH110X_WHITE);
+    display.display();
+    delay(50);
+}
+
 int main(){
 
-  pinMode(D8, OUTPUT);
-  pinMode(D9, OUTPUT);
+  //pinMode(D8, OUTPUT);
+  pinMode(9, OUTPUT);
 
-  digitalWrite(D8,LOW);
-  digitalWrite(D9,LOW);
+  //digitalWrite(D8,LOW);
+  //digitalWrite(D9,LOW);
 
   init();
-  setup();
+  //setup();
+
+  // Start OLED
+  display.begin(0, true); // we dont use the i2c address but we will reset!
+  
+
+  // Show image buffer on the display hardware.
+  // Since the buffer is intialized with an Adafruit splashscreen
+  // internally, this will display the splashscreen.
+  display.display();
+  delay(2000);
+
+  // Clear the buffer.
+  display.clearDisplay();
+
+  // draw a single pixel
+  display.drawPixel(10, 10, SH110X_WHITE);
+  // Show the display buffer on the hardware.
+  // NOTE: You _must_ call display after making any drawing commands
+  // to make them visible on the display hardware!
+  display.display();
+  delay(2000);
+  display.clearDisplay();
+
+  // draw many lines
+
+
+  int i=0;
 
   while(true){
 
     delay(1000);
-    digitalWrite(D8,LOW);
-    digitalWrite(D9,HIGH);
+    //digitalWrite(D8,LOW);
+    digitalWrite(9,HIGH);
     delay(1000);
-    digitalWrite(D8,HIGH);
-    digitalWrite(D9,LOW);
+    //digitalWrite(D8,HIGH);
+    digitalWrite(9,LOW);
+    i++;
+    display.setRotation(i%4);
+
+      
+
+    // miniature bitmap display
+    display.clearDisplay();
+    testdrawrect();
+    display.display();
+    delay(1);
+
+
+/*
 
     if(menu_ptr->system_state==welcome){
       if(!(menu_ptr->printed)){
@@ -254,7 +396,7 @@ int main(){
 
     }
 
-    
+    */
 
   }
     
