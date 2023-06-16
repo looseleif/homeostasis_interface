@@ -212,7 +212,7 @@ void oled::printDemoMenu(){
 
     for(int i=0;i<2;i++){
 
-    _screen->setTextSize(1);
+    _screen->setTextSize(2);
     _screen->setTextWrap(true);
     _screen->setTextColor(WHITE);
     _screen->setCursor(0,0);

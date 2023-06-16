@@ -193,12 +193,6 @@ void setup()   {
 
 }
 
-void testdrawrect(void) {
-    //display.drawRect(0, 0, 50, 25, SH110X_WHITE);
-    //display.display();
-    delay(50);
-}
-
 int main(){
 
   pinMode(13, OUTPUT);
@@ -214,10 +208,10 @@ int main(){
 
   while(true){
 
-    delay(100);
+    delay(1000);
     digitalWrite(13,HIGH);
     digitalWrite(14,HIGH);
-    delay(100);
+    delay(1000);
     digitalWrite(13,LOW);
     digitalWrite(14,LOW);
 
