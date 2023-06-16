@@ -5,11 +5,11 @@
 #include <Arduino.h>
 
 #define UP_PIN 10 //PD2
-#define DOWN_PIN 11 //PD3
-#define LEFT_PIN 12 //PD4
-#define RIGHT_PIN 13 //PD5
-#define SELECT_PIN 14 //PD6
-#define HOME_PIN 15 // PD7
+#define DOWN_PIN 9 //PD1
+#define LEFT_PIN 8 //PD0
+#define RIGHT_PIN 11 //PD3
+#define SELECT_PIN 29 //PA5
+#define HOME_PIN 12 // PD4
 
 #define GRIP_DEMO 0
 #define DIRECT_DEMO 1

@@ -6,7 +6,7 @@ oled::oled(menu *ptr){
     _screen = &screen;
     _screen->begin();
     _screen->clearDisplay();
-    _screen->setRotation(1);
+    _screen->setRotation(0);
 
 }
 
@@ -53,7 +53,7 @@ void oled::sendBitmap(const uint8_t *bitmap, uint8_t w, uint8_t h) {
 
 void oled::sendString(String toSend) {
     
-    _screen->setTextSize(1);
+    _screen->setTextSize(2);
     _screen->setTextWrap(true);
     _screen->setTextColor(WHITE);
     _screen->setCursor(0,0);
@@ -67,7 +67,7 @@ void oled::sendString(String toSend) {
 
 void oled::bootingPrint(void) {
     
-    _screen->setTextSize(1);
+    _screen->setTextSize(2);
     _screen->setTextWrap(true);
     _screen->setTextColor(WHITE);
     _screen->setCursor(0,0);
@@ -82,7 +82,7 @@ void oled::bootingPrint(void) {
 }
 
 void oled::rebootingPrint(void) {
-_screen->setTextSize(1);
+_screen->setTextSize(2);
 _screen->setTextWrap(true);
 _screen->setTextColor(WHITE);
 _screen->setCursor(0,0);
@@ -100,7 +100,7 @@ void oled::pleaseWaitPrint(void) {
 
     for(int i=0;i<2;i++){
     
-        _screen->setTextSize(1);
+        _screen->setTextSize(2);
         _screen->setTextWrap(true);
         _screen->setTextColor(WHITE);
         _screen->setCursor(0,0);
@@ -123,7 +123,7 @@ void oled::printGrip(void) {
 
     for(int i=0;i<2;i++){
     
-        _screen->setTextSize(1);
+        _screen->setTextSize(2);
         _screen->setTextWrap(true);
         _screen->setTextColor(WHITE);
         _screen->setCursor(0,0);
@@ -252,7 +252,7 @@ void oled::printDeviceMenu(){
 
 void oled::printSelector(int prev, int next, bool clear){
 
-    _screen->setTextSize(1);
+    _screen->setTextSize(2);
     _screen->setTextWrap(true);
     _screen->setTextColor(BLACK);
     _screen->setCursor(0,0);
@@ -277,7 +277,7 @@ void oled::printSelector(int prev, int next, bool clear){
 
     if(!clear){
 
-    _screen->setTextSize(1);
+    _screen->setTextSize(2);
     _screen->setTextWrap(true);
     _screen->setTextColor(WHITE);
     _screen->setCursor(0,0);

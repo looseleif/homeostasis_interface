@@ -8,7 +8,7 @@
 #include <FastLED.h>
 
 #define DATA_PIN 24 //PA0
-#define NUM_LEDS 3
+#define NUM_LEDS 30
 class strip: public _device 
 {
 

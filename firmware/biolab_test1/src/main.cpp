@@ -3,22 +3,7 @@
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
-#include <Adafruit_SH110X.h>
 
-#define OLED_MOSI     5
-#define OLED_CLK      7
-#define OLED_DC       2
-#define OLED_CS       4
-#define OLED_RST      3
-
-#define NUMFLAKES 10
-#define XPOS 0
-#define YPOS 1
-#define DELTAY 2
-
-
-#define LOGO16_GLCD_HEIGHT 16
-#define LOGO16_GLCD_WIDTH  16
 
 static const unsigned char PROGMEM logo16_glcd_bmp[] =
 { B00000000, B11000000,
@@ -38,10 +23,6 @@ static const unsigned char PROGMEM logo16_glcd_bmp[] =
   B01110000, B01110000,
   B00000000, B00110000
 };
-
-// Create the OLED display
-Adafruit_SH1107 display = Adafruit_SH1107(128, 128,OLED_MOSI, OLED_CLK, OLED_DC, OLED_RST, OLED_CS);
-
 
 #include <modules.h>
 
@@ -187,34 +168,34 @@ void setup()   {
   // CREATE OBJECTS
 
   createObject(menu_TYPE,0);
-  //createObject(oled_TYPE,0);
+  createObject(oled_TYPE,0);
   createObject(strip_TYPE,0);
 
   // INTRO BOOT SEQUENCE
 
   strip_ptr->setColor(0,0,0);
   strip_ptr->setIntensity(0);
-  //oled_ptr->clearAll();
-  //oled_ptr->bootingPrint();
+  oled_ptr->clearAll();
+  oled_ptr->bootingPrint();
   delay(100);
-  //oled_ptr->clearAll();
+  oled_ptr->clearAll();
   strip_ptr->lubDub();
   delay(100);
   strip_ptr->sweepColor(255,0,0,10);
-  //oled_ptr->_screen->drawBitmap(-20,0, heart_bmp, 100, 100, WHITE);
-  //oled_ptr->_screen->display();
+  oled_ptr->_screen->drawBitmap(-20,0, heart_bmp, 100, 100, WHITE);
+  oled_ptr->_screen->display();
   delay(100);
   strip_ptr->setColor(0,0,0);
-  //oled_ptr->clearAll();
-  //oled_ptr->pleaseWaitPrint();
+  oled_ptr->clearAll();
+  oled_ptr->pleaseWaitPrint();
   delay(100);
-  //oled_ptr->clearAll();
+  oled_ptr->clearAll();
 
 }
 
 void testdrawrect(void) {
-    display.drawRect(0, 0, 50, 25, SH110X_WHITE);
-    display.display();
+    //display.drawRect(0, 0, 50, 25, SH110X_WHITE);
+    //display.display();
     delay(50);
 }
 
@@ -229,31 +210,16 @@ int main(){
   init();
   setup();
 
-  // Start OLED
-  display.begin(0, true);
-  display.display();
-  delay(2000);
-  display.clearDisplay();
-
   int i=0;
 
   while(true){
 
     delay(100);
-    digitalWrite(8,HIGH);
+    digitalWrite(13,HIGH);
+    digitalWrite(14,HIGH);
     delay(100);
-    digitalWrite(8,LOW);
-    i++;
-    display.setRotation(i%4);
-
-      
-
-    // miniature bitmap display
-    display.clearDisplay();
-    testdrawrect();
-
-
-/*
+    digitalWrite(13,LOW);
+    digitalWrite(14,LOW);
 
     if(menu_ptr->system_state==welcome){
       if(!(menu_ptr->printed)){
@@ -319,8 +285,6 @@ int main(){
 
 
     }
-
-    */
 
   }
     
