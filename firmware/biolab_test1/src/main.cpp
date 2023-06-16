@@ -5,11 +5,11 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SH110X.h>
 
-#define OLED_MOSI     D11
-#define OLED_CLK      D13
-#define OLED_DC       D6
-#define OLED_CS       D10
-#define OLED_RST      D7
+#define OLED_MOSI     5
+#define OLED_CLK      7
+#define OLED_DC       2
+#define OLED_CS       4
+#define OLED_RST      3
 
 #define NUMFLAKES 10
 #define XPOS 0
@@ -165,10 +165,10 @@ void setup()   {
 
   // PORT DATA DIRECTION
   
-  // DDRA |= 0b00000000;
-  // DDRB |= 0b00000000;
-  // DDRC |= 0b00000000;
-  // DDRD |= 0b00000000;
+  DDRA |= 0b00000000;
+  DDRB |= 0b00000000;
+  DDRC |= 0b00000000;
+  DDRD |= 0b00000000;
 
   DDRD &= ~_BV(DDD7);
   PORTD |= _BV(PORTD7);
@@ -187,82 +187,29 @@ void setup()   {
   // CREATE OBJECTS
 
   createObject(menu_TYPE,0);
-  createObject(oled_TYPE,0);
+  //createObject(oled_TYPE,0);
   createObject(strip_TYPE,0);
 
   // INTRO BOOT SEQUENCE
 
   strip_ptr->setColor(0,0,0);
   strip_ptr->setIntensity(0);
-  oled_ptr->clearAll();
-  oled_ptr->bootingPrint();
+  //oled_ptr->clearAll();
+  //oled_ptr->bootingPrint();
   delay(100);
-  oled_ptr->clearAll();
+  //oled_ptr->clearAll();
   strip_ptr->lubDub();
   delay(100);
   strip_ptr->sweepColor(255,0,0,10);
-  oled_ptr->_screen->drawBitmap(-20,0, heart_bmp, 100, 100, WHITE);
-  oled_ptr->_screen->display();
+  //oled_ptr->_screen->drawBitmap(-20,0, heart_bmp, 100, 100, WHITE);
+  //oled_ptr->_screen->display();
   delay(100);
   strip_ptr->setColor(0,0,0);
-  oled_ptr->clearAll();
-  oled_ptr->pleaseWaitPrint();
+  //oled_ptr->clearAll();
+  //oled_ptr->pleaseWaitPrint();
   delay(100);
-  oled_ptr->clearAll();
+  //oled_ptr->clearAll();
 
-}
-
-void testdrawline() {
-  for (int16_t i = 0; i < display.width(); i += 4) {
-    display.drawLine(0, 0, i, display.height() - 1, SH110X_WHITE);
-    display.display();
-    delay(1);
-  }
-  for (int16_t i = 0; i < display.height(); i += 4) {
-    display.drawLine(0, 0, display.width() - 1, i, SH110X_WHITE);
-    display.display();
-    delay(1);
-  }
-  delay(250);
-
-  display.clearDisplay();
-  for (int16_t i = 0; i < display.width(); i += 4) {
-    display.drawLine(0, display.height() - 1, i, 0, SH110X_WHITE);
-    display.display();
-    delay(1);
-  }
-  for (int16_t i = display.height() - 1; i >= 0; i -= 4) {
-    display.drawLine(0, display.height() - 1, display.width() - 1, i, SH110X_WHITE);
-    display.display();
-    delay(1);
-  }
-  delay(250);
-
-  display.clearDisplay();
-  for (int16_t i = display.width() - 1; i >= 0; i -= 4) {
-    display.drawLine(display.width() - 1, display.height() - 1, i, 0, SH110X_WHITE);
-    display.display();
-    delay(1);
-  }
-  for (int16_t i = display.height() - 1; i >= 0; i -= 4) {
-    display.drawLine(display.width() - 1, display.height() - 1, 0, i, SH110X_WHITE);
-    display.display();
-    delay(1);
-  }
-  delay(250);
-
-  display.clearDisplay();
-  for (int16_t i = 0; i < display.height(); i += 4) {
-    display.drawLine(display.width() - 1, 0, 0, i, SH110X_WHITE);
-    display.display();
-    delay(1);
-  }
-  for (int16_t i = 0; i < display.width(); i += 4) {
-    display.drawLine(display.width() - 1, 0, i, display.height() - 1, SH110X_WHITE);
-    display.display();
-    delay(1);
-  }
-  delay(250);
 }
 
 void testdrawrect(void) {
@@ -273,50 +220,29 @@ void testdrawrect(void) {
 
 int main(){
 
-  //pinMode(D8, OUTPUT);
-  pinMode(9, OUTPUT);
+  pinMode(13, OUTPUT);
+  pinMode(14, OUTPUT);
 
-  //digitalWrite(D8,LOW);
-  //digitalWrite(D9,LOW);
+  digitalWrite(13,LOW);
+  digitalWrite(14,LOW);
 
   init();
-  //setup();
+  setup();
 
   // Start OLED
-  display.begin(0, true); // we dont use the i2c address but we will reset!
-  
-
-  // Show image buffer on the display hardware.
-  // Since the buffer is intialized with an Adafruit splashscreen
-  // internally, this will display the splashscreen.
-  display.display();
-  delay(2000);
-
-  // Clear the buffer.
-  display.clearDisplay();
-
-  // draw a single pixel
-  display.drawPixel(10, 10, SH110X_WHITE);
-  // Show the display buffer on the hardware.
-  // NOTE: You _must_ call display after making any drawing commands
-  // to make them visible on the display hardware!
+  display.begin(0, true);
   display.display();
   delay(2000);
   display.clearDisplay();
-
-  // draw many lines
-
 
   int i=0;
 
   while(true){
 
-    delay(1000);
-    //digitalWrite(D8,LOW);
-    digitalWrite(9,HIGH);
-    delay(1000);
-    //digitalWrite(D8,HIGH);
-    digitalWrite(9,LOW);
+    delay(100);
+    digitalWrite(8,HIGH);
+    delay(100);
+    digitalWrite(8,LOW);
     i++;
     display.setRotation(i%4);
 
@@ -325,8 +251,6 @@ int main(){
     // miniature bitmap display
     display.clearDisplay();
     testdrawrect();
-    display.display();
-    delay(1);
 
 
 /*
