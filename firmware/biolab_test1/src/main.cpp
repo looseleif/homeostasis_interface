@@ -136,8 +136,6 @@ ISR (TIMER1_OVF_vect)    // Timer1 ISR
 
   }
 
-	TCNT1 = 65500;   // build period of ~1ms
-
 }
 
 // START-UP
@@ -157,13 +155,20 @@ void setup()   {
   DDRD &= ~_BV(DDD6);
   PORTD |= _BV(PORTD6);
 
-  // TIMER0 ISR EVERY ~2 MILLISECOND
-
-  TCNT1 = (65500);   // for 1 sec at 16 MHz	 
-  TCCR1A = 0x00;
-	TCCR1B = (1 << CS10) | (1 << CS12); // Timer mode with 8 prescler
-	TIMSK1 = (1 << TOIE1) ;   // Enable timer1 overflow interrupt(TOIE1)
-	sei();  // Enable global interrupts by setting global interrupt enable bit in SREG
+  // TIMER 1 for interrupt frequency 1 Hz:
+  cli(); // stop interrupts
+  TCCR1A = 0; // set entire TCCR1A register to 0
+  TCCR1B = 0; // same for TCCR1B
+  TCNT1  = 0; // initialize counter value to 0
+  // set compare match register for 1 Hz increments
+  OCR1A = 31249; // = 8000000 / (256 * 1) - 1 (must be <65536)
+  // turn on CTC mode
+  TCCR1B |= (1 << WGM12);
+  // Set CS12, CS11 and CS10 bits for 256 prescaler
+  TCCR1B |= (1 << CS12) | (0 << CS11) | (0 << CS10);
+  // enable timer compare interrupt
+  TIMSK1 |= (1 << OCIE1A);
+  sei(); // allow interrupts
 	
   // CREATE OBJECTS
 
