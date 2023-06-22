@@ -14,12 +14,13 @@ menu::menu(void){
     pinMode(LEFT_PIN, INPUT_PULLUP);
     pinMode(RIGHT_PIN, INPUT_PULLUP);
     pinMode(SELECT_PIN, INPUT_PULLUP);
+    pinMode(HOME_PIN, INPUT_PULLUP);
 
     system_state = welcome;
     demo_state = stopped;
     home_state = false;
     printed = false;
-    cursor_prev = 5;
+    cursor_prev = 2;
     cursor_current = 0;
 
 }

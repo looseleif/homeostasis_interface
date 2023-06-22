@@ -29,7 +29,7 @@ void strip::sweepColor(int r, int g, int b, int rate){
 
   for(int i = 0; i<NUM_LEDS; i++){
 
-    this->leds[i] = CRGB(100+(50),0,0);
+    this->leds[i] = CRGB(r,g,b);
     FastLED.show();
     delay(rate);
 
@@ -41,7 +41,7 @@ void strip::lubDub(void){
 
   for(int i = 0; i<NUM_LEDS; i++){
 
-    this->leds[i] = CRGB(100+(50*i),0,0);
+    this->leds[i] = CRGB(111,0,0);
     delay(15);
 
   }
@@ -50,7 +50,7 @@ void strip::lubDub(void){
   FastLED.show();
   delay(50);
 
-  FastLED.setBrightness(25);
+  FastLED.setBrightness(50);
   FastLED.show();
   delay(200);
 
@@ -66,7 +66,7 @@ void strip::lubDub(void){
   FastLED.show();
   delay(250);
 
-  FastLED.setBrightness(75);
+  FastLED.setBrightness(50);
   FastLED.show();
   delay(200);
 
@@ -74,7 +74,7 @@ void strip::lubDub(void){
   FastLED.show();
   delay(50);
 
-  FastLED.setBrightness(100);
+  FastLED.setBrightness(50);
   FastLED.show();
   delay(200);
 
@@ -89,7 +89,7 @@ void strip::lubDub(void){
 
   }
 
-  FastLED.setBrightness(100);
+  FastLED.setBrightness(50);
 
   return;
 

@@ -1,35 +1,11 @@
 #include <Arduino.h>
-
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
-
-
-static const unsigned char PROGMEM logo16_glcd_bmp[] =
-{ B00000000, B11000000,
-  B00000001, B11000000,
-  B00000001, B11000000,
-  B00000011, B11100000,
-  B11110011, B11100000,
-  B11111110, B11111000,
-  B01111110, B11111111,
-  B00110011, B10011111,
-  B00011111, B11111100,
-  B00001101, B01110000,
-  B00011011, B10100000,
-  B00111111, B11100000,
-  B00111111, B11110000,
-  B01111100, B11110000,
-  B01110000, B01110000,
-  B00000000, B00110000
-};
-
 #include <modules.h>
-
 #include <menu.h>
 #include <oled.h>
 #include <strip.h>
-
 #include <sense.h>
 
 _device *main_ptr = new _device;
@@ -38,18 +14,13 @@ menu *menu_ptr;
 oled *oled_ptr;
 strip *strip_ptr;
 
-_device *D1_ptr;
-_device *D2_ptr;
-_device *D3_ptr;
-_device *A1_ptr;
-_device *A2_ptr;
-_device *A3_ptr;
+_affector *D1_ptr;
+_affector *D2_ptr;
+_affector *D3_ptr;
 
 int8_t D_index = 0;
-int8_t A_index = 0;
 
-_device *D_set[3] = {D1_ptr,D2_ptr,D3_ptr};
-_device *A_set[3] = {A1_ptr,A2_ptr,A3_ptr};
+_affector *D_set[3] = {D1_ptr,D2_ptr,D3_ptr};
 
 void createObject(int objtype, int portnum)
 {
@@ -72,17 +43,9 @@ void createObject(int objtype, int portnum)
     //strip_ptr = new strip(menu_ptr);
     break;
   case sense_TYPE:
+    oled_ptr->_screen->drawChar(0,0,char(1),WHITE,BLACK,3);
     D_set[D_index] = new sense(D_index,main_ptr,menu_ptr,oled_ptr,strip_ptr);
     D_index++;
-    break;
-  case speak_TYPE:
-    //strip_ptr = new strip(menu_ptr);
-    break;
-  case hold_TYPE:
-    //strip_ptr = new strip(menu_ptr);
-    break;
-  case debug_TYPE:
-    //strip_ptr = new strip(menu_ptr);
     break;
   }
 
@@ -103,7 +66,7 @@ void deleteObject(int objtype, int portnum)
 
 // TODO use flags instead of heavy ISR lease
 
-ISR (TIMER1_OVF_vect)    // Timer1 ISR
+ISR (TIMER1_COMPA_vect)
 {
   
   menu_ptr->cursor_prev = menu_ptr->cursor_current;
@@ -111,14 +74,14 @@ ISR (TIMER1_OVF_vect)    // Timer1 ISR
   if(!digitalRead(DOWN_PIN)){
 
     menu_ptr->cursor_current++;
-    menu_ptr->cursor_current%=6;
+    menu_ptr->cursor_current%=3;
     oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
 
   } else if(!digitalRead(UP_PIN)){
 
     if(menu_ptr->cursor_current==0){
 
-      menu_ptr->cursor_current = 5;
+      menu_ptr->cursor_current = 2;
 
     } else {
     menu_ptr->cursor_current--;
@@ -138,39 +101,39 @@ ISR (TIMER1_OVF_vect)    // Timer1 ISR
 
 }
 
-// START-UP
-
 void setup()   {
+
+  // SERIAL COMMS
 
   // PORT DATA DIRECTION
   
-  DDRA |= 0b00000000;
-  DDRB |= 0b00000000;
-  DDRC |= 0b00000000;
-  DDRD |= 0b00000000;
+  // DDRA |= 0b00000000;
+  // DDRB |= 0b00000000;
+  // DDRC |= 0b00000000;
+  // DDRD |= 0b00000000;
 
-  DDRD &= ~_BV(DDD7);
-  PORTD |= _BV(PORTD7);
+  // DDRD &= ~_BV(DDD7);
+  // PORTD |= _BV(PORTD7);
+  // DDRD &= ~_BV(DDD6);
+  // PORTD |= _BV(PORTD6);
 
-  DDRD &= ~_BV(DDD6);
-  PORTD |= _BV(PORTD6);
+  // TIMER1 W/ INTERRUPT
 
-  // TIMER 1 for interrupt frequency 1 Hz:
-  cli(); // stop interrupts
-  TCCR1A = 0; // set entire TCCR1A register to 0
-  TCCR1B = 0; // same for TCCR1B
-  TCNT1  = 0; // initialize counter value to 0
-  // set compare match register for 1 Hz increments
-  OCR1A = 31249; // = 8000000 / (256 * 1) - 1 (must be <65536)
+  cli();
+
+  TCCR1A = 0;// set entire TCCR1A register to 0
+  TCCR1B = 0;// same for TCCR1B
+  TCNT1  = 0;//initialize counter value to 0
+  // set compare match register for 1hz increments
+  OCR1A = 100;// = (16*10^6) / (1*1024) - 1 (must be <65536)
   // turn on CTC mode
   TCCR1B |= (1 << WGM12);
-  // Set CS12, CS11 and CS10 bits for 256 prescaler
-  TCCR1B |= (1 << CS12) | (0 << CS11) | (0 << CS10);
+  // Set CS10 and CS12 bits for 1024 prescaler
+  TCCR1B |= (1 << CS12) | (1 << CS10);  
   // enable timer compare interrupt
   TIMSK1 |= (1 << OCIE1A);
-  sei(); // allow interrupts
 	
-  // CREATE OBJECTS
+  // INITIALIZE INTERFACE DEVICES
 
   createObject(menu_TYPE,0);
   createObject(oled_TYPE,0);
@@ -182,23 +145,29 @@ void setup()   {
   strip_ptr->setIntensity(0);
   oled_ptr->clearAll();
   oled_ptr->bootingPrint();
-  delay(100);
+  delay(300);
   oled_ptr->clearAll();
   strip_ptr->lubDub();
   delay(100);
-  strip_ptr->sweepColor(255,0,0,10);
-  oled_ptr->_screen->drawBitmap(-20,0, heart_bmp, 100, 100, WHITE);
+  strip_ptr->sweepColor(111,0,0,10);
+  oled_ptr->_screen->drawBitmap(25,25, heart_bmp, 100, 100, WHITE);
   oled_ptr->_screen->display();
-  delay(100);
+  delay(300);
   strip_ptr->setColor(0,0,0);
   oled_ptr->clearAll();
   oled_ptr->pleaseWaitPrint();
   delay(100);
   oled_ptr->clearAll();
 
+  sei();
+
 }
 
 int main(){
+
+  // Serial1.begin(115200);
+  // delay(10);
+  // Serial1.println("Hello Computer");
 
   pinMode(13, OUTPUT);
   pinMode(14, OUTPUT);
@@ -213,11 +182,11 @@ int main(){
 
   while(true){
 
-    delay(1000);
-    digitalWrite(13,HIGH);
-    digitalWrite(14,HIGH);
-    delay(1000);
+    delay(250);
     digitalWrite(13,LOW);
+    digitalWrite(14,HIGH);
+    delay(250);
+    digitalWrite(13,HIGH);
     digitalWrite(14,LOW);
 
     if(menu_ptr->system_state==welcome){
@@ -256,6 +225,8 @@ int main(){
       if(!(menu_ptr->printed)){
         
         oled_ptr->clearAll();
+        menu_ptr->cursor_current = 0;
+        menu_ptr->cursor_prev = 2;
         oled_ptr->printDeviceMenu();
         menu_ptr->printed = true;
 
@@ -267,11 +238,23 @@ int main(){
           menu_ptr->demo_state = started;
           menu_ptr->system_state = running;
           menu_ptr->printed = false;
+          if(menu_ptr->selected_demo==grip_TYPE){
+              strip_ptr->setColor(0,0,10);
+              delay(100);
+          }
+          if(menu_ptr->selected_demo==direct_TYPE){
+              strip_ptr->setColor(0,10,0);
+              delay(100);
+          }
+          if(menu_ptr->selected_demo==sense_TYPE){
+              strip_ptr->setColor(10,0,0);
+              delay(100);
+          }
           createObject(menu_ptr->selected_demo, menu_ptr->selected_device);
-          // oled_ptr->clearAll();
-          // strip_ptr->setColor(100,0,0);
-          // strip_ptr->setIntensity(50);
-          // delay(50);
+          oled_ptr->clearAll();
+          strip_ptr->setColor(50,0,50);
+          strip_ptr->setIntensity(50);
+          delay(50);
 
       }
 
@@ -279,9 +262,12 @@ int main(){
       
     if(menu_ptr->system_state==running){
 
-        
-      D1_ptr->calculateRate(0);
-
+      oled_ptr->_screen->drawChar(20,20,94,WHITE,BLACK,3);
+      //D1_ptr->calculateRate(0);
+      oled_ptr->_screen->display();
+      delay(100);
+      oled_ptr->clearAll();
+      delay(100);
 
     }
 

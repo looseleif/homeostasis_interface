@@ -10,8 +10,8 @@ sense::sense(const uint8_t port, _device *mainptr, menu *menuptr, oled *oledptr,
 
   // HARD CODED FOR NOW!!!
 
-  trigPin = 24;
-  echoPin = 25;
+  trigPin = D2_A;
+  echoPin = D2_B;
 
   sense_sensor = new NewPing(trigPin,echoPin,300);
 
@@ -19,8 +19,11 @@ sense::sense(const uint8_t port, _device *mainptr, menu *menuptr, oled *oledptr,
 
 void sense::calculateRate(int8_t mod){
 
-  distance = sense_sensor->ping_median(10)/1000000*343/2;
-  sense_oled_ptr->sendString(String(distance));
+  //distance = sense_sensor->ping_median(10)/1000000*343/2;
+  //sense_oled_ptr->sendString(String(distance));
+  sense_oled_ptr->pleaseWaitPrint();
+  delay(500);
+  sense_oled_ptr->printGrip();
 
 }
 

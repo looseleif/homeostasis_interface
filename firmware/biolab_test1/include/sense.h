@@ -2,13 +2,10 @@
 #define SENSE_H
 
 #include <string.h>
-
 #include <modules.h>
 #include <menu.h>
 #include <strip.h>
 #include <oled.h>
-
-
 #include <NewPing.h>
 
 class sense: public _affector

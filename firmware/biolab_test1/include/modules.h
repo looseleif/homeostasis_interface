@@ -4,18 +4,12 @@
 #include <stdint.h>
 
 //pin association
-#define D1_pin1 3 //PB2
-#define D1_pin2 4 //PB3
-#define D2_pin1 8 //PD0
-#define D2_pin2 9 //PD1
-#define D3_pin1 22 //PC6
-#define D3_pin2 23 //PC7
-#define A1_pin1 24 //PA0
-#define A1_pin2 25 //PA1
-#define A2_pin1 26 //PA2
-#define A2_pin2 27 //PA3
-#define A3_pin1 28 //PA4
-#define A3_pin2 29 //PA5
+#define D1_A 3 //PB1
+#define D1_B 4 //PB0
+#define D2_A 31 //PA7
+#define D2_B 30 //PA6
+#define D3_A 18 //PC2
+#define D3_B 19 //PC3
 
 //device types
 #define grip_TYPE 0
@@ -35,12 +29,9 @@ class _device {
 
   public:
 
-    uint8_t DCON1_mode = 0;
-    uint8_t ACON1_mode = 0;
-    uint8_t DACON1_mode = 0;
-    uint8_t DCON2_mode = 0;
-    uint8_t ACON2_mode = 0;
-    uint8_t DACON2_mode = 0;
+    uint8_t D1_mode = 0;
+    uint8_t D2_mode = 0;
+    uint8_t D3_mode = 0;
     
     _device(){};
 

@@ -219,7 +219,7 @@ void oled::printDemoMenu(){
     
     }
 
-    String myString = "demo:\n\n[ ] grip\n[ ] direct\n[ ] sense\n[ ] speak\n[ ] hold\n[ ] debug";
+    String myString = "demo:\n\n[ ] grip\n[ ] direct\n[ ] sense";
 
     for(uint8_t i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);
@@ -233,14 +233,14 @@ void oled::printDeviceMenu(){
 
     for(int i=0;i<2;i++){
 
-    _screen->setTextSize(1);
+    _screen->setTextSize(2);
     _screen->setTextWrap(true);
     _screen->setTextColor(WHITE);
     _screen->setCursor(0,0);
     
     }
 
-    String myString = "device:\n\n[ ] D1\n[ ] D2\n[ ] D3\n[ ] A1\n[ ] A2\n[ ] A3";
+    String myString = "device:\n\n[ ] D1\n[ ] D2\n[ ] D3";
 
     for(uint8_t i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);

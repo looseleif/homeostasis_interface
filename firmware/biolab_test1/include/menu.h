@@ -21,9 +21,6 @@
 #define D1_DEVICE 0
 #define D2_DEVICE 1
 #define D3_DEVICE 2
-#define A1_DEVICE 3
-#define A2_DEVICE 4
-#define A3_DEVICE 5
 
 enum DEMO : uint8_t {
   stopped,

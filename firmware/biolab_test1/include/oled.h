@@ -17,23 +17,7 @@
 #define OLED_CS       4
 #define OLED_RST      3
 
-#define NUMFLAKES 10
-#define XPOS 0
-#define YPOS 1
-#define DELTAY 2
-
-
-#define LOGO16_GLCD_HEIGHT 16
-#define LOGO16_GLCD_WIDTH  16
-
-#define oled_CS 4 //PB4
-#define oled_RESET 1 //PB1
-#define oled_DC 0 //PB0
-
-//inline Adafruit_SSD1325 screen(oled_DC, oled_RESET, oled_CS);
-
 inline Adafruit_SH1107 screen(128, 128,OLED_MOSI, OLED_CLK, OLED_DC, OLED_RST, OLED_CS);
-
 
 static const unsigned char PROGMEM heart_bmp[] = {  
 
