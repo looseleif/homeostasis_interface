@@ -98,17 +98,19 @@ ISR (TIMER1_COMPA_vect)
 
   }
 
-  if(menu_ptr->selected_demo==sense_TYPE && menu_ptr->system_state==running){
-      
-      char dist_str[3];
-      snprintf(dist_str, sizeof(dist_str), "%d", D_set[0]->returnVal());
-      oled_ptr->clearAll();
-      oled_ptr->sendString(dist_str);
-      delay(10);
-        
-  }
-
 }
+
+// ISR (TIMER2_COMPA_vect)
+// {
+//   if(menu_ptr->selected_demo==sense_TYPE && menu_ptr->system_state==running){
+    
+//     char dist_str[3];
+//     snprintf(dist_str, sizeof(dist_str), "%d", D_set[0]->returnVal());
+//     oled_ptr->clearAll();
+//     oled_ptr->sendString(dist_str);
+        
+//   }
+// }
 
 void setup()   {
 
@@ -124,21 +126,35 @@ void setup()   {
   // DDRD &= ~_BV(DDD6);
   // PORTD |= _BV(PORTD6);
 
-  // TIMER1 W/ INTERRUPT
-
   cli();
+
+  // TIMER1 W/ INTERRUPT
 
   TCCR1A = 0;// set entire TCCR1A register to 0
   TCCR1B = 0;// same for TCCR1B
   TCNT1  = 0;//initialize counter value to 0
   // set compare match register for 1hz increments
-  OCR1A = 300;// = (16*10^6) / (1*1024) - 1 (must be <65536)
+  OCR1A = 15000;// = (16*10^6) / (1*1024) - 1 (must be <65536)
   // turn on CTC mode
   TCCR1B |= (1 << WGM12);
   // Set CS10 and CS12 bits for 1024 prescaler
   TCCR1B |= (1 << CS12) | (1 << CS10);  
   // enable timer compare interrupt
   TIMSK1 |= (1 << OCIE1A);
+
+  // TIMER2 W/ INTERRUPT
+
+  // TCCR2A = 0;// set entire TCCR2A register to 0
+  // TCCR2B = 0;// same for TCCR2B
+  // TCNT2  = 0;//initialize counter value to 0
+  // // set compare match register for 8khz increments
+  // OCR2A = 15000;// = (16*10^6) / (8000*8) - 1 (must be <256)
+  // // turn on CTC mode
+  // TCCR2A |= (1 << WGM21);
+  // // Set CS21 bit for 8 prescaler
+  // TCCR2B |= (1 << CS21);   
+  // // enable timer compare interrupt
+  // TIMSK2 |= (1 << OCIE2A);
 	
   // INITIALIZE INTERFACE DEVICES
 

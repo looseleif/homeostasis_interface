@@ -10,8 +10,8 @@ sense::sense(const uint8_t port, _device *mainptr, menu *menuptr, oled *oledptr,
 
   // HARD CODED FOR NOW!!!
 
-  trigPin = D2_B;
-  echoPin = D2_A;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ;
+  trigPin = D2_A;
+  echoPin = D2_B;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ;
   distance = 0;
 
   sense_ultra = new UltraSonicDistanceSensor(trigPin,echoPin);
