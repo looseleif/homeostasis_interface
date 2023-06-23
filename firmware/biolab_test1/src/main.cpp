@@ -43,7 +43,6 @@ void createObject(int objtype, int portnum)
     //strip_ptr = new strip(menu_ptr);
     break;
   case sense_TYPE:
-    oled_ptr->_screen->drawChar(0,0,char(1),WHITE,BLACK,3);
     D_set[D_index] = new sense(D_index,main_ptr,menu_ptr,oled_ptr,strip_ptr);
     D_index++;
     break;
@@ -99,11 +98,19 @@ ISR (TIMER1_COMPA_vect)
 
   }
 
+  if(menu_ptr->selected_demo==sense_TYPE && menu_ptr->system_state==running){
+      
+      char dist_str[3];
+      snprintf(dist_str, sizeof(dist_str), "%d", D_set[0]->returnVal());
+      oled_ptr->clearAll();
+      oled_ptr->sendString(dist_str);
+      delay(10);
+        
+  }
+
 }
 
 void setup()   {
-
-  // SERIAL COMMS
 
   // PORT DATA DIRECTION
   
@@ -125,7 +132,7 @@ void setup()   {
   TCCR1B = 0;// same for TCCR1B
   TCNT1  = 0;//initialize counter value to 0
   // set compare match register for 1hz increments
-  OCR1A = 100;// = (16*10^6) / (1*1024) - 1 (must be <65536)
+  OCR1A = 300;// = (16*10^6) / (1*1024) - 1 (must be <65536)
   // turn on CTC mode
   TCCR1B |= (1 << WGM12);
   // Set CS10 and CS12 bits for 1024 prescaler
@@ -206,13 +213,24 @@ int main(){
       if(!digitalRead(SELECT_PIN)){
 
         menu_ptr->selected_demo = menu_ptr->cursor_current;
+        
+        if(menu_ptr->selected_demo == SENSE_DEMO){
+
+          createObject(sense_TYPE, 0);
+
+        } else if(menu_ptr->selected_demo == GRIP_DEMO){
+
+          createObject(grip_TYPE, 0);
+
+        }
+        
         menu_ptr->system_state = device;
         menu_ptr->printed = false;
         oled_ptr->clearAll();
         oled_ptr->pleaseWaitPrint();
         delay(100);
         oled_ptr->clearAll();
-        strip_ptr->setColor(100,0,0);
+        strip_ptr->setColor(0,100,0);
         strip_ptr->setIntensity(50);
         delay(50);
 
@@ -225,8 +243,6 @@ int main(){
       if(!(menu_ptr->printed)){
         
         oled_ptr->clearAll();
-        menu_ptr->cursor_current = 0;
-        menu_ptr->cursor_prev = 2;
         oled_ptr->printDeviceMenu();
         menu_ptr->printed = true;
 
@@ -235,26 +251,17 @@ int main(){
       if(!digitalRead(SELECT_PIN)){
 
           menu_ptr->selected_device = menu_ptr->cursor_current;
-          menu_ptr->demo_state = started;
-          menu_ptr->system_state = running;
           menu_ptr->printed = false;
-          if(menu_ptr->selected_demo==grip_TYPE){
-              strip_ptr->setColor(0,0,10);
-              delay(100);
-          }
-          if(menu_ptr->selected_demo==direct_TYPE){
-              strip_ptr->setColor(0,10,0);
-              delay(100);
-          }
-          if(menu_ptr->selected_demo==sense_TYPE){
-              strip_ptr->setColor(10,0,0);
-              delay(100);
-          }
           createObject(menu_ptr->selected_demo, menu_ptr->selected_device);
           oled_ptr->clearAll();
-          strip_ptr->setColor(50,0,50);
+          strip_ptr->setColor(0,0,100);
           strip_ptr->setIntensity(50);
           delay(50);
+          oled_ptr->_screen->drawBitmap(-40,0, sense_bmp, 100, 100, WHITE);
+          delay(750);
+          oled_ptr->clearAll();
+          menu_ptr->demo_state = started;
+          menu_ptr->system_state = running;
 
       }
 
@@ -262,12 +269,13 @@ int main(){
       
     if(menu_ptr->system_state==running){
 
-      oled_ptr->_screen->drawChar(20,20,94,WHITE,BLACK,3);
-      //D1_ptr->calculateRate(0);
-      oled_ptr->_screen->display();
-      delay(100);
-      oled_ptr->clearAll();
-      delay(100);
+      if(menu_ptr->selected_demo == sense_TYPE){
+      
+        D_set[0]->captureData();
+        D_set[0]->updateGame();
+        delay(10);
+
+      }
 
     }
 
