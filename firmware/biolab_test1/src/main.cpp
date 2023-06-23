@@ -67,7 +67,7 @@ void deleteObject(int objtype, int portnum)
 
 ISR (TIMER1_COMPA_vect)
 {
-  
+
   menu_ptr->cursor_prev = menu_ptr->cursor_current;
 
   if(!digitalRead(DOWN_PIN)){
@@ -89,8 +89,6 @@ ISR (TIMER1_COMPA_vect)
 
   } else if(!digitalRead(HOME_PIN)){
 
-    oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, true);
-
     menu_ptr->printed = false;
     menu_ptr->system_state = welcome;
     menu_ptr->demo_state = stopped;
@@ -98,19 +96,21 @@ ISR (TIMER1_COMPA_vect)
 
   }
 
+  // if(menu_ptr->selected_demo==sense_TYPE && menu_ptr->system_state==running){
+    
+  //   char dist_str[3];
+  //   snprintf(dist_str, sizeof(dist_str), "%d", D_set[0]->returnVal());
+  //   oled_ptr->clearAll();
+  //   oled_ptr->sendString(dist_str);
+        
+  // }
+
 }
 
-// ISR (TIMER2_COMPA_vect)
-// {
-//   if(menu_ptr->selected_demo==sense_TYPE && menu_ptr->system_state==running){
-    
-//     char dist_str[3];
-//     snprintf(dist_str, sizeof(dist_str), "%d", D_set[0]->returnVal());
-//     oled_ptr->clearAll();
-//     oled_ptr->sendString(dist_str);
-        
-//   }
-// }
+ISR (TIMER2_COMPA_vect)
+{
+
+}
 
 void setup()   {
 
@@ -126,6 +126,11 @@ void setup()   {
   // DDRD &= ~_BV(DDD6);
   // PORTD |= _BV(PORTD6);
 
+  pinMode(13, OUTPUT);
+  pinMode(14, OUTPUT);
+  digitalWrite(13,HIGH);
+  digitalWrite(14,HIGH);
+
   cli();
 
   // TIMER1 W/ INTERRUPT
@@ -134,7 +139,7 @@ void setup()   {
   TCCR1B = 0;// same for TCCR1B
   TCNT1  = 0;//initialize counter value to 0
   // set compare match register for 1hz increments
-  OCR1A = 15000;// = (16*10^6) / (1*1024) - 1 (must be <65536)
+  OCR1A = 2500;// = (16*10^6) / (1*1024) - 1 (must be <65536)
   // turn on CTC mode
   TCCR1B |= (1 << WGM12);
   // Set CS10 and CS12 bits for 1024 prescaler
@@ -144,17 +149,17 @@ void setup()   {
 
   // TIMER2 W/ INTERRUPT
 
-  // TCCR2A = 0;// set entire TCCR2A register to 0
-  // TCCR2B = 0;// same for TCCR2B
-  // TCNT2  = 0;//initialize counter value to 0
-  // // set compare match register for 8khz increments
-  // OCR2A = 15000;// = (16*10^6) / (8000*8) - 1 (must be <256)
-  // // turn on CTC mode
-  // TCCR2A |= (1 << WGM21);
-  // // Set CS21 bit for 8 prescaler
-  // TCCR2B |= (1 << CS21);   
-  // // enable timer compare interrupt
-  // TIMSK2 |= (1 << OCIE2A);
+  TCCR2A = 0;// set entire TCCR2A register to 0
+  TCCR2B = 0;// same for TCCR2B
+  TCNT2  = 0;//initialize counter value to 0
+  // set compare match register for 8khz increments
+  OCR2A = 255;// = (16*10^6) / (8000*8) - 1 (must be <256)
+  // turn on CTC mode
+  TCCR2A |= (1 << WGM21);
+  // Set CS22 bit for 64 prescaler
+  TCCR2B |= (1 << CS22);   
+  // enable timer compare interrupt
+  TIMSK2 |= (1 << OCIE2A);
 	
   // INITIALIZE INTERFACE DEVICES
 
@@ -173,7 +178,7 @@ void setup()   {
   strip_ptr->lubDub();
   delay(100);
   strip_ptr->sweepColor(111,0,0,10);
-  oled_ptr->_screen->drawBitmap(25,25, heart_bmp, 100, 100, WHITE);
+  oled_ptr->_screen->drawBitmap(10,10,images[1], 100, 100, WHITE);
   oled_ptr->_screen->display();
   delay(300);
   strip_ptr->setColor(0,0,0);
@@ -188,37 +193,42 @@ void setup()   {
 
 int main(){
 
-  // Serial1.begin(115200);
-  // delay(10);
-  // Serial1.println("Hello Computer");
-
-  pinMode(13, OUTPUT);
-  pinMode(14, OUTPUT);
-
-  digitalWrite(13,LOW);
-  digitalWrite(14,LOW);
-
   init();
   setup();
 
-  int i=0;
+  int i;
 
   while(true){
 
-    delay(250);
     digitalWrite(13,LOW);
     digitalWrite(14,HIGH);
-    delay(250);
+    delay(10);
     digitalWrite(13,HIGH);
     digitalWrite(14,LOW);
+    delay(10);
 
     if(menu_ptr->system_state==welcome){
       if(!(menu_ptr->printed)){
         
+        if(menu_ptr->home_state){
+
+          oled_ptr->clearAll();
+          strip_ptr->lubDub();
+          menu_ptr->home_state = false;
+          menu_ptr->selected_demo = 0;
+          menu_ptr->selected_device = 0;
+          menu_ptr->cursor_current = 0;
+          menu_ptr->cursor_prev = 2;
+          D_index = 0;
+          
+        }
+
         oled_ptr->clearAll();
         menu_ptr->system_state = demo;
         oled_ptr->printDemoMenu();
+        oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
         menu_ptr->printed = true;
+
 
       }
 
@@ -229,24 +239,13 @@ int main(){
       if(!digitalRead(SELECT_PIN)){
 
         menu_ptr->selected_demo = menu_ptr->cursor_current;
-        
-        if(menu_ptr->selected_demo == SENSE_DEMO){
-
-          createObject(sense_TYPE, 0);
-
-        } else if(menu_ptr->selected_demo == GRIP_DEMO){
-
-          createObject(grip_TYPE, 0);
-
-        }
-        
         menu_ptr->system_state = device;
         menu_ptr->printed = false;
         oled_ptr->clearAll();
         oled_ptr->pleaseWaitPrint();
         delay(100);
         oled_ptr->clearAll();
-        strip_ptr->setColor(0,100,0);
+        strip_ptr->setColor(0,0,100);
         strip_ptr->setIntensity(50);
         delay(50);
 
@@ -260,6 +259,7 @@ int main(){
         
         oled_ptr->clearAll();
         oled_ptr->printDeviceMenu();
+        oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
         menu_ptr->printed = true;
 
       }
@@ -268,14 +268,13 @@ int main(){
 
           menu_ptr->selected_device = menu_ptr->cursor_current;
           menu_ptr->printed = false;
-          createObject(menu_ptr->selected_demo, menu_ptr->selected_device);
+          createObject(int(menu_ptr->selected_demo), int(menu_ptr->selected_device));
           oled_ptr->clearAll();
-          strip_ptr->setColor(0,0,100);
+          strip_ptr->setColor(50,0,50);
           strip_ptr->setIntensity(50);
           delay(50);
-          oled_ptr->_screen->drawBitmap(-40,0, sense_bmp, 100, 100, WHITE);
-          delay(750);
-          oled_ptr->clearAll();
+          oled_ptr->_screen->drawBitmap(10,10, images[menu_ptr->selected_demo], 100, 100, WHITE);
+          oled_ptr->_screen->display();
           menu_ptr->demo_state = started;
           menu_ptr->system_state = running;
 
@@ -287,18 +286,22 @@ int main(){
 
       if(menu_ptr->selected_demo == sense_TYPE){
       
-        D_set[0]->captureData();
-        D_set[0]->updateGame();
-        delay(10);
+        for(i = 0; i<D_index; i++){
+
+          D_set[i]->captureData();
+          D_set[i]->updateGame();
+
+        }
+        
+
 
       }
 
     }
 
   }
-    
-
 
   return 0;
 
 }
+

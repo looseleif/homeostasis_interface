@@ -26,18 +26,24 @@ void sense::captureData(void)
 void sense::updateGame(void)
 {
 
-  for(int i = 0; i<distance%NUM_LEDS; i++){
+  // for(int i = 0; i<distance%NUM_LEDS; i++){
 
-    sense_strip_ptr->leds[i] = CRGB(100,0,0);
+  //   sense_strip_ptr->leds[i] = CRGB(100,0,0);
 
-  }
+  // }
 
-  for(int i = distance%NUM_LEDS; i<NUM_LEDS; i++){
+  // for(int i = distance%NUM_LEDS; i<NUM_LEDS; i++){
+
+  //   sense_strip_ptr->leds[i] = CRGB(0,0,0);
+
+  // }
+
+  for(int i = 0; i<NUM_LEDS; i++){
 
     sense_strip_ptr->leds[i] = CRGB(0,0,0);
 
   }
-
+  sense_strip_ptr->leds[distance%NUM_LEDS] = CRGB(175,75,0);
   FastLED.show();
   
 }

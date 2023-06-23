@@ -10,46 +10,46 @@ oled::oled(menu *ptr){
 
 }
 
-void oled::sendBitmap(const uint8_t *bitmap, uint8_t w, uint8_t h) {
+// void oled::sendBitmap(const uint8_t *bitmap, uint8_t w, uint8_t h) {
 
-    uint8_t icons[10][3];
-    randomSeed(666);
+//     uint8_t icons[10][3];
+//     randomSeed(666);
 
-    for (uint8_t f=0; f< 10; f++) {
-        icons[f][0] = random(_screen->width());
-        icons[f][1] = 0;
-        icons[f][1] = random(5) + 1;
+//     for (uint8_t f=0; f< 10; f++) {
+//         icons[f][0] = random(_screen->width());
+//         icons[f][1] = 0;
+//         icons[f][1] = random(5) + 1;
         
-        Serial.print("x: ");
-        Serial.print(icons[f][0], DEC);
-        Serial.print(" y: ");
-        Serial.print(icons[f][1], DEC);
-        Serial.print(" dy: ");
-        Serial.println(icons[f][1], DEC);
-    }
+//         Serial.print("x: ");
+//         Serial.print(icons[f][0], DEC);
+//         Serial.print(" y: ");
+//         Serial.print(icons[f][1], DEC);
+//         Serial.print(" dy: ");
+//         Serial.println(icons[f][1], DEC);
+//     }
 
-    while (1) {
-        // draw each icon
-        for (uint8_t f=0; f< 10; f++) {
-        _screen->drawBitmap(icons[f][0], icons[f][1], heart_bmp, w, h, WHITE);
-        }
-        _screen->display();
-        delay(200);
+//     while (1) {
+//         // draw each icon
+//         for (uint8_t f=0; f< 10; f++) {
+//         _screen->drawBitmap(icons[f][0], icons[f][1], heart_bmp, w, h, WHITE);
+//         }
+//         _screen->display();
+//         delay(200);
         
-        // then erase it + move it
-        for (uint8_t f=0; f< 10; f++) {
-        _screen->drawBitmap(icons[f][0], icons[f][1],  heart_bmp, w, h, BLACK);
-        // move it
-        icons[f][1] += icons[f][1];
-        // if its gone, reinit
-        if (icons[f][1] > _screen->height()) {
-        icons[f][0] = random(_screen->width());
-        icons[f][1] = 0;
-        icons[f][1] = random(5) + 1;
-        }
-        }
-    }
-}
+//         // then erase it + move it
+//         for (uint8_t f=0; f< 10; f++) {
+//         _screen->drawBitmap(icons[f][0], icons[f][1],  heart_bmp, w, h, BLACK);
+//         // move it
+//         icons[f][1] += icons[f][1];
+//         // if its gone, reinit
+//         if (icons[f][1] > _screen->height()) {
+//         icons[f][0] = random(_screen->width());
+//         icons[f][1] = 0;
+//         icons[f][1] = random(5) + 1;
+//         }
+//         }
+//     }
+// }
 
 void oled::sendString(String toSend) {
     
@@ -300,13 +300,5 @@ void oled::printSelector(int prev, int next, bool clear){
     _screen->display();
 
     }
-
-}
-
-void oled::printDemo(int8_t demo_type, int8_t demo_val1, int8_t demo_val2){
-
-    _screen->drawBitmap(-20,0, sense_bmp, 100, 100, WHITE);
-    _screen->display();
-    return;
 
 }
