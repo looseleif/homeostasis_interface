@@ -37,8 +37,7 @@ class sense: public _affector
         int8_t echoPin;
 
         int distance;
-        
-        //NewPing *sense_sensor;
+
         UltraSonicDistanceSensor *sense_ultra;
 
         bool prevAVal;

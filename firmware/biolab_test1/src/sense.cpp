@@ -24,12 +24,16 @@ sense::sense(const uint8_t port, _device *mainptr, menu *menuptr, oled *oledptr,
 
   } else if(sense_menu_ptr->selected_device==2){
 
-      trigPin = D3_B;
-      echoPin = D3_A;
+      digitalWrite(13,HIGH);
+      digitalWrite(14,HIGH);
+
+      trigPin = D3_A;
+      echoPin = D3_B;
 
   }
 
   sense_ultra = new UltraSonicDistanceSensor(trigPin,echoPin);
+
 
 }
 
