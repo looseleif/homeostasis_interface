@@ -133,8 +133,8 @@ void setup()   {
 
   pinMode(13, OUTPUT);
   pinMode(14, OUTPUT);
-  digitalWrite(13,HIGH);
-  digitalWrite(14,HIGH);
+  digitalWrite(13,LOW);
+  digitalWrite(14,LOW);
 
   cli();
 
@@ -219,6 +219,8 @@ int main(){
 
           oled_ptr->clearAll();
           strip_ptr->lubDub();
+          strip_ptr->setColor(100,0,0);
+          strip_ptr->setIntensity(50);
           menu_ptr->home_state = false;
           menu_ptr->selected_demo = 0;
           menu_ptr->selected_device = 0;
@@ -230,10 +232,13 @@ int main(){
 
         oled_ptr->clearAll();
         menu_ptr->system_state = demo;
-        cursor_max = 2;
         oled_ptr->printDemoMenu();
         oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
+        cursor_max = 2;
+        menu_ptr->cursor_current = 0;
+        menu_ptr->cursor_prev = cursor_max;
         menu_ptr->printed = true;
+
 
 
       }
@@ -246,7 +251,6 @@ int main(){
 
         menu_ptr->selected_demo = menu_ptr->cursor_current;
         menu_ptr->system_state = device;
-        cursor_max = 2;
         menu_ptr->printed = false;
         oled_ptr->clearAll();
         oled_ptr->pleaseWaitPrint();
@@ -282,6 +286,8 @@ int main(){
           oled_ptr->pleaseWaitPrint();
           menu_ptr->system_state = addition;
           cursor_max = 1;
+          menu_ptr->cursor_current = 0;
+          menu_ptr->cursor_prev = cursor_max;
 
       }
 
@@ -320,8 +326,8 @@ int main(){
 
             oled_ptr->_screen->drawBitmap(10,10, images[menu_ptr->selected_demo], 100, 100, WHITE);
             oled_ptr->_screen->display();
-            menu_ptr->demo_state = started;
             menu_ptr->system_state = running;
+            menu_ptr->demo_state = started;
             strip_ptr->setColor(20,20,20);
             strip_ptr->setIntensity(50);
             delay(50);
@@ -331,7 +337,6 @@ int main(){
       }
 
     }
-      
     if(menu_ptr->system_state==running){
 
       if(menu_ptr->selected_demo == sense_TYPE){

@@ -4,8 +4,8 @@
 #include <stdint.h>
 
 //pin association
-#define D1_A 3 //PB1
-#define D1_B 4 //PB0
+#define D1_A 1 //PB1
+#define D1_B 0 //PB0
 #define D2_A 31 //PA7
 #define D2_B 30 //PA6
 #define D3_A 18 //PC2
@@ -48,6 +48,7 @@ class _affector: public _device
 {
   public: 
     virtual ~_affector(){} //must have a virtualized destructor
+    virtual void initDevice(void);
     virtual void captureData(void);
     virtual void updateGame(void);
     virtual int returnVal(void);
