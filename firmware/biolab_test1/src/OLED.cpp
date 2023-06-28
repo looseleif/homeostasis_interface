@@ -250,6 +250,27 @@ void oled::printDeviceMenu(){
 
 }
 
+void oled::printAdditionMenu(){
+
+    for(int i=0;i<1;i++){
+
+    _screen->setTextSize(2);
+    _screen->setTextWrap(true);
+    _screen->setTextColor(WHITE);
+    _screen->setCursor(0,0);
+    
+    }
+
+    String myString = "add?\n\n[ ] YES\n[ ] NO";
+
+    for(uint8_t i = 0; i<myString.length(); i++){
+        _screen->write(myString[i]);
+    }
+
+    _screen->display();
+
+}
+
 void oled::printSelector(int prev, int next, bool clear){
 
     _screen->setTextSize(2);

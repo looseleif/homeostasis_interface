@@ -22,6 +22,8 @@ int8_t D_index = 0;
 
 _affector *D_set[3] = {D1_ptr,D2_ptr,D3_ptr};
 
+int8_t cursor_max = 0;
+
 void createObject(int objtype, int portnum)
 {
 
@@ -70,29 +72,32 @@ ISR (TIMER1_COMPA_vect)
 
   menu_ptr->cursor_prev = menu_ptr->cursor_current;
 
-  if(!digitalRead(DOWN_PIN)){
+  if(!digitalRead(HOME_PIN)){
+
+    menu_ptr->printed = false;
+    menu_ptr->system_state = welcome;
+    menu_ptr->demo_state = stopped;
+    menu_ptr->home_state = true;
+
+  } else if(menu_ptr->system_state==running || menu_ptr->system_state==welcome){
+
+  
+  } else if(!digitalRead(DOWN_PIN)){
 
     menu_ptr->cursor_current++;
-    menu_ptr->cursor_current%=3;
+    menu_ptr->cursor_current%=(cursor_max+1);
     oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
 
   } else if(!digitalRead(UP_PIN)){
 
     if(menu_ptr->cursor_current==0){
 
-      menu_ptr->cursor_current = 2;
+      menu_ptr->cursor_current = cursor_max;
 
     } else {
     menu_ptr->cursor_current--;
     }
     oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
-
-  } else if(!digitalRead(HOME_PIN)){
-
-    menu_ptr->printed = false;
-    menu_ptr->system_state = welcome;
-    menu_ptr->demo_state = stopped;
-    menu_ptr->home_state = true;
 
   }
 
@@ -200,12 +205,12 @@ int main(){
 
   while(true){
 
-    digitalWrite(13,LOW);
-    digitalWrite(14,HIGH);
-    delay(10);
-    digitalWrite(13,HIGH);
-    digitalWrite(14,LOW);
-    delay(10);
+    // digitalWrite(13,LOW);
+    // digitalWrite(14,HIGH);
+    // delay(10);
+    // digitalWrite(13,HIGH);
+    // digitalWrite(14,LOW);
+    // delay(10);
 
     if(menu_ptr->system_state==welcome){
       if(!(menu_ptr->printed)){
@@ -218,13 +223,14 @@ int main(){
           menu_ptr->selected_demo = 0;
           menu_ptr->selected_device = 0;
           menu_ptr->cursor_current = 0;
-          menu_ptr->cursor_prev = 2;
+          menu_ptr->cursor_prev = cursor_max;
           D_index = 0;
           
         }
 
         oled_ptr->clearAll();
         menu_ptr->system_state = demo;
+        cursor_max = 2;
         oled_ptr->printDemoMenu();
         oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
         menu_ptr->printed = true;
@@ -240,10 +246,10 @@ int main(){
 
         menu_ptr->selected_demo = menu_ptr->cursor_current;
         menu_ptr->system_state = device;
+        cursor_max = 2;
         menu_ptr->printed = false;
         oled_ptr->clearAll();
         oled_ptr->pleaseWaitPrint();
-        delay(100);
         oled_ptr->clearAll();
         strip_ptr->setColor(0,0,100);
         strip_ptr->setIntensity(50);
@@ -273,10 +279,54 @@ int main(){
           strip_ptr->setColor(50,0,50);
           strip_ptr->setIntensity(50);
           delay(50);
-          oled_ptr->_screen->drawBitmap(10,10, images[menu_ptr->selected_demo], 100, 100, WHITE);
-          oled_ptr->_screen->display();
-          menu_ptr->demo_state = started;
-          menu_ptr->system_state = running;
+          oled_ptr->pleaseWaitPrint();
+          menu_ptr->system_state = addition;
+          cursor_max = 1;
+
+      }
+
+    }
+
+    if(menu_ptr->system_state==addition){
+
+      if(!(menu_ptr->printed)){
+        
+        oled_ptr->clearAll();
+        oled_ptr->printAdditionMenu();
+        oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
+        menu_ptr->printed = true;
+
+      }
+
+      if(!digitalRead(SELECT_PIN)){
+
+          menu_ptr->printed = false;
+          oled_ptr->clearAll();
+
+          if(!(menu_ptr->cursor_current)){
+
+              menu_ptr->system_state = device;
+              cursor_max = 2;
+              menu_ptr->printed = false;
+              oled_ptr->clearAll();
+              oled_ptr->pleaseWaitPrint();
+              delay(100);
+              oled_ptr->clearAll();
+              strip_ptr->setColor(0,0,100);
+              strip_ptr->setIntensity(50);
+              delay(50);
+
+          } else if(menu_ptr->cursor_current){
+
+            oled_ptr->_screen->drawBitmap(10,10, images[menu_ptr->selected_demo], 100, 100, WHITE);
+            oled_ptr->_screen->display();
+            menu_ptr->demo_state = started;
+            menu_ptr->system_state = running;
+            strip_ptr->setColor(20,20,20);
+            strip_ptr->setIntensity(50);
+            delay(50);
+
+          }
 
       }
 

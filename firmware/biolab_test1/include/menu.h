@@ -32,6 +32,7 @@ enum SYSTEM : uint8_t {
   welcome,
   demo,
   device,
+  addition,
   running,
   debug
 };

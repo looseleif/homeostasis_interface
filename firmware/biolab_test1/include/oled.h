@@ -784,7 +784,7 @@ class oled: public _device
 
         void printDemoMenu(void);
         void printDeviceMenu(void);
-
+        void printAdditionMenu(void);
 
         void printSelector(int prev, int next, bool clear);
         void printDemo(int8_t demo_type, int8_t demo_val1, int8_t demo_val2);
