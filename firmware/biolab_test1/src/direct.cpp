@@ -13,30 +13,41 @@ direct::direct(const uint8_t port, _device *mainptr, menu *menuptr, oled *oledpt
 
   if(direct_menu_ptr->selected_device==0){
       
+      cli();
+    
+      // Configure PD2 as an input using the Data Direction Register D (DDRD)
+      DDRA &= ~_BV(DDA1);
+
+      // Enable the pull-up resistor
+      PORTA |= _BV(PORTA1);
+
+      // Enable pin change interruptusing Pin Change Mask Register
+      PCMSK0 |= _BV(PCINT6);
+
+      // Enable pin change interrupt using the Pin Change Interrrupt Control Register (PCICR)
+      PCICR |= _BV(PCIE0);
+
+      sei();
+
       direct_pin1 = D1_A;
       direct_pin2 = D1_B;
       portNum = 0;
 
   } else if(direct_menu_ptr->selected_device==1){
-      
-      pinMode(D2_B,INPUT_PULLUP);
 
       cli();
     
-      // Configure PD2 as an input using the Data Direction Register D (DDRD)
+      // Configure input using the Data Direction Register
       DDRA &= ~_BV(DDA6);
 
-      // Enable the pull-up resistor on PD2 using the Port D Data Register (PORTD)
+      // Enable the pull-up resistor
       PORTA |= _BV(PORTA6);
 
-      // Enable pin change interrupt on the PCINT18 pin using Pin Change Mask Register 2 (PCMSK2)
+      // Enable pin change interruptusing Pin Change Mask Register
       PCMSK0 |= _BV(PCINT6);
 
-      // Enable pin change interrupt 2 using the Pin Change Interrrupt Control Register (PCICR)
+      // Enable pin change interrupt using the Pin Change Interrrupt Control Register (PCICR)
       PCICR |= _BV(PCIE0);
-
-      // // Configure PB5 as an output using the Port B Data Direction Register (DDRB)
-      // DDRB |= _BV(DDB5);
 
       sei();
 
