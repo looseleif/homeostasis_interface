@@ -10,36 +10,27 @@ sense::sense(const uint8_t port, _device *mainptr, menu *menuptr, oled *oledptr,
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ;
   distance = 0;
 
-  // menu_ptr->selected_device wil be 0,1,2
-
   if(sense_menu_ptr->selected_device==0){
       
       trigPin = D1_A;
       echoPin = D1_B;
+      portNum = 0;
 
   } else if(sense_menu_ptr->selected_device==1){
       
       trigPin = D2_A;
       echoPin = D2_B;
+      portNum = 1;
 
   } else if(sense_menu_ptr->selected_device==2){
 
-      digitalWrite(13,HIGH);
-      digitalWrite(14,HIGH);
-
       trigPin = D3_A;
       echoPin = D3_B;
+      portNum = 2;
 
   }
 
   sense_ultra = new UltraSonicDistanceSensor(trigPin,echoPin);
-
-
-}
-
-void sense::initDevice(){
-
-  return;
 
 }
 

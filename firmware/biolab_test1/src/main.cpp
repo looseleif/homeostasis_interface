@@ -7,6 +7,7 @@
 #include <oled.h>
 #include <strip.h>
 #include <sense.h>
+#include <direct.h>
 
 _device *main_ptr = new _device;
 
@@ -42,7 +43,11 @@ void createObject(int objtype, int portnum)
     //strip_ptr = new strip(menu_ptr);
     break;
   case direct_TYPE:
-    //strip_ptr = new strip(menu_ptr);
+    D_set[D_index] = new direct(D_index,main_ptr,menu_ptr,oled_ptr,strip_ptr);
+    D_index++;
+    digitalWrite(13,HIGH);
+    digitalWrite(14,HIGH);
+    break;
     break;
   case sense_TYPE:
     D_set[D_index] = new sense(D_index,main_ptr,menu_ptr,oled_ptr,strip_ptr);
@@ -310,7 +315,7 @@ int main(){
 
           if(!(menu_ptr->cursor_current)){
 
-              menu_ptr->system_state = device;
+              menu_ptr->system_state = welcome;
               cursor_max = 2;
               menu_ptr->printed = false;
               oled_ptr->clearAll();
@@ -338,7 +343,7 @@ int main(){
     }
     if(menu_ptr->system_state==running){
 
-      if(menu_ptr->selected_demo == sense_TYPE){
+      if(menu_ptr->selected_demo == sense_TYPE || menu_ptr->selected_demo == direct_TYPE){
       
         for(i = 0; i<D_index; i++){
 
