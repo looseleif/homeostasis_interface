@@ -9,6 +9,11 @@
 #include <oled.h>
 #include <math.h>
 
+#define CRANKRATESCALAR 80.0
+#define GENERAL_RATETYPE 0
+#define CRANKSUM_RATETYPE 1
+#define STRIPREFRESHDELAY 50
+
 class direct: public _affector
 {
 
@@ -37,6 +42,19 @@ class direct: public _affector
         bool prevBVal;
         bool pinAVal;
         bool pinBVal;
+
+        //removed extraneous values to help prevent bouncing, and inverted the polarity
+        // http://makeatronics.blogspot.com/2013/02/efficiently-reading-quadrature-with.html
+        // char quadratureLookupTable[16] = {0,0,0,0,0,0,0,-1,0,0,0,0,0,1,0,0};
+        float overallRate = 0;
+        float movingAverage = 0; //holds the moving average for the production of the hand crank. 
+        uint8_t movingAveragePeriod = 1000/STRIPREFRESHDELAY; 
+        //uint8_t movingAveragePeriod = 1000/STRIPREFRESHDELAY; 
+        uint8_t maxProductionRate = 60; //used in the rate calculation
+        uint8_t consumptionRate = 70; ///used in the rate calculation
+        int8_t crankSum = 0; //sums the number of valid pulses from the encoder
+        int8_t encoderPinA = -1; //stores object pin configuration
+        int8_t encoderPinB = -1; //stores object pin configuration
 
 };
 

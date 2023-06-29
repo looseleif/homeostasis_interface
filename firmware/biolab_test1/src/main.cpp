@@ -8,6 +8,8 @@
 #include <strip.h>
 #include <sense.h>
 #include <direct.h>
+#include <avr/interrupt.h>
+#include <avr/io.h>
 
 _device *main_ptr = new _device;
 
@@ -15,15 +17,18 @@ menu *menu_ptr;
 oled *oled_ptr;
 strip *strip_ptr;
 
-_affector *D1_ptr;
-_affector *D2_ptr;
-_affector *D3_ptr;
+_affector *D1_ptr = NULL;
+_affector *D2_ptr = NULL;
+_affector *D3_ptr = NULL;
 
 int8_t D_index = 0;
 
 _affector *D_set[3] = {D1_ptr,D2_ptr,D3_ptr};
 
 int8_t cursor_max = 0;
+
+uint16_t rateCounter = 0;
+uint8_t refreshFlag = 0;
 
 void createObject(int objtype, int portnum)
 {
@@ -45,8 +50,8 @@ void createObject(int objtype, int portnum)
   case direct_TYPE:
     D_set[D_index] = new direct(D_index,main_ptr,menu_ptr,oled_ptr,strip_ptr);
     D_index++;
-    digitalWrite(13,HIGH);
-    digitalWrite(14,HIGH);
+    // digitalWrite(13,HIGH);
+    // digitalWrite(14,HIGH);
     break;
     break;
   case sense_TYPE:
@@ -120,7 +125,58 @@ ISR (TIMER1_COMPA_vect)
 ISR (TIMER2_COMPA_vect)
 {
 
+  // rateCounter++;
+
+  // if(rateCounter>=500){
+
+  //   refreshFlag = 1;
+
+  // }
+
 }
+
+ISR (PCINT0_vect)
+{
+
+  PCIFR ^= (1 << PCIF0);
+  PORTD ^= (1 << PD5);
+  PORTD ^= (1 << PD6);
+
+}
+
+// ISR (PCINT1_vect)
+// {
+
+//   PCIFR ^= (1 << PCIF0);
+//   digitalWrite(13,HIGH);
+//   digitalWrite(14,HIGH);
+
+// }
+
+// ISR (PCINT2_vect)
+// {
+
+//   PCIFR ^= (1 << PCIF0);
+//   digitalWrite(13,HIGH);
+//   digitalWrite(14,HIGH);
+
+// }
+
+// ISR (PCINT3_vect)
+// {
+
+//   PCIFR ^= (1 << PCIF0);
+//   digitalWrite(13,HIGH);
+//   digitalWrite(14,HIGH);
+
+// }
+
+// ISR(PCINT7_vect){
+
+//   PORTD ^= (1 << PD5);
+//   PORTD ^= (1 << PD6);
+
+// }
 
 void setup()   {
 
@@ -158,17 +214,17 @@ void setup()   {
 
   // TIMER2 W/ INTERRUPT
 
-  // TCCR2A = 0;// set entire TCCR2A register to 0
-  // TCCR2B = 0;// same for TCCR2B
-  // TCNT2  = 0;//initialize counter value to 0
-  // // set compare match register for 8khz increments
-  // OCR2A = 255;// = (16*10^6) / (8000*8) - 1 (must be <256)
-  // // turn on CTC mode
-  // TCCR2A |= (1 << WGM21);
-  // // Set CS22 bit for 64 prescaler
-  // TCCR2B |= (1 << CS22);   
-  // // enable timer compare interrupt
-  // TIMSK2 |= (1 << OCIE2A);
+  TCCR2A = 0;// set entire TCCR2A register to 0
+  TCCR2B = 0;// same for TCCR2B
+  TCNT2  = 0;//initialize counter value to 0
+  // set compare match register for 8khz increments
+  OCR2A = 255;// = (16*10^6) / (8000*8) - 1 (must be <256)
+  // turn on CTC mode
+  TCCR2A |= (1 << WGM21);
+  // Set CS22 bit for 64 prescaler
+  TCCR2B |= (1 << CS22);   
+  // enable timer compare interrupt
+  TIMSK2 |= (1 << OCIE2A);
 	
   // INITIALIZE INTERFACE DEVICES
 
@@ -209,13 +265,6 @@ int main(){
 
   while(true){
 
-    // digitalWrite(13,LOW);
-    // digitalWrite(14,HIGH);
-    // delay(10);
-    // digitalWrite(13,HIGH);
-    // digitalWrite(14,LOW);
-    // delay(10);
-
     if(menu_ptr->system_state==welcome){
       if(!(menu_ptr->printed)){
         
@@ -242,8 +291,6 @@ int main(){
         menu_ptr->cursor_current = 0;
         menu_ptr->cursor_prev = cursor_max;
         menu_ptr->printed = true;
-
-
 
       }
 
