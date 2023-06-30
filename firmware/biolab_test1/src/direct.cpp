@@ -1,8 +1,5 @@
 #include <direct.h>>
 
-int8_t quadratureLookupTable[16] = {0,/*-1*/0,1,0,1,0,0,/*-1*/0,/*-1*/0,0,0,1,0,1,/*-1*/0,0};
-
-
 direct::direct(const uint8_t port, _device *mainptr, menu *menuptr, oled *oledptr, strip *stripptr){
 
   direct_main_ptr = mainptr;
@@ -15,17 +12,20 @@ direct::direct(const uint8_t port, _device *mainptr, menu *menuptr, oled *oledpt
       
       cli();
     
-      // Configure PD2 as an input using the Data Direction Register D (DDRD)
-      DDRA &= ~_BV(DDA1);
+      // Configure input using the Data Direction Register
+      DDRB &= ~_BV(DDB1);
+      DDRB &= ~_BV(DDB0);
 
       // Enable the pull-up resistor
-      PORTA |= _BV(PORTA1);
+      PORTB |= _BV(PORTB1);
+      PORTB |= _BV(PORTB0);
 
       // Enable pin change interruptusing Pin Change Mask Register
-      PCMSK0 |= _BV(PCINT6);
+      PCMSK1 |= _BV(PCINT9);
+      PCMSK1 |= _BV(PCINT8);
 
       // Enable pin change interrupt using the Pin Change Interrrupt Control Register (PCICR)
-      PCICR |= _BV(PCIE0);
+      PCICR |= _BV(PCIE1);
 
       sei();
 
@@ -38,25 +38,47 @@ direct::direct(const uint8_t port, _device *mainptr, menu *menuptr, oled *oledpt
       cli();
     
       // Configure input using the Data Direction Register
+      DDRA &= ~_BV(DDA7);
       DDRA &= ~_BV(DDA6);
 
       // Enable the pull-up resistor
+      PORTA |= _BV(PORTA7);
       PORTA |= _BV(PORTA6);
 
       // Enable pin change interruptusing Pin Change Mask Register
-      PCMSK0 |= _BV(PCINT6);
+      PCMSK0 |= _BV(PCINT7);
+      //PCMSK0 |= _BV(PCINT6);
 
       // Enable pin change interrupt using the Pin Change Interrrupt Control Register (PCICR)
       PCICR |= _BV(PCIE0);
 
       sei();
 
-      direct_pin1 = D2_A;
-      direct_pin2 = D2_B;
+      direct_pin1 = D2_A; //PCINT7
+      direct_pin2 = D2_B; //PCINT6
       portNum = 1;
 
   } else if(direct_menu_ptr->selected_device==2){
 
+      cli();
+    
+      // Configure input using the Data Direction Register
+      DDRC &= ~_BV(DDC2);
+      DDRC &= ~_BV(DDC3);
+
+      // Enable the pull-up resistor
+      PORTC |= _BV(PORTC2);
+      PORTC |= _BV(PORTC3);
+
+      // Enable pin change interruptusing Pin Change Mask Register
+      PCMSK2 |= _BV(PCINT18);
+      PCMSK2 |= _BV(PCINT19);
+
+      // Enable pin change interrupt using the Pin Change Interrrupt Control Register (PCICR)
+      PCICR |= _BV(PCIE2);
+
+      sei();
+      
       direct_pin1 = D3_A;
       direct_pin2 = D3_B;
       portNum = 2;
@@ -70,48 +92,85 @@ void direct::captureData(void)
 
 }
 
-void direct::updateGame(void)
+void direct::updateGame(int x)
 {
 
-  // int8_t modifier = 0;
+  if(x == CRANKSUM_RATETYPE){
 
-  // // if(modifier == CRANKSUM_RATETYPE){
+    int8_t currentOut = returnVal();
+    //make sure it's not an invalid state change
+    crankSum = currentOut;
+    
+  }
 
-  // //   int8_t currentOut = returnVal();
-  // //   //make sure it's not an invalid state change
-  // //   if(currentOut)
-  // //   { 
-  // //   crankSum += currentOut;
-  // //   }
-  // // }
+  if(x == GENERAL_RATETYPE){
 
-  // if(modifier == GENERAL_RATETYPE){
+    // // calculates current moving average efficiently
+    // movingAverage += (-movingAverage/movingAveragePeriod + crankSum*1.1);
 
-  //   // calculates current moving average efficiently
-  //   movingAverage += (-movingAverage/movingAveragePeriod + crankSum*1.1);
+    // //make it pointless to spin the crank too fast
+    // if(movingAverage > 80) movingAverage = 80;
+    // //prevent excessively small carryover
+    // if(movingAverage < 1) movingAverage = 0;
+    // overallRate = ((movingAverage/80. * maxProductionRate)*2.0 - consumptionRate) * 0.0001 * CRANKRATESCALAR;// * CRANKRATESCALAR;
+    // //reset the sum because it has just been incorporated into a moving avg
+    //crankSum = 0;
+    // //send the rate to the strip so that it can update the position of this indicator
+    // for(int i = 0; i<NUM_LEDS; i++){
 
-  //   //make it pointless to spin the crank too fast
-  //   if(movingAverage > 80) movingAverage = 80;
-  //   //prevent excessively small carryover
-  //   if(movingAverage < 1) movingAverage = 0;
-  //   overallRate = ((movingAverage/80. * maxProductionRate)*2.0 - consumptionRate) * 0.0001 * CRANKRATESCALAR;// * CRANKRATESCALAR;
-  //   //reset the sum because it has just been incorporated into a moving avg
-  //   crankSum = 0;
-  //   //send the rate to the strip so that it can update the position of this indicator
-  //   // direct_strip_ptr->leds[]
-  // }
-  // return;
+    //   direct_strip_ptr->leds[i] = CRGB(0,0,0);
+
+    // }
+    // direct_strip_ptr->leds[(int)(floor(70*overallRate))%30] = CRGB(175,75,0);
+    // direct_strip_ptr->setIntensity(50);
+
+    if(crankSum>0){
+
+      for(int i = 0; i<NUM_LEDS; i++){
+
+        direct_strip_ptr->leds[i] = CRGB(100,0,0);
+
+      }
+      direct_strip_ptr->setIntensity(50);
+
+    } else if(crankSum<0){
+
+      for(int i = 0; i<NUM_LEDS; i++){
+
+        direct_strip_ptr->leds[i] = CRGB(0,0,100);
+
+      }
+      direct_strip_ptr->setIntensity(50);
+
+    } else {
+
+      for(int i = 0; i<NUM_LEDS; i++){
+
+        direct_strip_ptr->leds[i] = CRGB(0,100,0);
+
+      }
+      direct_strip_ptr->setIntensity(50);
+
+    }
+
+    crankSum = 0;
+    
+    
+  }
+  return;
 
 }
 
-int direct::returnVal(void){
+int8_t direct::returnVal(void){
 
-  // pinAVal = digitalRead(direct_pin1);
-  // pinBVal = digitalRead(direct_pin2);
-  // uint8_t lookupVal = (prevAVal << 3) | (prevBVal << 2) | (pinAVal << 1) | pinBVal;
-  // prevAVal = pinAVal;
-  // prevBVal = prevBVal;
-  // return quadratureLookupTable[lookupVal];
+  PORTD ^= (1 << PD5);
+  PORTD ^= (1 << PD6);
+  pinAVal = digitalRead(direct_pin2) & 0b1111;
+  pinBVal = digitalRead(direct_pin1) & 0b1111;
+  int8_t lookupVal = (prevAVal << 3) | (prevBVal << 2) | (pinAVal << 1) | pinBVal;
+  prevAVal = pinAVal;
+  prevBVal = pinBVal;
+  return quadratureLookupTable[lookupVal & 0b1111];
 
 }
 

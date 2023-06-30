@@ -27,8 +27,10 @@ _affector *D_set[3] = {D1_ptr,D2_ptr,D3_ptr};
 
 int8_t cursor_max = 0;
 
-uint16_t rateCounter = 0;
 uint8_t refreshFlag = 0;
+uint8_t refreshCount = 0;
+uint8_t crankFlag = 0;
+uint8_t mod = 0;
 
 void createObject(int objtype, int portnum)
 {
@@ -50,8 +52,6 @@ void createObject(int objtype, int portnum)
   case direct_TYPE:
     D_set[D_index] = new direct(D_index,main_ptr,menu_ptr,oled_ptr,strip_ptr);
     D_index++;
-    // digitalWrite(13,HIGH);
-    // digitalWrite(14,HIGH);
     break;
     break;
   case sense_TYPE:
@@ -111,27 +111,18 @@ ISR (TIMER1_COMPA_vect)
 
   }
 
-  // if(menu_ptr->selected_demo==sense_TYPE && menu_ptr->system_state==running){
-    
-  //   char dist_str[3];
-  //   snprintf(dist_str, sizeof(dist_str), "%d", D_set[0]->returnVal());
-  //   oled_ptr->clearAll();
-  //   oled_ptr->sendString(dist_str);
-        
-  // }
-
 }
 
 ISR (TIMER2_COMPA_vect)
 {
+    refreshCount++;
+    if(refreshCount==15){
 
-  // rateCounter++;
+      refreshFlag = 1;
+      refreshCount = 0;
 
-  // if(rateCounter>=500){
+    }
 
-  //   refreshFlag = 1;
-
-  // }
 
 }
 
@@ -139,28 +130,25 @@ ISR (PCINT0_vect)
 {
 
   PCIFR ^= (1 << PCIF0);
-  PORTD ^= (1 << PD5);
-  PORTD ^= (1 << PD6);
+  crankFlag = 1;
 
 }
 
-// ISR (PCINT1_vect)
-// {
+ISR (PCINT1_vect)
+{
 
-//   PCIFR ^= (1 << PCIF0);
-//   digitalWrite(13,HIGH);
-//   digitalWrite(14,HIGH);
+  PCIFR ^= (1 << PCIF0);
+  crankFlag = 1;
 
-// }
+}
 
-// ISR (PCINT2_vect)
-// {
+ISR (PCINT2_vect)
+{
 
-//   PCIFR ^= (1 << PCIF0);
-//   digitalWrite(13,HIGH);
-//   digitalWrite(14,HIGH);
+  PCIFR ^= (1 << PCIF0);
+  crankFlag = 1;
 
-// }
+}
 
 // ISR (PCINT3_vect)
 // {
@@ -347,7 +335,7 @@ int main(){
     if(menu_ptr->system_state==addition){
 
       if(!(menu_ptr->printed)){
-        
+
         oled_ptr->clearAll();
         oled_ptr->printAdditionMenu();
         oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
@@ -388,18 +376,39 @@ int main(){
       }
 
     }
+
     if(menu_ptr->system_state==running){
 
-      if(menu_ptr->selected_demo == sense_TYPE || menu_ptr->selected_demo == direct_TYPE){
+      if(menu_ptr->selected_demo == sense_TYPE){
       
         for(i = 0; i<D_index; i++){
 
-          D_set[i]->captureData();
-          D_set[i]->updateGame();
+          // D_set[i]->captureData();
+          // D_set[i]->updateGame(mod);
 
         }
-        
+      
+      }
 
+      if(crankFlag){
+
+        for(i = 0; i<D_index; i++){
+
+          D_set[i]->updateGame(1);
+          crankFlag = 0;
+
+        }
+
+      }
+
+      if(refreshFlag){
+
+        for(i = 0; i<D_index; i++){
+
+          D_set[i]->updateGame(0);
+          refreshFlag = 0;
+
+        }
 
       }
 

@@ -48,8 +48,8 @@ class _affector: public _device
   public: 
     virtual ~_affector(){} //must have a virtualized destructor
     virtual void captureData(void);
-    virtual void updateGame(void);
-    virtual int returnVal(void);
+    virtual void updateGame(int x);
+    virtual int8_t returnVal(void);
 };
 
 

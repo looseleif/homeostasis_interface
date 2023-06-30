@@ -24,8 +24,8 @@ class direct: public _affector
         direct(const uint8_t port, _device *mainptr, menu *menuptr, oled *oledptr, strip *stripptr);
 
         void direct::captureData(void) override;
-        void direct::updateGame(void) override;
-        int direct::returnVal(void) override;
+        void direct::updateGame(int x) override;
+        int8_t direct::returnVal(void) override;
         
         _device *direct_main_ptr;
         strip *direct_strip_ptr;
@@ -36,20 +36,16 @@ class direct: public _affector
         int8_t direct_pin1;
         int8_t direct_pin2;
 
-        int distance;
-
         bool prevAVal;
         bool prevBVal;
         bool pinAVal;
         bool pinBVal;
 
-        //removed extraneous values to help prevent bouncing, and inverted the polarity
         // http://makeatronics.blogspot.com/2013/02/efficiently-reading-quadrature-with.html
-        // char quadratureLookupTable[16] = {0,0,0,0,0,0,0,-1,0,0,0,0,0,1,0,0};
+        int8_t quadratureLookupTable[16] = {0,0,0,-1,0,0,1,0,0,1,0,0,-1,0,0,0};
         float overallRate = 0;
         float movingAverage = 0; //holds the moving average for the production of the hand crank. 
         uint8_t movingAveragePeriod = 1000/STRIPREFRESHDELAY; 
-        //uint8_t movingAveragePeriod = 1000/STRIPREFRESHDELAY; 
         uint8_t maxProductionRate = 60; //used in the rate calculation
         uint8_t consumptionRate = 70; ///used in the rate calculation
         int8_t crankSum = 0; //sums the number of valid pulses from the encoder
