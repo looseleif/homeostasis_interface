@@ -105,55 +105,56 @@ void direct::updateGame(int x)
 
   if(x == GENERAL_RATETYPE){
 
-    // // calculates current moving average efficiently
-    // movingAverage += (-movingAverage/movingAveragePeriod + crankSum*1.1);
-
-    // //make it pointless to spin the crank too fast
-    // if(movingAverage > 80) movingAverage = 80;
-    // //prevent excessively small carryover
-    // if(movingAverage < 1) movingAverage = 0;
-    // overallRate = ((movingAverage/80. * maxProductionRate)*2.0 - consumptionRate) * 0.0001 * CRANKRATESCALAR;// * CRANKRATESCALAR;
-    // //reset the sum because it has just been incorporated into a moving avg
-    //crankSum = 0;
-    // //send the rate to the strip so that it can update the position of this indicator
-    // for(int i = 0; i<NUM_LEDS; i++){
-
-    //   direct_strip_ptr->leds[i] = CRGB(0,0,0);
-
-    // }
-    // direct_strip_ptr->leds[(int)(floor(70*overallRate))%30] = CRGB(175,75,0);
-    // direct_strip_ptr->setIntensity(50);
-
     if(crankSum>0){
 
-      for(int i = 0; i<NUM_LEDS; i++){
-
-        direct_strip_ptr->leds[i] = CRGB(100,0,0);
-
-      }
-      direct_strip_ptr->setIntensity(50);
+      direction = 1;
+      speed += 1;
 
     } else if(crankSum<0){
 
-      for(int i = 0; i<NUM_LEDS; i++){
-
-        direct_strip_ptr->leds[i] = CRGB(0,0,100);
-
-      }
-      direct_strip_ptr->setIntensity(50);
+      direction = -1;
+      speed += 1;
 
     } else {
 
-      for(int i = 0; i<NUM_LEDS; i++){
+      if(speed!=0) speed -= 1;
 
-        direct_strip_ptr->leds[i] = CRGB(0,100,0);
+    }
 
-      }
-      direct_strip_ptr->setIntensity(50);
+    if(speed == 0){
+
+      direction = 0;
+
+    } else if(speed > 3){
+
+      speed = 3;
+
+    }
+
+    if(pos>60){
+
+      pos = 30 + pos%30;
+
+    } else if (pos-speed < 30 && direction==-1){
+
+      pos = 60 - speed;
+
+    } else {
+
+      pos += (speed*direction);
 
     }
 
     crankSum = 0;
+    for(int i = 0; i<NUM_LEDS; i++){
+
+      direct_strip_ptr->leds[i] = CRGB(0,0,0);
+
+    }
+
+    direct_strip_ptr->leds[pos%NUM_LEDS] = CRGB(0,75,175);
+
+    direct_strip_ptr->setIntensity(50);
     
     
   }

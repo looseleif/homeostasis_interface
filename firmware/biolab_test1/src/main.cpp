@@ -116,7 +116,7 @@ ISR (TIMER1_COMPA_vect)
 ISR (TIMER2_COMPA_vect)
 {
     refreshCount++;
-    if(refreshCount==15){
+    if(refreshCount==35){
 
       refreshFlag = 1;
       refreshCount = 0;
@@ -222,22 +222,22 @@ void setup()   {
 
   // INTRO BOOT SEQUENCE
 
-  strip_ptr->setColor(0,0,0);
-  strip_ptr->setIntensity(0);
-  oled_ptr->clearAll();
-  oled_ptr->bootingPrint();
-  delay(300);
-  oled_ptr->clearAll();
-  strip_ptr->lubDub();
-  delay(100);
-  strip_ptr->sweepColor(111,0,0,10);
-  oled_ptr->_screen->drawBitmap(10,10,images[1], 100, 100, WHITE);
-  oled_ptr->_screen->display();
-  delay(300);
-  strip_ptr->setColor(0,0,0);
-  oled_ptr->clearAll();
-  oled_ptr->pleaseWaitPrint();
-  delay(100);
+  // strip_ptr->setColor(0,0,0);
+  // strip_ptr->setIntensity(0);
+  // oled_ptr->clearAll();
+  // oled_ptr->bootingPrint();
+  // delay(300);
+  // oled_ptr->clearAll();
+  // strip_ptr->lubDub();
+  // delay(100);
+  // strip_ptr->sweepColor(111,0,0,10);
+  // oled_ptr->_screen->drawBitmap(10,10,images[1], 100, 100, WHITE);
+  // oled_ptr->_screen->display();
+  // delay(300);
+  // strip_ptr->setColor(0,0,0);
+  // oled_ptr->clearAll();
+  // oled_ptr->pleaseWaitPrint();
+  // delay(100);
   oled_ptr->clearAll();
 
   sei();
@@ -383,8 +383,8 @@ int main(){
       
         for(i = 0; i<D_index; i++){
 
-          // D_set[i]->captureData();
-          // D_set[i]->updateGame(mod);
+          D_set[i]->captureData();
+          D_set[i]->updateGame(0);
 
         }
       

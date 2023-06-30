@@ -51,6 +51,9 @@ class direct: public _affector
         int8_t crankSum = 0; //sums the number of valid pulses from the encoder
         int8_t encoderPinA = -1; //stores object pin configuration
         int8_t encoderPinB = -1; //stores object pin configuration
+        uint8_t speed = 0;
+        uint8_t pos = 0;
+        int8_t direction = 0;
 
 };
 
