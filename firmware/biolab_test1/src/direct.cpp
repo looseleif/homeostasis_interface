@@ -97,9 +97,7 @@ void direct::updateGame(int x)
 
   if(x == CRANKSUM_RATETYPE){
 
-    int8_t currentOut = returnVal();
-    //make sure it's not an invalid state change
-    crankSum = currentOut;
+    crankSum = returnVal();
     
   }
 
@@ -108,26 +106,14 @@ void direct::updateGame(int x)
     if(crankSum>0){
 
       direction = 1;
-      speed += 1;
 
     } else if(crankSum<0){
 
       direction = -1;
-      speed += 1;
 
     } else {
 
-      if(speed!=0) speed -= 1;
-
-    }
-
-    if(speed == 0){
-
       direction = 0;
-
-    } else if(speed > 3){
-
-      speed = 3;
 
     }
 
@@ -135,27 +121,17 @@ void direct::updateGame(int x)
 
       pos = 30 + pos%30;
 
-    } else if (pos-speed < 30 && direction==-1){
+    } else if (pos-1 < 30 && direction==-1){
 
-      pos = 60 - speed;
+      pos = 60 - 1;
 
     } else {
 
-      pos += (speed*direction);
+      pos += (direction);
 
     }
 
     crankSum = 0;
-    for(int i = 0; i<NUM_LEDS; i++){
-
-      direct_strip_ptr->leds[i] = CRGB(0,0,0);
-
-    }
-
-    direct_strip_ptr->leds[pos%NUM_LEDS] = CRGB(0,75,175);
-
-    direct_strip_ptr->setIntensity(50);
-    
     
   }
   return;
@@ -172,6 +148,12 @@ int8_t direct::returnVal(void){
   prevAVal = pinAVal;
   prevBVal = pinBVal;
   return quadratureLookupTable[lookupVal & 0b1111];
+
+}
+
+uint8_t direct::returnPos(void){
+
+  return pos;
 
 }
 

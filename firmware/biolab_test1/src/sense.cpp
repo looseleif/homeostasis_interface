@@ -8,7 +8,7 @@ sense::sense(const uint8_t port, _device *mainptr, menu *menuptr, oled *oledptr,
   sense_strip_ptr = stripptr;
   portNum = port;
 
-  distance = 0;
+  pos = 0;
 
   if(sense_menu_ptr->selected_device==0){
       
@@ -36,24 +36,24 @@ sense::sense(const uint8_t port, _device *mainptr, menu *menuptr, oled *oledptr,
 
 void sense::captureData(void){
 
-    distance = static_cast<int>(sense_ultra->measureDistanceCm());
+    pos = static_cast<uint8_t>(sense_ultra->measureDistanceCm());
 
 }
 
 void sense::updateGame(int x){
 
-  for(int i = 0; i<NUM_LEDS; i++){
-
-    sense_strip_ptr->leds[i] = CRGB(0,0,0);
-
-  }
-  sense_strip_ptr->leds[distance%NUM_LEDS] = CRGB(175,75,0);
-  sense_strip_ptr->setIntensity(50);
+  captureData();
   
 }
 
 int8_t sense::returnVal(void){
 
-  return abs(distance);
+  return 0;
+
+}
+
+uint8_t sense::returnPos(void){
+
+  return pos;
 
 }

@@ -8,6 +8,7 @@
 #include <strip.h>
 #include <sense.h>
 #include <direct.h>
+#include <manager.h>
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
@@ -16,6 +17,7 @@ _device *main_ptr = new _device;
 menu *menu_ptr;
 oled *oled_ptr;
 strip *strip_ptr;
+manager *manager_ptr;
 
 _affector *D1_ptr = NULL;
 _affector *D2_ptr = NULL;
@@ -51,13 +53,16 @@ void createObject(int objtype, int portnum)
     break;
   case direct_TYPE:
     D_set[D_index] = new direct(D_index,main_ptr,menu_ptr,oled_ptr,strip_ptr);
+    D_set[D_index]->current_affector = direct_affector;
     D_index++;
-    break;
     break;
   case sense_TYPE:
     D_set[D_index] = new sense(D_index,main_ptr,menu_ptr,oled_ptr,strip_ptr);
+    D_set[D_index]->current_affector = sense_affector;
     D_index++;
     break;
+  case manager_TYPE:
+    manager_ptr = new manager(main_ptr,menu_ptr,oled_ptr,strip_ptr);
   }
 
 }
@@ -116,14 +121,12 @@ ISR (TIMER1_COMPA_vect)
 ISR (TIMER2_COMPA_vect)
 {
     refreshCount++;
-    if(refreshCount==35){
+    if(refreshCount==15){
 
       refreshFlag = 1;
       refreshCount = 0;
 
     }
-
-
 }
 
 ISR (PCINT0_vect)
@@ -168,18 +171,6 @@ ISR (PCINT2_vect)
 
 void setup()   {
 
-  // PORT DATA DIRECTION
-  
-  // DDRA |= 0b00000000;
-  // DDRB |= 0b00000000;
-  // DDRC |= 0b00000000;
-  // DDRD |= 0b00000000;
-
-  // DDRD &= ~_BV(DDD7);
-  // PORTD |= _BV(PORTD7);
-  // DDRD &= ~_BV(DDD6);
-  // PORTD |= _BV(PORTD6);
-
   pinMode(13, OUTPUT);
   pinMode(14, OUTPUT);
   digitalWrite(13,LOW);
@@ -219,6 +210,7 @@ void setup()   {
   createObject(menu_TYPE,0);
   createObject(oled_TYPE,0);
   createObject(strip_TYPE,0);
+  createObject(manager_TYPE,0);
 
   // INTRO BOOT SEQUENCE
 
@@ -379,23 +371,16 @@ int main(){
 
     if(menu_ptr->system_state==running){
 
-      if(menu_ptr->selected_demo == sense_TYPE){
-      
-        for(i = 0; i<D_index; i++){
-
-          D_set[i]->captureData();
-          D_set[i]->updateGame(0);
-
-        }
-      
-      }
-
       if(crankFlag){
 
         for(i = 0; i<D_index; i++){
 
-          D_set[i]->updateGame(1);
-          crankFlag = 0;
+          if(D_set[i]->current_affector==direct_affector){
+
+            D_set[i]->updateGame(1);
+            crankFlag = 0;
+
+          }
 
         }
 
@@ -403,12 +388,18 @@ int main(){
 
       if(refreshFlag){
 
+        strip_ptr->setColor(0,0,0);
+
         for(i = 0; i<D_index; i++){
 
           D_set[i]->updateGame(0);
-          refreshFlag = 0;
+          D_set[i]->captureData();
+          manager_ptr->plotAffector(D_set[i]->returnPos(), i);
 
         }
+
+        refreshFlag = 0;
+        strip_ptr->setIntensity(50);
 
       }
 

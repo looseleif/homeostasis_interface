@@ -20,17 +20,19 @@
 #define menu_TYPE 5
 #define oled_TYPE 6
 #define strip_TYPE 7
-#define debug_TYPE 8
+#define manager_TYPE 8
+
+enum AFFECTOR : uint8_t {
+  grip_affector,
+  direct_affector,
+  sense_affector
+};
 
 class _device {
   
   private:
 
   public:
-
-    uint8_t D1_mode = 0;
-    uint8_t D2_mode = 0;
-    uint8_t D3_mode = 0;
     
     _device(){};
 
@@ -46,10 +48,14 @@ class _device {
 class _affector: public _device
 {
   public: 
+
+    AFFECTOR current_affector;
+
     virtual ~_affector(){} //must have a virtualized destructor
     virtual void captureData(void);
     virtual void updateGame(int x);
     virtual int8_t returnVal(void);
+    virtual uint8_t returnPos(void);
 };
 
 

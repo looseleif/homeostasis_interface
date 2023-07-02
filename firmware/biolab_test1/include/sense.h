@@ -25,6 +25,7 @@ class sense: public _affector
         void sense::captureData(void) override;
         void sense::updateGame(int x) override;
         int8_t sense::returnVal(void) override;
+        uint8_t sense::returnPos(void) override;
         
         _device *sense_main_ptr;
         strip *sense_strip_ptr;
@@ -35,7 +36,7 @@ class sense: public _affector
         int8_t trigPin;
         int8_t echoPin;
 
-        int distance;
+        uint8_t pos;
 
         UltraSonicDistanceSensor *sense_ultra;
 

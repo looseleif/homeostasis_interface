@@ -26,6 +26,7 @@ class direct: public _affector
         void direct::captureData(void) override;
         void direct::updateGame(int x) override;
         int8_t direct::returnVal(void) override;
+        uint8_t direct::returnPos(void) override;
         
         _device *direct_main_ptr;
         strip *direct_strip_ptr;
@@ -45,13 +46,9 @@ class direct: public _affector
         int8_t quadratureLookupTable[16] = {0,0,0,-1,0,0,1,0,0,1,0,0,-1,0,0,0};
         float overallRate = 0;
         float movingAverage = 0; //holds the moving average for the production of the hand crank. 
-        uint8_t movingAveragePeriod = 1000/STRIPREFRESHDELAY; 
-        uint8_t maxProductionRate = 60; //used in the rate calculation
-        uint8_t consumptionRate = 70; ///used in the rate calculation
         int8_t crankSum = 0; //sums the number of valid pulses from the encoder
         int8_t encoderPinA = -1; //stores object pin configuration
         int8_t encoderPinB = -1; //stores object pin configuration
-        uint8_t speed = 0;
         uint8_t pos = 0;
         int8_t direction = 0;
 
