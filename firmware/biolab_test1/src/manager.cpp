@@ -9,12 +9,53 @@ manager::manager(_device *mainptr, menu *menuptr, oled *oledptr, strip *stripptr
 
 }
 
-void manager::createObjective(void){
+void manager::updateObjective(void){
 
-    uint8_t point = 30+(rand()%30);
-    manager_strip_ptr->leds[point%30] = CRGB(100,0,0);
-    manager_strip_ptr->leds[(point-1)%30] = CRGB(100,0,0);
-    manager_strip_ptr->leds[(point+1)%30] = CRGB(100,0,0);
+    poi = 30+(rand()%30);
+    poin = (poi-1)%30;
+    poip = (poi+1)%30;
+    poi = poi%30;
+    exists = 1;
+    entered = 0;
+
+}
+
+void manager::checkInside(uint8_t pos){
+
+    if((pos==poi||pos==poin||pos==poip) && entered){
+
+        entered = 0;
+        exists = 0;
+
+    }
+
+    if((pos==poi||pos==poin||pos==poip) && !entered){
+
+        entered = 1;
+
+    }
+
+}
+
+void manager::plotObjective(void){
+
+    if(exists){
+    
+        if(entered){
+            
+            manager_strip_ptr->leds[poi] = CRGB(100,100,100);
+            manager_strip_ptr->leds[poin] = CRGB(100,100,100);
+            manager_strip_ptr->leds[poip] = CRGB(100,100,100);
+
+        } else {
+
+            manager_strip_ptr->leds[poi] = CRGB(100,0,0);
+            manager_strip_ptr->leds[poin] = CRGB(100,0,0);
+            manager_strip_ptr->leds[poip] = CRGB(100,0,0);
+
+        }
+    
+    }
 
 }
 

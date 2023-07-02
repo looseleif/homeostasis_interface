@@ -33,6 +33,8 @@ uint8_t refreshFlag = 0;
 uint8_t refreshCount = 0;
 uint8_t crankFlag = 0;
 uint8_t mod = 0;
+uint8_t switchFlag = 0;
+uint8_t switchCount = 0;
 
 void createObject(int objtype, int portnum)
 {
@@ -121,11 +123,16 @@ ISR (TIMER1_COMPA_vect)
 ISR (TIMER2_COMPA_vect)
 {
     refreshCount++;
-    if(refreshCount==15){
+    if(refreshCount==25){
 
+      switchCount++;
       refreshFlag = 1;
       refreshCount = 0;
 
+    }
+    if(switchCount==25+(rand()%55)){
+      switchFlag = 1;
+      switchCount = 0;
     }
 }
 
@@ -264,6 +271,8 @@ int main(){
         }
 
         oled_ptr->clearAll();
+        strip_ptr->setColor(100,0,0);
+        strip_ptr->setIntensity(50);
         menu_ptr->system_state = demo;
         oled_ptr->printDemoMenu();
         oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
@@ -340,7 +349,7 @@ int main(){
           menu_ptr->printed = false;
           oled_ptr->clearAll();
 
-          if(!(menu_ptr->cursor_current)){
+          if((menu_ptr->cursor_current)){
 
               menu_ptr->system_state = welcome;
               cursor_max = 2;
@@ -349,11 +358,11 @@ int main(){
               oled_ptr->pleaseWaitPrint();
               delay(100);
               oled_ptr->clearAll();
-              strip_ptr->setColor(0,0,100);
+              strip_ptr->setColor(100,0,0);
               strip_ptr->setIntensity(50);
               delay(50);
 
-          } else if(menu_ptr->cursor_current){
+          } else {
 
             oled_ptr->_screen->drawBitmap(10,10, images[menu_ptr->selected_demo], 100, 100, WHITE);
             oled_ptr->_screen->display();
@@ -390,16 +399,27 @@ int main(){
 
         strip_ptr->setColor(0,0,0);
 
+        manager_ptr->plotObjective();
+
         for(i = 0; i<D_index; i++){
 
           D_set[i]->updateGame(0);
           D_set[i]->captureData();
           manager_ptr->plotAffector(D_set[i]->returnPos(), i);
+          manager_ptr->checkInside(D_set[i]->returnPos());
 
         }
 
-        refreshFlag = 0;
         strip_ptr->setIntensity(50);
+
+        refreshFlag = 0;
+
+      }
+
+      if(switchFlag){
+
+        manager_ptr->updateObjective();
+        switchFlag = 0;
 
       }
 

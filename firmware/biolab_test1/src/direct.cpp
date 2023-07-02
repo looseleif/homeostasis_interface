@@ -127,7 +127,7 @@ void direct::updateGame(int x)
 
     } else {
 
-      pos += (direction);
+      pos += direction;
 
     }
 
@@ -153,7 +153,7 @@ int8_t direct::returnVal(void){
 
 uint8_t direct::returnPos(void){
 
-  return pos;
+  return pos%30;
 
 }
 

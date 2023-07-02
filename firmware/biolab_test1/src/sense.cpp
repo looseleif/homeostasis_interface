@@ -41,8 +41,6 @@ void sense::captureData(void){
 }
 
 void sense::updateGame(int x){
-
-  captureData();
   
 }
 
@@ -54,6 +52,6 @@ int8_t sense::returnVal(void){
 
 uint8_t sense::returnPos(void){
 
-  return pos;
+  return pos%30;
 
 }

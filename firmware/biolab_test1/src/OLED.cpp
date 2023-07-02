@@ -57,8 +57,6 @@ for(uint8_t i = 0; i<myString.length(); i++){
 
 void oled::pleaseWaitPrint(void) {
 
-    for(int i=0;i<2;i++){
-    
         _screen->setTextSize(2);
         _screen->setTextWrap(true);
         _screen->setTextColor(WHITE);
@@ -73,8 +71,6 @@ void oled::pleaseWaitPrint(void) {
         _screen->display();
         delay(500);
         this->clearAll();
-
-    }
 
 }
 
@@ -178,7 +174,7 @@ void oled::printDemoMenu(){
     
     }
 
-    String myString = "demo:\n\n[ ] grip\n[ ] direct\n[ ] sense";
+    String myString = "affector:\n\n[ ] grip\n[ ] direct\n[ ] sense";
 
     for(uint8_t i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);
@@ -199,7 +195,7 @@ void oled::printDeviceMenu(){
     
     }
 
-    String myString = "device:\n\n[ ] D1\n[ ] D2\n[ ] D3";
+    String myString = "port:\n\n[ ] CON1\n[ ] CON2\n[ ] CON3";
 
     for(uint8_t i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);
@@ -220,7 +216,7 @@ void oled::printAdditionMenu(){
     
     }
 
-    String myString = "add?\n\n[ ] YES\n[ ] NO";
+    String myString = "ready?\n\n[ ] YES\n[ ] NO";
 
     for(uint8_t i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);
