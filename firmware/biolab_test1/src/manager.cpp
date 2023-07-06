@@ -24,6 +24,7 @@ void manager::checkInside(uint8_t pos){
 
     if((pos==poi||pos==poin||pos==poip) && entered){
 
+        scoreFlag = 1;
         entered = 0;
         exists = 0;
 
@@ -55,10 +56,6 @@ void manager::plotObjective(void){
 
         }
     
-    } else {
-
-        score++;
-
     }
 
 }
@@ -80,7 +77,13 @@ void manager::endGame(void){
     manager_oled_ptr->printGameOver();
     manager_oled_ptr->clearAll();
     delay(500);
-    manager_oled_ptr->printScore(score);
+    
+    if(score>5){
+        manager_oled_ptr->printWin();
+    }else{
+        manager_oled_ptr->printLose(); 
+    }
+
     score = 0;
     delay(1500);
 

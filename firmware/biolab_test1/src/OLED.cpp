@@ -321,7 +321,7 @@ void oled::printGameOver(){
 
 }
 
-void oled::printScore(uint8_t the_score){
+void oled::printWin(){
 
     for(int i=0;i<2;i++){
 
@@ -332,35 +332,41 @@ void oled::printScore(uint8_t the_score){
     
     }
 
-    if(the_score>5){
+    String myString = "YOU WIN!";
 
-        String myString = "YOU WIN!";
-
-        for(uint8_t i = 0; i<myString.length(); i++){
-            _screen->write(myString[i]);
-        }
-
-        _screen->display();
-
-        delay(1000);
-
-    } else {
-
-        String myString = "YOU LOSE!";
-
-        for(uint8_t i = 0; i<myString.length(); i++){
-            _screen->write(myString[i]);
-        }
-
-        _screen->display();
-
-        delay(1000);
-
+    for(uint8_t i = 0; i<myString.length(); i++){
+        _screen->write(myString[i]);
     }
-    
+
+    _screen->display();
+
+    delay(1000);
 
     _screen->clearDisplay();
 
-    delay(500);
+}
+
+void oled::printLose(){
+
+    for(int i=0;i<2;i++){
+
+        _screen->setTextSize(2);
+        _screen->setTextWrap(true);
+        _screen->setTextColor(WHITE);
+        _screen->setCursor(0,0);
+    
+    }
+
+    String myString = "YOU LOSE!";
+
+    for(uint8_t i = 0; i<myString.length(); i++){
+        _screen->write(myString[i]);
+    }
+
+    _screen->display();
+
+    delay(1000);
+
+    _screen->clearDisplay();
 
 }

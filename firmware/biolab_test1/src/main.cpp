@@ -437,6 +437,12 @@ int main(){
       if(switchFlag){
 
         manager_ptr->updateObjective();
+        if(manager_ptr->scoreFlag){
+
+          manager_ptr->score++;
+
+        }
+        manager_ptr->scoreFlag = 0;
         switchFlag = 0;
 
       }

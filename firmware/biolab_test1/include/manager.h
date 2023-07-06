@@ -39,6 +39,7 @@ class manager: public _device
       uint8_t exists = 1;
 
       uint8_t score = 0;
+      uint8_t scoreFlag = 0;
 
 };
 
