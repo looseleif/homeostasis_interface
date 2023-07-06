@@ -80,12 +80,8 @@ void deleteObject(int objtype, int portnum)
 }
 
 // INTERRUPT SERVICE ROUTINES
-  
-//Interrupt service routine for a timer that exectures every millisecond. DO NOT call functions/methods from within
-//an ISR. Set flags that are checked for within the main loop. You want to spend as little time inside of an ISR as
-//possible to prevent undefined program behavior. 
 
-// TODO use flags instead of heavy ISR lease
+// SLOW
 
 ISR (TIMER1_COMPA_vect)
 {
@@ -120,8 +116,22 @@ ISR (TIMER1_COMPA_vect)
     oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
 
   }
+  
+  if(menu_ptr->system_state==running){
+    
+    gameCount++;
+    if(gameCount==45){
+
+      gameCount = 0;
+      gameFlag = 1;
+
+    }
+
+  }
 
 }
+
+// FAST
 
 ISR (TIMER2_COMPA_vect)
 {
@@ -129,7 +139,6 @@ ISR (TIMER2_COMPA_vect)
     if(refreshCount==25){
 
       switchCount++;
-      gameCount++;
       refreshFlag = 1;
       refreshCount = 0;
 
@@ -138,12 +147,7 @@ ISR (TIMER2_COMPA_vect)
       switchFlag = 1;
       switchCount = 0;
     }
-    if(gameCount==255){
 
-      gameCount = 0;
-      gameFlag = 1;
-
-    }
 }
 
 ISR (PCINT0_vect)
@@ -305,6 +309,9 @@ int main(){
         oled_ptr->clearAll();
         strip_ptr->setColor(0,0,100);
         strip_ptr->setIntensity(50);
+        cursor_max = 2;
+        menu_ptr->cursor_current = 0;
+        menu_ptr->cursor_prev = cursor_max;
         delay(50);
 
       }
@@ -407,15 +414,6 @@ int main(){
       }
 
       if(refreshFlag){
-
-        if(gameFlag){
-
-          gameFlag = 0;
-
-          manager_ptr->endGame();
-          
-
-        }
         
         strip_ptr->setColor(0,0,0);
 
@@ -434,14 +432,22 @@ int main(){
 
         refreshFlag = 0;
 
-        gameCount++;
-
       }
 
       if(switchFlag){
 
         manager_ptr->updateObjective();
         switchFlag = 0;
+
+      }
+
+      if(gameFlag){
+
+        gameFlag = 0;
+
+        manager_ptr->endGame();
+
+        menu_ptr->system_state = again;
 
       }
 
@@ -453,6 +459,7 @@ int main(){
 
         oled_ptr->clearAll();
         oled_ptr->printAgainMenu();
+        cursor_max = 1;
         menu_ptr->cursor_current = 0;
         menu_ptr->cursor_prev = cursor_max;
         oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
@@ -460,7 +467,43 @@ int main(){
 
       }
 
+      if(!digitalRead(SELECT_PIN)){
+
+        menu_ptr->printed = false;
+        oled_ptr->clearAll();
+
+        if((menu_ptr->cursor_current)){
+
+            menu_ptr->system_state = welcome;
+            cursor_max = 2;
+            menu_ptr->printed = false;
+            oled_ptr->clearAll();
+            oled_ptr->pleaseWaitPrint();
+            delay(100);
+            oled_ptr->clearAll();
+            strip_ptr->setColor(100,0,0);
+            strip_ptr->setIntensity(50);
+            cursor_max = 1;
+            menu_ptr->cursor_current = 0;
+            menu_ptr->cursor_prev = cursor_max;
+            delay(50);
+
+        } else {
+
+          oled_ptr->_screen->drawBitmap(10,10, images[menu_ptr->selected_demo], 100, 100, WHITE);
+          oled_ptr->_screen->display();
+          menu_ptr->system_state = running;
+          menu_ptr->demo_state = started;
+          strip_ptr->setColor(20,20,20);
+          strip_ptr->setIntensity(50);
+          delay(50);
+
+        }
+
+      }
+    
     }
+    
 
   }
 

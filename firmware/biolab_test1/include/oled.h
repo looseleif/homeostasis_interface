@@ -371,6 +371,7 @@ class oled: public _device
         void printDemo(int8_t demo_type, int8_t demo_val1, int8_t demo_val2);
 
         void printGameOver(void);
+        void printScore(uint8_t score);
 
 };
 

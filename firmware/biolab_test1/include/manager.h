@@ -38,6 +38,8 @@ class manager: public _device
       uint8_t entered = 0;
       uint8_t exists = 1;
 
+      uint8_t score = 0;
+
 };
 
 #endif

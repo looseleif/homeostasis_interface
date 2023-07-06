@@ -55,6 +55,10 @@ void manager::plotObjective(void){
 
         }
     
+    } else {
+
+        score++;
+
     }
 
 }
@@ -71,7 +75,13 @@ void manager::plotAffector(uint8_t pos, int dev){
 
 void manager::endGame(void){
 
+    manager_oled_ptr->clearAll();
+    delay(500);
     manager_oled_ptr->printGameOver();
-
+    manager_oled_ptr->clearAll();
+    delay(500);
+    manager_oled_ptr->printScore(score);
+    score = 0;
+    delay(1500);
 
 }
