@@ -35,6 +35,9 @@ uint8_t crankFlag = 0;
 uint8_t mod = 0;
 uint8_t switchFlag = 0;
 uint8_t switchCount = 0;
+uint8_t gameFlag = 0;
+uint8_t gameCount = 0;
+
 
 void createObject(int objtype, int portnum)
 {
@@ -126,6 +129,7 @@ ISR (TIMER2_COMPA_vect)
     if(refreshCount==25){
 
       switchCount++;
+      gameCount++;
       refreshFlag = 1;
       refreshCount = 0;
 
@@ -133,6 +137,12 @@ ISR (TIMER2_COMPA_vect)
     if(switchCount==25+(rand()%55)){
       switchFlag = 1;
       switchCount = 0;
+    }
+    if(gameCount==255){
+
+      gameCount = 0;
+      gameFlag = 1;
+
     }
 }
 
@@ -264,8 +274,6 @@ int main(){
           menu_ptr->home_state = false;
           menu_ptr->selected_demo = 0;
           menu_ptr->selected_device = 0;
-          menu_ptr->cursor_current = 0;
-          menu_ptr->cursor_prev = cursor_max;
           D_index = 0;
           
         }
@@ -360,6 +368,9 @@ int main(){
               oled_ptr->clearAll();
               strip_ptr->setColor(100,0,0);
               strip_ptr->setIntensity(50);
+              cursor_max = 1;
+              menu_ptr->cursor_current = 0;
+              menu_ptr->cursor_prev = cursor_max;
               delay(50);
 
           } else {
@@ -397,6 +408,15 @@ int main(){
 
       if(refreshFlag){
 
+        if(gameFlag){
+
+          gameFlag = 0;
+
+          manager_ptr->endGame();
+          
+
+        }
+        
         strip_ptr->setColor(0,0,0);
 
         manager_ptr->plotObjective();
@@ -414,12 +434,29 @@ int main(){
 
         refreshFlag = 0;
 
+        gameCount++;
+
       }
 
       if(switchFlag){
 
         manager_ptr->updateObjective();
         switchFlag = 0;
+
+      }
+
+    }
+
+    if(menu_ptr->system_state==again){
+
+      if(!(menu_ptr->printed)){
+
+        oled_ptr->clearAll();
+        oled_ptr->printAgainMenu();
+        menu_ptr->cursor_current = 0;
+        menu_ptr->cursor_prev = cursor_max;
+        oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
+        menu_ptr->printed = true;
 
       }
 

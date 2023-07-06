@@ -22,6 +22,7 @@ class manager: public _device
       void manager::checkInside(uint8_t pos);
       void manager::plotObjective(void);
       void manager::plotAffector(uint8_t pos, int dev);
+      void manager::endGame(void);
 
       _device *manager_main_ptr;
       strip *manager_strip_ptr;

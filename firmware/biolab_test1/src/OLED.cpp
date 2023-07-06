@@ -226,6 +226,27 @@ void oled::printAdditionMenu(){
 
 }
 
+void oled::printAgainMenu(){
+
+    for(int i=0;i<1;i++){
+
+    _screen->setTextSize(2);
+    _screen->setTextWrap(true);
+    _screen->setTextColor(WHITE);
+    _screen->setCursor(0,0);
+    
+    }
+
+    String myString = "again?\n\n[ ] YES\n[ ] NO";
+
+    for(uint8_t i = 0; i<myString.length(); i++){
+        _screen->write(myString[i]);
+    }
+
+    _screen->display();
+
+}
+
 void oled::printSelector(int prev, int next, bool clear){
 
     _screen->setTextSize(2);
@@ -276,5 +297,26 @@ void oled::printSelector(int prev, int next, bool clear){
     _screen->display();
 
     }
+
+}
+
+void oled::printGameOver(){
+
+    for(int i=0;i<2;i++){
+
+    _screen->setTextSize(2);
+    _screen->setTextWrap(true);
+    _screen->setTextColor(WHITE);
+    _screen->setCursor(0,0);
+    
+    }
+
+    String myString = "GAME\nOVER";
+
+    for(uint8_t i = 0; i<myString.length(); i++){
+        _screen->write(myString[i]);
+    }
+
+    _screen->display();
 
 }

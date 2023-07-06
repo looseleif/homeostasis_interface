@@ -34,7 +34,7 @@ enum SYSTEM : uint8_t {
   device,
   addition,
   running,
-  debug
+  again
 };
 
 class menu: public _device 

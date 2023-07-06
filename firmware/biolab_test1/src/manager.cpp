@@ -68,3 +68,10 @@ void manager::plotAffector(uint8_t pos, int dev){
     }
 
 }
+
+void manager::endGame(void){
+
+    manager_oled_ptr->printGameOver();
+
+
+}
