@@ -9,6 +9,10 @@
 #include <oled.h>
 #include <math.h>
 
+enum GAME : uint8_t {
+  zone,
+  pattern
+};
 class manager: public _device
 {
 
@@ -28,6 +32,8 @@ class manager: public _device
       strip *manager_strip_ptr;
       oled *manager_oled_ptr;
       menu *manager_menu_ptr;
+
+      GAME game_selected;
 
       uint8_t poi;
       uint8_t poin;

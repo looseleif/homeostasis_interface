@@ -163,6 +163,27 @@ void oled::clearAll(){
 
 }
 
+void oled::printGameMenu(){
+
+    for(int i=0;i<2;i++){
+
+    _screen->setTextSize(2);
+    _screen->setTextWrap(true);
+    _screen->setTextColor(WHITE);
+    _screen->setCursor(0,0);
+    
+    }
+
+    String myString = "game:\n\n[ ] zone\n[ ] memory";
+
+    for(uint8_t i = 0; i<myString.length(); i++){
+        _screen->write(myString[i]);
+    }
+
+    _screen->display();
+
+}
+
 void oled::printDemoMenu(){
 
     for(int i=0;i<2;i++){

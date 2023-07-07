@@ -362,6 +362,7 @@ class oled: public _device
         void testdrawline(void);
         void clearAll(void);
 
+        void printGameMenu(void);
         void printDemoMenu(void);
         void printDeviceMenu(void);
         void printAdditionMenu(void);

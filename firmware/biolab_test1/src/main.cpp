@@ -46,7 +46,7 @@ void createObject(int objtype, int portnum)
   {
   case menu_TYPE:
     menu_ptr = new menu();
-    break; 
+    break;
   case oled_TYPE:
     oled_ptr = new oled(menu_ptr);
     break;
@@ -68,6 +68,7 @@ void createObject(int objtype, int portnum)
     break;
   case manager_TYPE:
     manager_ptr = new manager(main_ptr,menu_ptr,oled_ptr,strip_ptr);
+    break;
   }
 
 }
@@ -233,6 +234,7 @@ void setup()   {
   createObject(strip_TYPE,0);
   createObject(manager_TYPE,0);
 
+
   // INTRO BOOT SEQUENCE
 
   // strip_ptr->setColor(0,0,0);
@@ -285,10 +287,10 @@ int main(){
         oled_ptr->clearAll();
         strip_ptr->setColor(100,0,0);
         strip_ptr->setIntensity(50);
-        menu_ptr->system_state = demo;
-        oled_ptr->printDemoMenu();
+        menu_ptr->system_state = game;
+        oled_ptr->printGameMenu();
         oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
-        cursor_max = 2;
+        cursor_max = 1;
         menu_ptr->cursor_current = 0;
         menu_ptr->cursor_prev = cursor_max;
         menu_ptr->printed = true;
@@ -297,8 +299,52 @@ int main(){
 
     }
 
+    if(menu_ptr->system_state==game){
+      if(!(menu_ptr->printed)){
+
+        oled_ptr->clearAll();
+        strip_ptr->setColor(100,0,0);
+        strip_ptr->setIntensity(50);
+        menu_ptr->system_state = game;
+        oled_ptr->printGameMenu();
+        oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
+        cursor_max = 1;
+        menu_ptr->cursor_current = 0;
+        menu_ptr->cursor_prev = cursor_max;
+        menu_ptr->printed = true;
+
+      }
+      
+      if(!digitalRead(SELECT_PIN)){
+
+        manager_ptr->game_selected = zone;
+        menu_ptr->system_state = demo;
+        menu_ptr->printed = false;
+        oled_ptr->clearAll();
+        oled_ptr->pleaseWaitPrint();
+        oled_ptr->clearAll();
+        strip_ptr->setColor(0,0,100);
+        strip_ptr->setIntensity(50);
+        cursor_max = 2;
+        menu_ptr->cursor_current = 0;
+        menu_ptr->cursor_prev = cursor_max;
+        delay(50);
+
+      }
+
+    }
+
     if(menu_ptr->system_state==demo){
 
+      if(!(menu_ptr->printed)){
+        
+        oled_ptr->clearAll();
+        oled_ptr->printDemoMenu();
+        oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
+        menu_ptr->printed = true;
+
+      }
+      
       if(!digitalRead(SELECT_PIN)){
 
         menu_ptr->selected_demo = menu_ptr->cursor_current;
@@ -333,7 +379,8 @@ int main(){
 
           menu_ptr->selected_device = menu_ptr->cursor_current;
           menu_ptr->printed = false;
-          createObject(int(menu_ptr->selected_demo), int(menu_ptr->selected_device));
+          //createObject(int(menu_ptr->selected_demo), int(menu_ptr->selected_device));
+          createObject(1, 1);
           oled_ptr->clearAll();
           strip_ptr->setColor(50,0,50);
           strip_ptr->setIntensity(50);
