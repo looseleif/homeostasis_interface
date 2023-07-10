@@ -54,7 +54,6 @@ void createObject(int objtype, int portnum)
     strip_ptr = new strip(menu_ptr);
     break;
   case grip_TYPE:
-    //strip_ptr = new strip(menu_ptr);
     break;
   case direct_TYPE:
     D_set[D_index] = new direct(D_index,main_ptr,menu_ptr,oled_ptr,strip_ptr);
