@@ -262,8 +262,6 @@ int main(){
   init();
   setup();
 
-  int i;
-
   while(true){
 
     if(menu_ptr->system_state==welcome){
@@ -444,7 +442,7 @@ int main(){
 
       if(crankFlag){
 
-        for(i = 0; i<D_index; i++){
+        for(int i = 0; i<D_index; i++){
 
           if(D_set[i]->current_affector==direct_affector){
 
@@ -463,7 +461,7 @@ int main(){
 
         manager_ptr->plotObjective();
 
-        for(i = 0; i<D_index; i++){
+        for(int i = 0; i<D_index; i++){
 
           D_set[i]->updateGame(0);
           D_set[i]->captureData();
@@ -559,4 +557,3 @@ int main(){
   return 0;
 
 }
-
