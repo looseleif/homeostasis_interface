@@ -97,7 +97,6 @@ ISR (TIMER1_COMPA_vect)
 
   } else if(menu_ptr->system_state==running || menu_ptr->system_state==welcome){
 
-  
   } else if(!digitalRead(DOWN_PIN)){
 
     menu_ptr->cursor_current++;
@@ -378,8 +377,7 @@ int main(){
 
           menu_ptr->selected_device = menu_ptr->cursor_current;
           menu_ptr->printed = false;
-          //createObject(int(menu_ptr->selected_demo), int(menu_ptr->selected_device));
-          createObject(1, 1);
+          createObject(menu_ptr->selected_demo, menu_ptr->selected_device);
           oled_ptr->clearAll();
           strip_ptr->setColor(50,0,50);
           strip_ptr->setIntensity(50);
@@ -556,7 +554,6 @@ int main(){
     
     }
     
-
   }
 
   return 0;
