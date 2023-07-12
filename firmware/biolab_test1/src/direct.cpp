@@ -22,7 +22,7 @@ direct::direct(const uint8_t port, _device *mainptr, menu *menuptr, oled *oledpt
 
       // Enable pin change interruptusing Pin Change Mask Register
       PCMSK1 |= _BV(PCINT9);
-      PCMSK1 |= _BV(PCINT8);
+      // PCMSK1 |= _BV(PCINT8);
 
       // Enable pin change interrupt using the Pin Change Interrrupt Control Register (PCICR)
       PCICR |= _BV(PCIE1);
@@ -72,7 +72,7 @@ direct::direct(const uint8_t port, _device *mainptr, menu *menuptr, oled *oledpt
 
       // Enable pin change interruptusing Pin Change Mask Register
       PCMSK2 |= _BV(PCINT18);
-      PCMSK2 |= _BV(PCINT19);
+      // PCMSK2 |= _BV(PCINT19);
 
       // Enable pin change interrupt using the Pin Change Interrrupt Control Register (PCICR)
       PCICR |= _BV(PCIE2);
