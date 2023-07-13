@@ -29,7 +29,6 @@ enum DEMO : uint8_t {
 };
 
 enum SYSTEM : uint8_t {
-  welcome,
   game,
   demo,
   device,

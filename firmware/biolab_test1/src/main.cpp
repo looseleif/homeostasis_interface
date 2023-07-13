@@ -81,21 +81,23 @@ void deleteObject(int objtype, int portnum)
 
 // INTERRUPT SERVICE ROUTINES
 
-// SLOW
+// MENU & GAME UPDATE
 
 ISR (TIMER1_COMPA_vect)
 {
+
+  PORTD ^= (1 << PD5);
 
   menu_ptr->cursor_prev = menu_ptr->cursor_current;
 
   if(!digitalRead(HOME_PIN)){
 
     menu_ptr->printed = false;
-    menu_ptr->system_state = welcome;
+    menu_ptr->system_state = game;
     menu_ptr->demo_state = stopped;
     menu_ptr->home_state = true;
 
-  } else if(menu_ptr->system_state==running || menu_ptr->system_state==welcome){
+  } else if(menu_ptr->system_state==running){
 
   } else if(!digitalRead(DOWN_PIN)){
 
@@ -130,12 +132,15 @@ ISR (TIMER1_COMPA_vect)
 
 }
 
-// FAST
+// DEVICE & SWITCH UPDATE
 
 ISR (TIMER2_COMPA_vect)
 {
+
     refreshCount++;
     if(refreshCount==25){
+
+      PORTD ^= (1 << PD6);
 
       switchCount++;
       refreshFlag = 1;
@@ -148,6 +153,8 @@ ISR (TIMER2_COMPA_vect)
     }
 
 }
+
+// PORT PIN CHANGE
 
 ISR (PCINT0_vect)
 {
@@ -173,36 +180,24 @@ ISR (PCINT2_vect)
 
 }
 
-// ISR (PCINT3_vect)
-// {
-
-//   PCIFR ^= (1 << PCIF0);
-//   digitalWrite(13,HIGH);
-//   digitalWrite(14,HIGH);
-
-// }
-
-// ISR(PCINT7_vect){
-
-//   PORTD ^= (1 << PD5);
-//   PORTD ^= (1 << PD6);
-
-// }
+// SETUP TIMERS + INTERRUPTS + OBJECTS
 
 void setup()   {
 
-  pinMode(13, OUTPUT);
-  pinMode(14, OUTPUT);
-  digitalWrite(13,LOW);
-  digitalWrite(14,LOW);
+  // DEBUG LEDS
 
-  cli();
+  DDRD |= (1 << PD5);
+  PORTD ^= (1 << PD5);
+  DDRD |= (1 << PD6);
+  PORTD ^= (1 << PD6); 
+
+  cli(); // DISABLE INTERRUPTS
 
   // TIMER1 W/ INTERRUPT
 
-  TCCR1A = 0;// set entire TCCR1A register to 0
-  TCCR1B = 0;// same for TCCR1B
-  TCNT1  = 0;//initialize counter value to 0
+  TCCR1A = 0; // set entire TCCR1A register to 0
+  TCCR1B = 0; // same for TCCR1B
+  TCNT1  = 0; //initialize counter value to 0
   OCR1A = 2500;
   // turn on CTC mode
   TCCR1B |= (1 << WGM12);
@@ -213,9 +208,9 @@ void setup()   {
 
   // TIMER2 W/ INTERRUPT
 
-  TCCR2A = 0;// set entire TCCR2A register to 0
-  TCCR2B = 0;// same for TCCR2B
-  TCNT2  = 0;//initialize counter value to 0
+  TCCR2A = 0; // set entire TCCR2A register to 0
+  TCCR2B = 0; // same for TCCR2B
+  TCNT2  = 0; //initialize counter value to 0
   // set compare match register for 8khz increments
   OCR2A = 255;// = (16*10^6) / (8000*8) - 1 (must be <256)
   // turn on CTC mode
@@ -232,28 +227,27 @@ void setup()   {
   createObject(strip_TYPE,0);
   createObject(manager_TYPE,0);
 
-
   // INTRO BOOT SEQUENCE
 
-  // strip_ptr->setColor(0,0,0);
-  // strip_ptr->setIntensity(0);
-  // oled_ptr->clearAll();
-  // oled_ptr->bootingPrint();
-  // delay(300);
-  // oled_ptr->clearAll();
-  // strip_ptr->lubDub();
-  // delay(100);
-  // strip_ptr->sweepColor(111,0,0,10);
-  // oled_ptr->_screen->drawBitmap(10,10,images[1], 100, 100, WHITE);
-  // oled_ptr->_screen->display();
-  // delay(300);
-  // strip_ptr->setColor(0,0,0);
-  // oled_ptr->clearAll();
-  // oled_ptr->pleaseWaitPrint();
-  // delay(100);
+  strip_ptr->setColor(0,0,0);
+  strip_ptr->setIntensity(0);
+  oled_ptr->clearAll();
+  oled_ptr->bootingPrint();
+  delay(300);
+  oled_ptr->clearAll();
+  strip_ptr->lubDub();
+  delay(100);
+  strip_ptr->sweepColor(111,0,0,10);
+  oled_ptr->_screen->drawBitmap(10,10,images[1], 100, 100, WHITE);
+  oled_ptr->_screen->display();
+  delay(300);
+  strip_ptr->setColor(0,0,0);
+  oled_ptr->clearAll();
+  oled_ptr->pleaseWaitPrint();
+  delay(100);
   oled_ptr->clearAll();
 
-  sei();
+  sei(); // ENABLE INTERRUPTS
 
 }
 
@@ -264,43 +258,30 @@ int main(){
 
   while(true){
 
-    if(menu_ptr->system_state==welcome){
-      if(!(menu_ptr->printed)){
-        
-        if(menu_ptr->home_state){
-
-          oled_ptr->clearAll();
-          strip_ptr->lubDub();
-          strip_ptr->setColor(100,0,0);
-          strip_ptr->setIntensity(50);
-          menu_ptr->home_state = false;
-          menu_ptr->selected_demo = 0;
-          menu_ptr->selected_device = 0;
-          D_index = 0;
-          
-        }
-
-        oled_ptr->clearAll();
-        strip_ptr->setColor(100,0,0);
-        strip_ptr->setIntensity(50);
-        menu_ptr->system_state = game;
-        oled_ptr->printGameMenu();
-        oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
-        cursor_max = 1;
-        menu_ptr->cursor_current = 0;
-        menu_ptr->cursor_prev = cursor_max;
-        menu_ptr->printed = true;
-
-      }
-
-    }
+    // MENU STATE MACHINE
 
     if(menu_ptr->system_state==game){
+      
+      if(menu_ptr->home_state){
+
+        oled_ptr->clearAll();
+        oled_ptr->clearAll();
+        strip_ptr->inverseSweep(10);
+        strip_ptr->setColor(100,0,0);
+        strip_ptr->setIntensity(75);
+        _delay_ms(1000);
+        menu_ptr->home_state = false;
+        menu_ptr->selected_demo = 0;
+        menu_ptr->selected_device = 0;
+        D_index = 0;
+        
+      }
+
       if(!(menu_ptr->printed)){
 
         oled_ptr->clearAll();
         strip_ptr->setColor(100,0,0);
-        strip_ptr->setIntensity(50);
+        strip_ptr->setIntensity(75);
         menu_ptr->system_state = game;
         oled_ptr->printGameMenu();
         oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
@@ -319,8 +300,8 @@ int main(){
         oled_ptr->clearAll();
         oled_ptr->pleaseWaitPrint();
         oled_ptr->clearAll();
-        strip_ptr->setColor(0,0,100);
-        strip_ptr->setIntensity(50);
+        strip_ptr->setColor(100,10,0);
+        strip_ptr->setIntensity(75);
         cursor_max = 2;
         menu_ptr->cursor_current = 0;
         menu_ptr->cursor_prev = cursor_max;
@@ -349,8 +330,8 @@ int main(){
         oled_ptr->clearAll();
         oled_ptr->pleaseWaitPrint();
         oled_ptr->clearAll();
-        strip_ptr->setColor(0,0,100);
-        strip_ptr->setIntensity(50);
+        strip_ptr->setColor(100,30,0);
+        strip_ptr->setIntensity(75);
         cursor_max = 2;
         menu_ptr->cursor_current = 0;
         menu_ptr->cursor_prev = cursor_max;
@@ -377,8 +358,8 @@ int main(){
           menu_ptr->printed = false;
           createObject(menu_ptr->selected_demo, menu_ptr->selected_device);
           oled_ptr->clearAll();
-          strip_ptr->setColor(50,0,50);
-          strip_ptr->setIntensity(50);
+          strip_ptr->setColor(100,100,100);
+          strip_ptr->setIntensity(25);
           delay(50);
           oled_ptr->pleaseWaitPrint();
           menu_ptr->system_state = addition;
@@ -403,36 +384,36 @@ int main(){
 
       if(!digitalRead(SELECT_PIN)){
 
-          menu_ptr->printed = false;
-          oled_ptr->clearAll();
+        menu_ptr->printed = false;
+        oled_ptr->clearAll();
 
-          if((menu_ptr->cursor_current)){
+        if((menu_ptr->cursor_current)){
 
-              menu_ptr->system_state = welcome;
-              cursor_max = 2;
-              menu_ptr->printed = false;
-              oled_ptr->clearAll();
-              oled_ptr->pleaseWaitPrint();
-              delay(100);
-              oled_ptr->clearAll();
-              strip_ptr->setColor(100,0,0);
-              strip_ptr->setIntensity(50);
-              cursor_max = 1;
-              menu_ptr->cursor_current = 0;
-              menu_ptr->cursor_prev = cursor_max;
-              delay(50);
-
-          } else {
-
-            oled_ptr->_screen->drawBitmap(10,10, images[menu_ptr->selected_demo], 100, 100, WHITE);
-            oled_ptr->_screen->display();
-            menu_ptr->system_state = running;
-            menu_ptr->demo_state = started;
-            strip_ptr->setColor(20,20,20);
-            strip_ptr->setIntensity(50);
+            menu_ptr->system_state = demo;
+            cursor_max = 2;
+            menu_ptr->printed = false;
+            oled_ptr->clearAll();
+            oled_ptr->pleaseWaitPrint();
+            delay(100);
+            oled_ptr->clearAll();
+            strip_ptr->setColor(0,0,0);
+            strip_ptr->setIntensity(75);
+            cursor_max = 1;
+            menu_ptr->cursor_current = 0;
+            menu_ptr->cursor_prev = cursor_max;
             delay(50);
 
-          }
+        } else {
+
+          oled_ptr->_screen->drawBitmap(10,10, images[menu_ptr->selected_demo], 100, 100, WHITE);
+          oled_ptr->_screen->display();
+          menu_ptr->system_state = running;
+          menu_ptr->demo_state = started;
+          strip_ptr->setColor(20,20,20);
+          strip_ptr->setIntensity(50);
+          delay(50);
+
+        }
 
       }
 
@@ -470,7 +451,7 @@ int main(){
 
         }
 
-        strip_ptr->setIntensity(50);
+        strip_ptr->setIntensity(75);
 
         refreshFlag = 0;
 
@@ -505,6 +486,8 @@ int main(){
 
       if(!(menu_ptr->printed)){
 
+        strip_ptr->setColor(100,0,0);
+        strip_ptr->setIntensity(75);
         oled_ptr->clearAll();
         oled_ptr->printAgainMenu();
         cursor_max = 1;
@@ -522,19 +505,18 @@ int main(){
 
         if((menu_ptr->cursor_current)){
 
-            menu_ptr->system_state = welcome;
-            cursor_max = 2;
-            menu_ptr->printed = false;
-            oled_ptr->clearAll();
-            oled_ptr->pleaseWaitPrint();
-            delay(100);
-            oled_ptr->clearAll();
-            strip_ptr->setColor(100,0,0);
-            strip_ptr->setIntensity(50);
-            cursor_max = 1;
-            menu_ptr->cursor_current = 0;
-            menu_ptr->cursor_prev = cursor_max;
-            delay(50);
+          menu_ptr->system_state = game;
+          cursor_max = 2;
+          menu_ptr->printed = false;
+          oled_ptr->clearAll();
+          oled_ptr->pleaseWaitPrint();
+          delay(100);
+          oled_ptr->clearAll();
+          strip_ptr->inverseSweep(10);
+          cursor_max = 1;
+          menu_ptr->cursor_current = 0;
+          menu_ptr->cursor_prev = cursor_max;
+          delay(50);
 
         } else {
 

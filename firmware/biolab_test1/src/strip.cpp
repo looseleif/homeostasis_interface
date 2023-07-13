@@ -37,6 +37,18 @@ void strip::sweepColor(int r, int g, int b, int rate){
 
 }
 
+void strip::inverseSweep(int rate){
+
+  for(int i = NUM_LEDS-1; i>=0; i--){
+
+    this->leds[i] = CRGB(0,0,0);
+    FastLED.show();
+    delay(rate);
+
+  }
+
+}
+
 void strip::lubDub(void){
 
   for(int i = 0; i<NUM_LEDS; i++){

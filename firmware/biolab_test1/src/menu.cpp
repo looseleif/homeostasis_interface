@@ -9,7 +9,7 @@ menu::menu(void){
     pinMode(SELECT_PIN, INPUT_PULLUP);
     pinMode(HOME_PIN, INPUT_PULLUP);
 
-    system_state = welcome;
+    system_state = game;
     demo_state = stopped;
     home_state = false;
     printed = false;

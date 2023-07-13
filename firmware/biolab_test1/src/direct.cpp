@@ -140,8 +140,6 @@ void direct::updateGame(int x)
 
 int8_t direct::returnVal(void){
 
-  PORTD ^= (1 << PD5);
-  PORTD ^= (1 << PD6);
   pinAVal = digitalRead(direct_pin2) & 0b1111;
   pinBVal = digitalRead(direct_pin1) & 0b1111;
   int8_t lookupVal = (prevAVal << 3) | (prevBVal << 2) | (pinAVal << 1) | pinBVal;
