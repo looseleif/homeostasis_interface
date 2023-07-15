@@ -285,7 +285,7 @@ int main(){
         menu_ptr->system_state = game;
         oled_ptr->printGameMenu();
         oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
-        cursor_max = 1;
+        cursor_max = 2;
         menu_ptr->cursor_current = 0;
         menu_ptr->cursor_prev = cursor_max;
         menu_ptr->printed = true;
@@ -398,7 +398,7 @@ int main(){
             oled_ptr->clearAll();
             strip_ptr->setColor(0,0,0);
             strip_ptr->setIntensity(75);
-            cursor_max = 1;
+            cursor_max = 1; // investigate this
             menu_ptr->cursor_current = 0;
             menu_ptr->cursor_prev = cursor_max;
             delay(50);
