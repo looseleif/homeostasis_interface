@@ -36,6 +36,15 @@ class manager: public _device
 
       GAME game_selected;
 
+      uint8_t refreshFlag = 0;
+      uint8_t refreshCount = 0;
+      uint8_t crankFlag = 0;
+      uint8_t mod = 0;
+      uint8_t switchFlag = 0;
+      uint8_t switchCount = 0;
+      uint8_t gameFlag = 0;
+      uint8_t gameCount = 0;
+
       uint8_t poi;
       uint8_t poin;
       uint8_t poip;

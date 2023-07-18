@@ -29,16 +29,6 @@ _affector *D_set[3] = {D1_ptr,D2_ptr,D3_ptr};
 
 int8_t cursor_max = 0;
 
-uint8_t refreshFlag = 0;
-uint8_t refreshCount = 0;
-uint8_t crankFlag = 0;
-uint8_t mod = 0;
-uint8_t switchFlag = 0;
-uint8_t switchCount = 0;
-uint8_t gameFlag = 0;
-uint8_t gameCount = 0;
-
-
 void createObject(int objtype, int portnum)
 {
 
@@ -120,11 +110,11 @@ ISR (TIMER1_COMPA_vect)
   
   if(menu_ptr->system_state==running){
     
-    gameCount++;
-    if(gameCount==45){
+    manager_ptr->gameCount++;
+    if(manager_ptr->gameCount==45){
 
-      gameCount = 0;
-      gameFlag = 1;
+      manager_ptr->gameCount = 0;
+      manager_ptr->gameFlag = 1;
 
     }
 
@@ -137,19 +127,19 @@ ISR (TIMER1_COMPA_vect)
 ISR (TIMER2_COMPA_vect)
 {
 
-    refreshCount++;
-    if(refreshCount==25){
+    manager_ptr->refreshCount++;
+    if(manager_ptr->refreshCount==25){
 
       PORTD ^= (1 << PD6);
 
-      switchCount++;
-      refreshFlag = 1;
-      refreshCount = 0;
+      manager_ptr->switchCount++;
+      manager_ptr->refreshFlag = 1;
+      manager_ptr->refreshCount = 0;
 
     }
-    if(switchCount==25+(rand()%55)){
-      switchFlag = 1;
-      switchCount = 0;
+    if(manager_ptr->switchCount==25+(rand()%55)){
+      manager_ptr->switchFlag = 1;
+      manager_ptr->switchCount = 0;
     }
 
 }
@@ -160,7 +150,7 @@ ISR (PCINT0_vect)
 {
 
   PCIFR ^= (1 << PCIF0);
-  crankFlag = 1;
+  manager_ptr->crankFlag = 1;
 
 }
 
@@ -168,7 +158,7 @@ ISR (PCINT1_vect)
 {
 
   PCIFR ^= (1 << PCIF0);
-  crankFlag = 1;
+  manager_ptr->crankFlag = 1;
 
 }
 
@@ -176,7 +166,7 @@ ISR (PCINT2_vect)
 {
 
   PCIFR ^= (1 << PCIF0);
-  crankFlag = 1;
+  manager_ptr->crankFlag = 1;
 
 }
 
@@ -421,14 +411,14 @@ int main(){
 
     if(menu_ptr->system_state==running){
 
-      if(crankFlag){
+      if(manager_ptr->crankFlag){
 
         for(int i = 0; i<D_index; i++){
 
           if(D_set[i]->current_affector==direct_affector){
 
             D_set[i]->updateGame(1);
-            crankFlag = 0;
+            manager_ptr->crankFlag = 0;
 
           }
 
@@ -436,7 +426,7 @@ int main(){
 
       }
 
-      if(refreshFlag){
+      if(manager_ptr->refreshFlag){
         
         strip_ptr->setColor(0,0,0);
 
@@ -453,11 +443,11 @@ int main(){
 
         strip_ptr->setIntensity(75);
 
-        refreshFlag = 0;
+        manager_ptr->refreshFlag = 0;
 
       }
 
-      if(switchFlag){
+      if(manager_ptr->switchFlag){
 
         manager_ptr->updateObjective();
         if(manager_ptr->scoreFlag){
@@ -466,13 +456,13 @@ int main(){
 
         }
         manager_ptr->scoreFlag = 0;
-        switchFlag = 0;
+        manager_ptr->switchFlag = 0;
 
       }
 
-      if(gameFlag){
+      if(manager_ptr->gameFlag){
 
-        gameFlag = 0;
+        manager_ptr->gameFlag = 0;
 
         manager_ptr->endGame();
 
