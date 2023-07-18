@@ -18,15 +18,6 @@ class sense: public _affector
 
     private:
     
-    public:
-
-        sense(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr);
-
-        void sense::captureData(void) override;
-        void sense::updateGame(int x) override;
-        int8_t sense::returnVal(void) override;
-        uint8_t sense::returnPos(void) override;
-        
         strip *_strip;
         oled *_oled;
         menu *_menu;
@@ -43,7 +34,16 @@ class sense: public _affector
         bool prevAVal;
         bool prevBVal;
         bool pinAVal;
-        bool pinBVal;
+        bool pinBVal;    
+
+    public:
+
+        sense(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr);
+
+        void sense::captureData(void) override;
+        void sense::updateGame(int x) override;
+        int8_t sense::returnVal(void) override;
+        uint8_t sense::returnPos(void) override;
 
 };
 

@@ -19,18 +19,6 @@ class direct: public _affector
 
     private:
     
-    public:
-
-        direct(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr);
-
-        void direct::captureData(void) override;
-        void direct::updateGame(int x) override;
-        int8_t direct::returnVal(void) override;
-        uint8_t direct::returnPos(void) override;
-        
-        strip *_strip;
-        oled *_oled;
-        menu *_menu;
         int8_t portNum = -1; //used to save the port number that this object is instantiated on.
         
         int8_t direct_pin1;
@@ -49,6 +37,19 @@ class direct: public _affector
         int8_t encoderPinB = -1; //stores object pin configuration
         uint8_t pos = 0;
         int8_t direction = 0;
+
+    public:
+
+        direct(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr);
+
+        void direct::captureData(void) override;
+        void direct::updateGame(int x) override;
+        int8_t direct::returnVal(void) override;
+        uint8_t direct::returnPos(void) override;
+        
+        strip *_strip;
+        oled *_oled;
+        menu *_menu;
 
 };
 
