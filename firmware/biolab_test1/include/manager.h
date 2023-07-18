@@ -21,7 +21,7 @@ class manager: public _device
 
     public:
 
-      manager(_device *mainptr, menu *menuptr, oled *oledptr, strip *stripptr);
+      manager(menu *menuptr, oled *oledptr, strip *stripptr);
       
       void manager::updateObjective(void);
       void manager::checkInside(uint8_t pos);
@@ -29,10 +29,9 @@ class manager: public _device
       void manager::plotAffector(uint8_t pos, int dev);
       void manager::endGame(void);
 
-      _device *manager_main_ptr;
-      strip *manager_strip_ptr;
-      oled *manager_oled_ptr;
-      menu *manager_menu_ptr;
+      strip *_strip;
+      oled *_oled;
+      menu *_menu;
 
       GAME game_selected;
 

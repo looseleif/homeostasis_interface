@@ -20,17 +20,17 @@ class sense: public _affector
     
     public:
 
-        sense(const uint8_t port, _device *mainptr, menu *menuptr, oled *oledptr, strip *stripptr);
+        sense(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr);
 
         void sense::captureData(void) override;
         void sense::updateGame(int x) override;
         int8_t sense::returnVal(void) override;
         uint8_t sense::returnPos(void) override;
         
-        _device *sense_main_ptr;
-        strip *sense_strip_ptr;
-        oled *sense_oled_ptr;
-        menu *sense_menu_ptr;
+        strip *_strip;
+        oled *_oled;
+        menu *_menu;
+        
         int8_t portNum = -1; //used to save the port number that this object is instantiated on.
         
         int8_t trigPin;

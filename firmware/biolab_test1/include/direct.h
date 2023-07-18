@@ -21,17 +21,16 @@ class direct: public _affector
     
     public:
 
-        direct(const uint8_t port, _device *mainptr, menu *menuptr, oled *oledptr, strip *stripptr);
+        direct(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr);
 
         void direct::captureData(void) override;
         void direct::updateGame(int x) override;
         int8_t direct::returnVal(void) override;
         uint8_t direct::returnPos(void) override;
         
-        _device *direct_main_ptr;
-        strip *direct_strip_ptr;
-        oled *direct_oled_ptr;
-        menu *direct_menu_ptr;
+        strip *_strip;
+        oled *_oled;
+        menu *_menu;
         int8_t portNum = -1; //used to save the port number that this object is instantiated on.
         
         int8_t direct_pin1;
@@ -42,7 +41,6 @@ class direct: public _affector
         bool pinAVal;
         bool pinBVal;
 
-        // http://makeatronics.blogspot.com/2013/02/efficiently-reading-quadrature-with.html
         int8_t quadratureLookupTable[16] = {0,0,0,-1,0,0,1,0,0,1,0,0,-1,0,0,0};
         float overallRate = 0;
         float movingAverage = 0; //holds the moving average for the production of the hand crank. 

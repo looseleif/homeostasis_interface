@@ -1,14 +1,13 @@
 #include <direct.h>>
 
-direct::direct(const uint8_t port, _device *mainptr, menu *menuptr, oled *oledptr, strip *stripptr){
+direct::direct(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr){
 
-  direct_main_ptr = mainptr;
-  direct_menu_ptr = menuptr;
-  direct_oled_ptr = oledptr;
-  direct_strip_ptr = stripptr;
+  _menu = menuptr;
+  _oled = oledptr;
+  _strip = stripptr;
   portNum = port;
 
-  if(direct_menu_ptr->selected_device==0){
+  if(_menu->selected_device==0){
       
       cli();
     
@@ -33,7 +32,7 @@ direct::direct(const uint8_t port, _device *mainptr, menu *menuptr, oled *oledpt
       direct_pin2 = D1_B;
       portNum = 0;
 
-  } else if(direct_menu_ptr->selected_device==1){
+  } else if(_menu->selected_device==1){
 
       cli();
     
@@ -58,7 +57,7 @@ direct::direct(const uint8_t port, _device *mainptr, menu *menuptr, oled *oledpt
       direct_pin2 = D2_B; //PCINT6
       portNum = 1;
 
-  } else if(direct_menu_ptr->selected_device==2){
+  } else if(_menu->selected_device==2){
 
       cli();
     

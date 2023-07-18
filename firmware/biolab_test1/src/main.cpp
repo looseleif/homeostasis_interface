@@ -12,12 +12,11 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
-_device *main_ptr = new _device;
+menu *_menu;
+manager *_manager;
 
-menu *menu_ptr;
-oled *oled_ptr;
-strip *strip_ptr;
-manager *manager_ptr;
+oled *_oled;
+strip *_strip;
 
 _affector *D1_ptr = NULL;
 _affector *D2_ptr = NULL;
@@ -35,28 +34,28 @@ void createObject(int objtype, int portnum)
   switch (objtype)
   {
   case menu_TYPE:
-    menu_ptr = new menu();
+    _menu = new menu();
     break;
   case oled_TYPE:
-    oled_ptr = new oled(menu_ptr);
+    _oled = new oled(_menu);
     break;
   case strip_TYPE:
-    strip_ptr = new strip(menu_ptr);
+    _strip = new strip(_menu);
     break;
   case grip_TYPE:
     break;
   case direct_TYPE:
-    D_set[D_index] = new direct(D_index,main_ptr,menu_ptr,oled_ptr,strip_ptr);
+    D_set[D_index] = new direct(D_index,_menu,_oled,_strip);
     D_set[D_index]->current_affector = direct_affector;
     D_index++;
     break;
   case sense_TYPE:
-    D_set[D_index] = new sense(D_index,main_ptr,menu_ptr,oled_ptr,strip_ptr);
+    D_set[D_index] = new sense(D_index,_menu,_oled,_strip);
     D_set[D_index]->current_affector = sense_affector;
     D_index++;
     break;
   case manager_TYPE:
-    manager_ptr = new manager(main_ptr,menu_ptr,oled_ptr,strip_ptr);
+    _manager = new manager(_menu,_oled,_strip);
     break;
   }
 
@@ -78,43 +77,43 @@ ISR (TIMER1_COMPA_vect)
 
   PORTD ^= (1 << PD5);
 
-  menu_ptr->cursor_prev = menu_ptr->cursor_current;
+  _menu->cursor_prev = _menu->cursor_current;
 
   if(!digitalRead(HOME_PIN)){
 
-    menu_ptr->printed = false;
-    menu_ptr->system_state = game;
-    menu_ptr->demo_state = stopped;
-    menu_ptr->home_state = true;
+    _menu->printed = false;
+    _menu->system_state = game;
+    _menu->demo_state = stopped;
+    _menu->home_state = true;
 
-  } else if(menu_ptr->system_state==running){
+  } else if(_menu->system_state==running){
 
   } else if(!digitalRead(DOWN_PIN)){
 
-    menu_ptr->cursor_current++;
-    menu_ptr->cursor_current%=(cursor_max+1);
-    oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
+    _menu->cursor_current++;
+    _menu->cursor_current%=(cursor_max+1);
+    _oled->printSelector(_menu->cursor_prev,_menu->cursor_current, false);
 
   } else if(!digitalRead(UP_PIN)){
 
-    if(menu_ptr->cursor_current==0){
+    if(_menu->cursor_current==0){
 
-      menu_ptr->cursor_current = cursor_max;
+      _menu->cursor_current = cursor_max;
 
     } else {
-    menu_ptr->cursor_current--;
+    _menu->cursor_current--;
     }
-    oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
+    _oled->printSelector(_menu->cursor_prev,_menu->cursor_current, false);
 
   }
   
-  if(menu_ptr->system_state==running){
+  if(_menu->system_state==running){
     
-    manager_ptr->gameCount++;
-    if(manager_ptr->gameCount==45){
+    _manager->gameCount++;
+    if(_manager->gameCount==45){
 
-      manager_ptr->gameCount = 0;
-      manager_ptr->gameFlag = 1;
+      _manager->gameCount = 0;
+      _manager->gameFlag = 1;
 
     }
 
@@ -127,19 +126,19 @@ ISR (TIMER1_COMPA_vect)
 ISR (TIMER2_COMPA_vect)
 {
 
-    manager_ptr->refreshCount++;
-    if(manager_ptr->refreshCount==25){
+    _manager->refreshCount++;
+    if(_manager->refreshCount==25){
 
       PORTD ^= (1 << PD6);
 
-      manager_ptr->switchCount++;
-      manager_ptr->refreshFlag = 1;
-      manager_ptr->refreshCount = 0;
+      _manager->switchCount++;
+      _manager->refreshFlag = 1;
+      _manager->refreshCount = 0;
 
     }
-    if(manager_ptr->switchCount==25+(rand()%55)){
-      manager_ptr->switchFlag = 1;
-      manager_ptr->switchCount = 0;
+    if(_manager->switchCount==25+(rand()%55)){
+      _manager->switchFlag = 1;
+      _manager->switchCount = 0;
     }
 
 }
@@ -150,7 +149,7 @@ ISR (PCINT0_vect)
 {
 
   PCIFR ^= (1 << PCIF0);
-  manager_ptr->crankFlag = 1;
+  _manager->crankFlag = 1;
 
 }
 
@@ -158,7 +157,7 @@ ISR (PCINT1_vect)
 {
 
   PCIFR ^= (1 << PCIF0);
-  manager_ptr->crankFlag = 1;
+  _manager->crankFlag = 1;
 
 }
 
@@ -166,7 +165,7 @@ ISR (PCINT2_vect)
 {
 
   PCIFR ^= (1 << PCIF0);
-  manager_ptr->crankFlag = 1;
+  _manager->crankFlag = 1;
 
 }
 
@@ -219,23 +218,23 @@ void setup()   {
 
   // INTRO BOOT SEQUENCE
 
-  strip_ptr->setColor(0,0,0);
-  strip_ptr->setIntensity(0);
-  oled_ptr->clearAll();
-  oled_ptr->bootingPrint();
+  _strip->setColor(0,0,0);
+  _strip->setIntensity(0);
+  _oled->clearAll();
+  _oled->bootingPrint();
   delay(300);
-  oled_ptr->clearAll();
-  strip_ptr->lubDub();
+  _oled->clearAll();
+  _strip->lubDub();
   delay(100);
-  strip_ptr->sweepColor(111,0,0,10);
-  oled_ptr->_screen->drawBitmap(10,10,images[1], 100, 100, WHITE);
-  oled_ptr->_screen->display();
+  _strip->sweepColor(111,0,0,10);
+  _oled->_screen->drawBitmap(10,10,images[1], 100, 100, WHITE);
+  _oled->_screen->display();
   delay(300);
-  strip_ptr->setColor(0,0,0);
-  oled_ptr->clearAll();
-  oled_ptr->pleaseWaitPrint();
+  _strip->setColor(0,0,0);
+  _oled->clearAll();
+  _oled->pleaseWaitPrint();
   delay(100);
-  oled_ptr->clearAll();
+  _oled->clearAll();
 
   sei(); // ENABLE INTERRUPTS
 
@@ -250,157 +249,157 @@ int main(){
 
     // MENU STATE MACHINE
 
-    if(menu_ptr->system_state==game){
+    if(_menu->system_state==game){
       
-      if(menu_ptr->home_state){
+      if(_menu->home_state){
 
-        oled_ptr->clearAll();
-        oled_ptr->clearAll();
-        strip_ptr->inverseSweep(10);
-        strip_ptr->setColor(100,0,0);
-        strip_ptr->setIntensity(75);
+        _oled->clearAll();
+        _oled->clearAll();
+        _strip->inverseSweep(10);
+        _strip->setColor(100,0,0);
+        _strip->setIntensity(75);
         _delay_ms(1000);
-        menu_ptr->home_state = false;
-        menu_ptr->selected_demo = 0;
-        menu_ptr->selected_device = 0;
+        _menu->home_state = false;
+        _menu->selected_demo = 0;
+        _menu->selected_device = 0;
         D_index = 0;
         
       }
 
-      if(!(menu_ptr->printed)){
+      if(!(_menu->printed)){
 
-        oled_ptr->clearAll();
-        strip_ptr->setColor(100,0,0);
-        strip_ptr->setIntensity(75);
-        menu_ptr->system_state = game;
-        oled_ptr->printGameMenu();
-        oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
+        _oled->clearAll();
+        _strip->setColor(100,0,0);
+        _strip->setIntensity(75);
+        _menu->system_state = game;
+        _oled->printGameMenu();
+        _oled->printSelector(_menu->cursor_prev,_menu->cursor_current, false);
         cursor_max = 2;
-        menu_ptr->cursor_current = 0;
-        menu_ptr->cursor_prev = cursor_max;
-        menu_ptr->printed = true;
+        _menu->cursor_current = 0;
+        _menu->cursor_prev = cursor_max;
+        _menu->printed = true;
 
       }
       
       if(!digitalRead(SELECT_PIN)){
 
-        manager_ptr->game_selected = zone;
-        menu_ptr->system_state = demo;
-        menu_ptr->printed = false;
-        oled_ptr->clearAll();
-        oled_ptr->pleaseWaitPrint();
-        oled_ptr->clearAll();
-        strip_ptr->setColor(100,10,0);
-        strip_ptr->setIntensity(75);
+        _manager->game_selected = zone;
+        _menu->system_state = demo;
+        _menu->printed = false;
+        _oled->clearAll();
+        _oled->pleaseWaitPrint();
+        _oled->clearAll();
+        _strip->setColor(100,10,0);
+        _strip->setIntensity(75);
         cursor_max = 2;
-        menu_ptr->cursor_current = 0;
-        menu_ptr->cursor_prev = cursor_max;
+        _menu->cursor_current = 0;
+        _menu->cursor_prev = cursor_max;
         delay(50);
 
       }
 
     }
 
-    if(menu_ptr->system_state==demo){
+    if(_menu->system_state==demo){
 
-      if(!(menu_ptr->printed)){
+      if(!(_menu->printed)){
         
-        oled_ptr->clearAll();
-        oled_ptr->printDemoMenu();
-        oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
-        menu_ptr->printed = true;
+        _oled->clearAll();
+        _oled->printDemoMenu();
+        _oled->printSelector(_menu->cursor_prev,_menu->cursor_current, false);
+        _menu->printed = true;
 
       }
       
       if(!digitalRead(SELECT_PIN)){
 
-        menu_ptr->selected_demo = menu_ptr->cursor_current;
-        menu_ptr->system_state = device;
-        menu_ptr->printed = false;
-        oled_ptr->clearAll();
-        oled_ptr->pleaseWaitPrint();
-        oled_ptr->clearAll();
-        strip_ptr->setColor(100,30,0);
-        strip_ptr->setIntensity(75);
+        _menu->selected_demo = _menu->cursor_current;
+        _menu->system_state = device;
+        _menu->printed = false;
+        _oled->clearAll();
+        _oled->pleaseWaitPrint();
+        _oled->clearAll();
+        _strip->setColor(100,30,0);
+        _strip->setIntensity(75);
         cursor_max = 2;
-        menu_ptr->cursor_current = 0;
-        menu_ptr->cursor_prev = cursor_max;
+        _menu->cursor_current = 0;
+        _menu->cursor_prev = cursor_max;
         delay(50);
 
       }
 
     }
 
-    if(menu_ptr->system_state==device){
+    if(_menu->system_state==device){
 
-      if(!(menu_ptr->printed)){
+      if(!(_menu->printed)){
         
-        oled_ptr->clearAll();
-        oled_ptr->printDeviceMenu();
-        oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
-        menu_ptr->printed = true;
+        _oled->clearAll();
+        _oled->printDeviceMenu();
+        _oled->printSelector(_menu->cursor_prev,_menu->cursor_current, false);
+        _menu->printed = true;
 
       }
 
       if(!digitalRead(SELECT_PIN)){
 
-          menu_ptr->selected_device = menu_ptr->cursor_current;
-          menu_ptr->printed = false;
-          createObject(menu_ptr->selected_demo, menu_ptr->selected_device);
-          oled_ptr->clearAll();
-          strip_ptr->setColor(100,100,100);
-          strip_ptr->setIntensity(25);
+          _menu->selected_device = _menu->cursor_current;
+          _menu->printed = false;
+          createObject(_menu->selected_demo, _menu->selected_device);
+          _oled->clearAll();
+          _strip->setColor(100,100,100);
+          _strip->setIntensity(25);
           delay(50);
-          oled_ptr->pleaseWaitPrint();
-          menu_ptr->system_state = addition;
+          _oled->pleaseWaitPrint();
+          _menu->system_state = addition;
           cursor_max = 1;
-          menu_ptr->cursor_current = 0;
-          menu_ptr->cursor_prev = cursor_max;
+          _menu->cursor_current = 0;
+          _menu->cursor_prev = cursor_max;
 
       }
 
     }
 
-    if(menu_ptr->system_state==addition){
+    if(_menu->system_state==addition){
 
-      if(!(menu_ptr->printed)){
+      if(!(_menu->printed)){
 
-        oled_ptr->clearAll();
-        oled_ptr->printAdditionMenu();
-        oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
-        menu_ptr->printed = true;
+        _oled->clearAll();
+        _oled->printAdditionMenu();
+        _oled->printSelector(_menu->cursor_prev,_menu->cursor_current, false);
+        _menu->printed = true;
 
       }
 
       if(!digitalRead(SELECT_PIN)){
 
-        menu_ptr->printed = false;
-        oled_ptr->clearAll();
+        _menu->printed = false;
+        _oled->clearAll();
 
-        if((menu_ptr->cursor_current)){
+        if((_menu->cursor_current)){
 
-            menu_ptr->system_state = demo;
+            _menu->system_state = demo;
             cursor_max = 2;
-            menu_ptr->printed = false;
-            oled_ptr->clearAll();
-            oled_ptr->pleaseWaitPrint();
+            _menu->printed = false;
+            _oled->clearAll();
+            _oled->pleaseWaitPrint();
             delay(100);
-            oled_ptr->clearAll();
-            strip_ptr->setColor(0,0,0);
-            strip_ptr->setIntensity(75);
+            _oled->clearAll();
+            _strip->setColor(0,0,0);
+            _strip->setIntensity(75);
             cursor_max = 1; // investigate this
-            menu_ptr->cursor_current = 0;
-            menu_ptr->cursor_prev = cursor_max;
+            _menu->cursor_current = 0;
+            _menu->cursor_prev = cursor_max;
             delay(50);
 
         } else {
 
-          oled_ptr->_screen->drawBitmap(10,10, images[menu_ptr->selected_demo], 100, 100, WHITE);
-          oled_ptr->_screen->display();
-          menu_ptr->system_state = running;
-          menu_ptr->demo_state = started;
-          strip_ptr->setColor(20,20,20);
-          strip_ptr->setIntensity(50);
+          _oled->_screen->drawBitmap(10,10, images[_menu->selected_demo], 100, 100, WHITE);
+          _oled->_screen->display();
+          _menu->system_state = running;
+          _menu->demo_state = started;
+          _strip->setColor(20,20,20);
+          _strip->setIntensity(50);
           delay(50);
 
         }
@@ -409,16 +408,16 @@ int main(){
 
     }
 
-    if(menu_ptr->system_state==running){
+    if(_menu->system_state==running){
 
-      if(manager_ptr->crankFlag){
+      if(_manager->crankFlag){
 
         for(int i = 0; i<D_index; i++){
 
           if(D_set[i]->current_affector==direct_affector){
 
             D_set[i]->updateGame(1);
-            manager_ptr->crankFlag = 0;
+            _manager->crankFlag = 0;
 
           }
 
@@ -426,96 +425,96 @@ int main(){
 
       }
 
-      if(manager_ptr->refreshFlag){
+      if(_manager->refreshFlag){
         
-        strip_ptr->setColor(0,0,0);
+        _strip->setColor(0,0,0);
 
-        manager_ptr->plotObjective();
+        _manager->plotObjective();
 
         for(int i = 0; i<D_index; i++){
 
           D_set[i]->updateGame(0);
           D_set[i]->captureData();
-          manager_ptr->plotAffector(D_set[i]->returnPos(), i);
-          manager_ptr->checkInside(D_set[i]->returnPos());
+          _manager->plotAffector(D_set[i]->returnPos(), i);
+          _manager->checkInside(D_set[i]->returnPos());
 
         }
 
-        strip_ptr->setIntensity(75);
+        _strip->setIntensity(75);
 
-        manager_ptr->refreshFlag = 0;
+        _manager->refreshFlag = 0;
 
       }
 
-      if(manager_ptr->switchFlag){
+      if(_manager->switchFlag){
 
-        manager_ptr->updateObjective();
-        if(manager_ptr->scoreFlag){
+        _manager->updateObjective();
+        if(_manager->scoreFlag){
 
-          manager_ptr->score++;
+          _manager->score++;
 
         }
-        manager_ptr->scoreFlag = 0;
-        manager_ptr->switchFlag = 0;
+        _manager->scoreFlag = 0;
+        _manager->switchFlag = 0;
 
       }
 
-      if(manager_ptr->gameFlag){
+      if(_manager->gameFlag){
 
-        manager_ptr->gameFlag = 0;
+        _manager->gameFlag = 0;
 
-        manager_ptr->endGame();
+        _manager->endGame();
 
-        menu_ptr->system_state = again;
+        _menu->system_state = again;
 
       }
 
     }
 
-    if(menu_ptr->system_state==again){
+    if(_menu->system_state==again){
 
-      if(!(menu_ptr->printed)){
+      if(!(_menu->printed)){
 
-        strip_ptr->setColor(100,0,0);
-        strip_ptr->setIntensity(75);
-        oled_ptr->clearAll();
-        oled_ptr->printAgainMenu();
+        _strip->setColor(100,0,0);
+        _strip->setIntensity(75);
+        _oled->clearAll();
+        _oled->printAgainMenu();
         cursor_max = 1;
-        menu_ptr->cursor_current = 0;
-        menu_ptr->cursor_prev = cursor_max;
-        oled_ptr->printSelector(menu_ptr->cursor_prev,menu_ptr->cursor_current, false);
-        menu_ptr->printed = true;
+        _menu->cursor_current = 0;
+        _menu->cursor_prev = cursor_max;
+        _oled->printSelector(_menu->cursor_prev,_menu->cursor_current, false);
+        _menu->printed = true;
 
       }
 
       if(!digitalRead(SELECT_PIN)){
 
-        menu_ptr->printed = false;
-        oled_ptr->clearAll();
+        _menu->printed = false;
+        _oled->clearAll();
 
-        if((menu_ptr->cursor_current)){
+        if((_menu->cursor_current)){
 
-          menu_ptr->system_state = game;
+          _menu->system_state = game;
           cursor_max = 2;
-          menu_ptr->printed = false;
-          oled_ptr->clearAll();
-          oled_ptr->pleaseWaitPrint();
+          _menu->printed = false;
+          _oled->clearAll();
+          _oled->pleaseWaitPrint();
           delay(100);
-          oled_ptr->clearAll();
-          strip_ptr->inverseSweep(10);
+          _oled->clearAll();
+          _strip->inverseSweep(10);
           cursor_max = 1;
-          menu_ptr->cursor_current = 0;
-          menu_ptr->cursor_prev = cursor_max;
+          _menu->cursor_current = 0;
+          _menu->cursor_prev = cursor_max;
           delay(50);
 
         } else {
 
-          oled_ptr->_screen->drawBitmap(10,10, images[menu_ptr->selected_demo], 100, 100, WHITE);
-          oled_ptr->_screen->display();
-          menu_ptr->system_state = running;
-          menu_ptr->demo_state = started;
-          strip_ptr->setColor(20,20,20);
-          strip_ptr->setIntensity(50);
+          _oled->_screen->drawBitmap(10,10, images[_menu->selected_demo], 100, 100, WHITE);
+          _oled->_screen->display();
+          _menu->system_state = running;
+          _menu->demo_state = started;
+          _strip->setColor(20,20,20);
+          _strip->setIntensity(50);
           delay(50);
 
         }

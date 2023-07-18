@@ -1,11 +1,10 @@
 #include <manager.h>>
 
-manager::manager(_device *mainptr, menu *menuptr, oled *oledptr, strip *stripptr){
+manager::manager(menu *menuptr, oled *oledptr, strip *stripptr){
 
-  manager_main_ptr = mainptr;
-  manager_menu_ptr = menuptr;
-  manager_oled_ptr = oledptr;
-  manager_strip_ptr = stripptr;
+  _menu = menuptr;
+  _oled = oledptr;
+  _strip = stripptr;
 
 }
 
@@ -44,15 +43,15 @@ void manager::plotObjective(void){
     
         if(entered){
             
-            manager_strip_ptr->leds[poi] = CRGB(100,100,100);
-            manager_strip_ptr->leds[poin] = CRGB(100,100,100);
-            manager_strip_ptr->leds[poip] = CRGB(100,100,100);
+            _strip->leds[poi] = CRGB(100,100,100);
+            _strip->leds[poin] = CRGB(100,100,100);
+            _strip->leds[poip] = CRGB(100,100,100);
 
         } else {
 
-            manager_strip_ptr->leds[poi] = CRGB(100,0,0);
-            manager_strip_ptr->leds[poin] = CRGB(100,0,0);
-            manager_strip_ptr->leds[poip] = CRGB(100,0,0);
+            _strip->leds[poi] = CRGB(100,0,0);
+            _strip->leds[poin] = CRGB(100,0,0);
+            _strip->leds[poip] = CRGB(100,0,0);
 
         }
     
@@ -63,25 +62,25 @@ void manager::plotObjective(void){
 void manager::plotAffector(uint8_t pos, int dev){
 
     switch(dev){
-        case 0: manager_strip_ptr->leds[pos%NUM_LEDS] = CRGB(0,50,50); break;
-        case 1: manager_strip_ptr->leds[pos%NUM_LEDS] = CRGB(50,50,0); break;
-        case 2: manager_strip_ptr->leds[pos%NUM_LEDS] = CRGB(0,50,50); break;
+        case 0: _strip->leds[pos%NUM_LEDS] = CRGB(0,50,50); break;
+        case 1: _strip->leds[pos%NUM_LEDS] = CRGB(50,50,0); break;
+        case 2: _strip->leds[pos%NUM_LEDS] = CRGB(0,50,50); break;
     }
 
 }
 
 void manager::endGame(void){
 
-    manager_oled_ptr->clearAll();
+    _oled->clearAll();
     delay(500);
-    manager_oled_ptr->printGameOver();
-    manager_oled_ptr->clearAll();
+    _oled->printGameOver();
+    _oled->clearAll();
     delay(500);
     
     if(score>5){
-        manager_oled_ptr->printWin();
+        _oled->printWin();
     }else{
-        manager_oled_ptr->printLose(); 
+        _oled->printLose(); 
     }
 
     score = 0;
