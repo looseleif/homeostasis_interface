@@ -45,7 +45,7 @@ void createObject(int objtype, int portnum)
     break;
   case sense_TYPE:
     D_set[D_index] = new sense(D_index,_menu,_oled,_strip);
-    D_set[D_index]->current_affector = direct_affector;
+    D_set[D_index]->current_affector = sense_affector;
     D_index++;
     break;
   case direct_TYPE:
@@ -260,6 +260,9 @@ int main(){
         _oled->clearAll();
         _oled->clearAll();
         _strip->inverseSweep(10);
+        _delay_ms(1000);
+        _strip->sweepColor(100,0,0,10);
+        _delay_ms(50);
         _strip->setColor(100,0,0);
         _strip->setIntensity(75);
         _delay_ms(1000);
@@ -287,7 +290,7 @@ int main(){
       
       if(!digitalRead(SELECT_PIN)){
 
-        _manager->game_selected = zone;
+        _manager->game_selected = _menu->cursor_current;
         _menu->system_state = demo;
         _menu->printed = false;
         _oled->clearAll();

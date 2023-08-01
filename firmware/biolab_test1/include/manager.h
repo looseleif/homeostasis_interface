@@ -33,7 +33,7 @@ class manager: public _device
       oled *_oled;
       menu *_menu;
 
-      GAME game_selected;
+      uint8_t game_selected;
 
       uint8_t refreshFlag = 0;
       uint8_t refreshCount = 0;

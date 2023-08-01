@@ -10,13 +10,16 @@
 
 #include <Adafruit_Sensor.h>
 #include <Adafruit_ADXL343.h>
+#include <SlowSoftI2CMaster.h>
+#include <avr/io.h>
 
 class sense: public _affector
 {
 
     private:
 
-        Adafruit_ADXL343* sense_accel;
+        Adafruit_ADXL343 *sense_accel;
+        SlowSoftI2CMaster *sense_soft;
 
     public:
 

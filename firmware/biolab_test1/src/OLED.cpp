@@ -195,7 +195,7 @@ void oled::printDemoMenu(){
     
     }
 
-    String myString = "affector:\n\n[ ] sense\n[ ] direct\n[ ] monitor";
+    String myString = "affector:\n\n[ ] sense\n[ ] direct\n[ ] fixate";
 
     for(uint8_t i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);
