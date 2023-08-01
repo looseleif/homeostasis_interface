@@ -6,8 +6,9 @@
 #include <menu.h>
 #include <oled.h>
 #include <strip.h>
-#include <sense.h>
+#include <conduct.h>
 #include <direct.h>
+#include <sense.h>
 #include <manager.h>
 #include <avr/interrupt.h>
 #include <avr/io.h>
@@ -42,7 +43,10 @@ void createObject(int objtype, int portnum)
   case strip_TYPE:
     _strip = new strip(_menu);
     break;
-  case grip_TYPE:
+  case conduct_TYPE:
+    D_set[D_index] = new conduct(D_index,_menu,_oled,_strip);
+    D_set[D_index]->current_affector = direct_affector;
+    D_index++;
     break;
   case direct_TYPE:
     D_set[D_index] = new direct(D_index,_menu,_oled,_strip);

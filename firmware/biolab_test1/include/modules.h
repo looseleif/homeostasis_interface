@@ -12,18 +12,16 @@
 #define D3_B 19 //PC3
 
 //device types
-#define grip_TYPE 0
+#define conduct_TYPE 0
 #define direct_TYPE 1
 #define sense_TYPE 2
-#define speak_TYPE 3
-#define hold_TYPE 4
 #define menu_TYPE 5
 #define oled_TYPE 6
 #define strip_TYPE 7
 #define manager_TYPE 8
 
 enum AFFECTOR : uint8_t {
-  grip_affector,
+  conduct_affector,
   direct_affector,
   sense_affector
 };
