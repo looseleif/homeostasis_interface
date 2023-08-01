@@ -12,7 +12,7 @@
 #define D3_B 19 //PC3
 
 //device types
-#define conduct_TYPE 0
+#define sense_TYPE 0
 #define direct_TYPE 1
 #define fixate_TYPE 2
 #define menu_TYPE 5
@@ -21,7 +21,7 @@
 #define manager_TYPE 8
 
 enum AFFECTOR : uint8_t {
-  conduct_affector,
+  sense_affector,
   direct_affector,
   fixate_affector
 };
