@@ -83,7 +83,7 @@ void oled::printGrip(void) {
         _screen->setTextColor(WHITE);
         _screen->setCursor(0,0);
 
-        String myString = "grip\ndemo\nselected";
+        String myString = "conduct\ndemo\nselected";
 
         for(uint8_t i = 0; i<myString.length(); i++){
             _screen->write(myString[i]);
@@ -195,7 +195,7 @@ void oled::printDemoMenu(){
     
     }
 
-    String myString = "affector:\n\n[ ] grip\n[ ] direct\n[ ] sense";
+    String myString = "affector:\n\n[ ] sense\n[ ] direct\n[ ] monitor";
 
     for(uint8_t i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);
@@ -216,7 +216,7 @@ void oled::printDeviceMenu(){
     
     }
 
-    String myString = "port:\n\n[ ] CON1\n[ ] CON2\n[ ] CON3";
+    String myString = "port:\n\n[ ] LEFT\n[ ] MIDDLE\n[ ] RIGHT";
 
     for(uint8_t i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);

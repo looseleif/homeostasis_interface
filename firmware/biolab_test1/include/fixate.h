@@ -1,5 +1,5 @@
-#ifndef SENSE_H
-#define SENSE_H
+#ifndef FIXATE_H
+#define FIXATE_H
 
 #include <string.h>
 
@@ -13,7 +13,7 @@
 #include <NewPing.h>
 #include <HCSR04.h>
 
-class sense: public _affector
+class fixate: public _affector
 {
 
     private:
@@ -29,7 +29,7 @@ class sense: public _affector
 
         uint8_t pos;
 
-        UltraSonicDistanceSensor *sense_ultra;
+        UltraSonicDistanceSensor *fixate_ultra;
 
         bool prevAVal;
         bool prevBVal;
@@ -38,12 +38,12 @@ class sense: public _affector
 
     public:
 
-        sense(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr);
+        fixate(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr);
 
-        void sense::captureData(void) override;
-        void sense::updateGame(int x) override;
-        int8_t sense::returnVal(void) override;
-        uint8_t sense::returnPos(void) override;
+        void fixate::captureData(void) override;
+        void fixate::updateGame(int x) override;
+        int8_t fixate::returnVal(void) override;
+        uint8_t fixate::returnPos(void) override;
 
 };
 

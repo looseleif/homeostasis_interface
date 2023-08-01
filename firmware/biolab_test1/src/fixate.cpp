@@ -1,6 +1,6 @@
-#include <sense.h>
+#include <fixate.h>
 
-sense::sense(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr){
+fixate::fixate(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr){
 
   _menu = menuptr;
   _oled = oledptr;
@@ -29,27 +29,27 @@ sense::sense(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr){
 
   }
 
-  sense_ultra = new UltraSonicDistanceSensor(trigPin,echoPin);
+  fixate_ultra = new UltraSonicDistanceSensor(trigPin,echoPin);
 
 }
 
-void sense::captureData(void){
+void fixate::captureData(void){
 
-    pos = static_cast<uint8_t>(sense_ultra->measureDistanceCm());
+    pos = static_cast<uint8_t>(fixate_ultra->measureDistanceCm());
 
 }
 
-void sense::updateGame(int x){
+void fixate::updateGame(int x){
   
 }
 
-int8_t sense::returnVal(void){
+int8_t fixate::returnVal(void){
 
   return 0;
 
 }
 
-uint8_t sense::returnPos(void){
+uint8_t fixate::returnPos(void){
 
   return pos%30;
 

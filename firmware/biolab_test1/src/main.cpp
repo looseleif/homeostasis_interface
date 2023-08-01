@@ -8,7 +8,7 @@
 #include <strip.h>
 #include <conduct.h>
 #include <direct.h>
-#include <sense.h>
+#include <fixate.h>
 #include <manager.h>
 #include <avr/interrupt.h>
 #include <avr/io.h>
@@ -53,9 +53,9 @@ void createObject(int objtype, int portnum)
     D_set[D_index]->current_affector = direct_affector;
     D_index++;
     break;
-  case sense_TYPE:
-    D_set[D_index] = new sense(D_index,_menu,_oled,_strip);
-    D_set[D_index]->current_affector = sense_affector;
+  case fixate_TYPE:
+    D_set[D_index] = new fixate(D_index,_menu,_oled,_strip);
+    D_set[D_index]->current_affector = fixate_affector;
     D_index++;
     break;
   case manager_TYPE:

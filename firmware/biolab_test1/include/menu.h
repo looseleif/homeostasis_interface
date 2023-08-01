@@ -13,7 +13,7 @@
 
 #define GRIP_DEMO 0
 #define DIRECT_DEMO 1
-#define SENSE_DEMO 2
+#define FIXATE_DEMO 2
 #define SPEAK_DEMO 3
 #define HOLD_DEMO 4
 #define DEBUG_DEMO 5
