@@ -17,7 +17,7 @@
 #define OLED_CS       4
 #define OLED_RST      3
 
-inline Adafruit_SH1107 screen(128, 128,OLED_MOSI, OLED_CLK, OLED_DC, OLED_RST, OLED_CS);
+inline Adafruit_SH1107 screen(128, 128, OLED_MOSI, OLED_CLK, OLED_DC, OLED_RST, OLED_CS);
 
 static const unsigned char PROGMEM images[3][1300] = { 
 
@@ -356,10 +356,6 @@ class oled: public _device
         void bootingPrint(void);
         void rebootingPrint(void);
         void pleaseWaitPrint(void);
-        void printGrip(void);
-        void testdrawcircle(void);
-        void testdrawrect(void);
-        void testdrawline(void);
         void clearAll(void);
 
         void printGameMenu(void);

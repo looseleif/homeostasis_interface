@@ -6,22 +6,33 @@ manager::manager(menu *menuptr, oled *oledptr, strip *stripptr){
   _oled = oledptr;
   _strip = stripptr;
 
+  // max width 3
+  width = 2;
+
 }
 
 void manager::updateObjective(void){
 
-    poi = 30+(rand()%30);
-    poin = (poi-1)%30;
-    poip = (poi+1)%30;
-    poi = poi%30;
-    exists = 1;
-    entered = 0;
+    switch(game_selected){
+        case(zone):
+            poi = 30+(rand()%30);
+            poin = (poi-width);
+            poip = (poi+width);
+            exists = 1;
+            entered = 0;
+            break;
+        case(memory):
+            break;
+        case(chase):
+            break;
+    }
+
 
 }
 
 void manager::checkInside(uint8_t pos){
 
-    if((pos==poi||pos==poin||pos==poip) && entered){
+    if((pos>=poin && pos<=poip) && entered){
 
         scoreFlag = 1;
         entered = 0;
@@ -29,7 +40,7 @@ void manager::checkInside(uint8_t pos){
 
     }
 
-    if((pos==poi||pos==poin||pos==poip) && !entered){
+    if((pos>=poin && pos<=poip) && !entered){
 
         entered = 1;
 
@@ -43,15 +54,15 @@ void manager::plotObjective(void){
     
         if(entered){
             
-            _strip->leds[poi] = CRGB(100,100,100);
-            _strip->leds[poin] = CRGB(100,100,100);
-            _strip->leds[poip] = CRGB(100,100,100);
+            for(int i=poin; i<=poip; i++){
+                _strip->leds[i%30] = CRGB(100,100,100);
+            }
 
         } else {
 
-            _strip->leds[poi] = CRGB(100,0,0);
-            _strip->leds[poin] = CRGB(100,0,0);
-            _strip->leds[poip] = CRGB(100,0,0);
+            for(int i=poin; i<=poip; i++){
+                _strip->leds[i%30] = CRGB(100,0,0);
+            }
 
         }
     

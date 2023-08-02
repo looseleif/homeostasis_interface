@@ -11,7 +11,7 @@
 
 enum GAME : uint8_t {
   zone,
-  pattern,
+  memory,
   chase
 };
 class manager: public _device
