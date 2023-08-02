@@ -27,46 +27,64 @@ void manager::updateObjective(void){
             break;
     }
 
-
 }
 
 void manager::checkInside(uint8_t pos){
 
-    if((pos>=poin && pos<=poip) && entered){
+    // :0) gonna be a pain to explain
+    switch(game_selected){
+        case(zone):
+            if((pos+30>=poin && pos+30<=poip) && entered){
 
-        scoreFlag = 1;
-        entered = 0;
-        exists = 0;
+                scoreFlag = 1;
+                entered = 0;
+                exists = 0;
 
-    }
+            }
 
-    if((pos>=poin && pos<=poip) && !entered){
+            if((pos+30>=poin && pos+30<=poip) && !entered){
 
-        entered = 1;
+                entered = 1;
 
+            }
+            break;
+        case(memory):
+            break;
+        case(chase):
+            break;
     }
 
 }
 
 void manager::plotObjective(void){
 
-    if(exists){
+    switch(game_selected){
+        case(zone):
+            if(exists){
     
-        if(entered){
+                if(entered){
+                    
+                    for(int i=poin; i<=poip; i++){
+                        _strip->leds[i%30] = CRGB(100,100,100);
+                    }
+
+                } else {
+
+                    for(int i=poin; i<=poip; i++){
+                        _strip->leds[i%30] = CRGB(100,0,0);
+                    }
+
+                }
             
-            for(int i=poin; i<=poip; i++){
-                _strip->leds[i%30] = CRGB(100,100,100);
             }
-
-        } else {
-
-            for(int i=poin; i<=poip; i++){
-                _strip->leds[i%30] = CRGB(100,0,0);
-            }
-
-        }
-    
+            break;
+        case(memory):
+            break;
+        case(chase):
+            break;
     }
+    
+    
 
 }
 
