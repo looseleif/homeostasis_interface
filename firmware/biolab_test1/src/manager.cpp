@@ -24,7 +24,7 @@ void manager::updateObjective(void){
         case(memory):
             break;
         case(chase):
-            break;
+            break;ss
     }
 
 }
