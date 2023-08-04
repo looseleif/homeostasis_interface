@@ -291,6 +291,22 @@ int main(){
       if(!digitalRead(SELECT_PIN)){
 
         _manager->game_selected = _menu->cursor_current;
+        cli();
+        switch (_manager->game_selected)
+        {
+        case (zone):
+          OCR2A = 255;
+          break;
+        case (memory):
+          OCR2A = 255;
+          break;
+        case (chase):
+          OCR2A = 25;
+          break;        
+        default:
+          break;
+        }
+        sei();
         _menu->system_state = demo;
         _menu->printed = false;
         _oled->clearAll();

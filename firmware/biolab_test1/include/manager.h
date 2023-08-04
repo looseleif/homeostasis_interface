@@ -35,6 +35,7 @@ class manager: public _device
 
       uint8_t game_selected;
 
+      uint8_t speed = 1;
       uint8_t refreshFlag = 0;
       uint8_t refreshCount = 0;
       uint8_t crankFlag = 0;

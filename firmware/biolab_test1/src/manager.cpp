@@ -24,7 +24,10 @@ void manager::updateObjective(void){
         case(memory):
             break;
         case(chase):
-            break;ss
+            poi = 30+((poi+speed)%30);
+            poin = (poi-width);
+            poip = (poi+width);
+            break;
     }
 
 }
@@ -51,6 +54,11 @@ void manager::checkInside(uint8_t pos){
         case(memory):
             break;
         case(chase):
+            if((pos+30>=poin && pos+30<=poip)){
+
+                scoreFlag = 1;
+
+            }
             break;
     }
 
@@ -81,6 +89,9 @@ void manager::plotObjective(void){
         case(memory):
             break;
         case(chase):
+            for(int i=poin; i<=poip; i++){
+                _strip->leds[i%30] = CRGB(100,0,0);
+            }
             break;
     }
     
