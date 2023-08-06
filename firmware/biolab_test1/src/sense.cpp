@@ -4,6 +4,9 @@ sense::sense(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr){
 
   sense_soft = new SlowSoftI2CMaster(A4, A5, true);
 
+  // write your own god damn driver chase!
+  // after swimming that is, gotta clear the mind
+
   sense_accel = new Adafruit_ADXL343(12345);
   sense_accel->setRange(ADXL343_RANGE_2_G);
   sense_accel->setDataRate(ADXL343_DATARATE_1600_HZ);
