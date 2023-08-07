@@ -147,6 +147,8 @@ class sense: public _affector
         unsigned long _X;
         unsigned long _Y;
         unsigned long _Z;
+        
+        int xval, yval, zval;
 
         strip *_strip;
         oled *_oled;

@@ -2,33 +2,48 @@
 
 sense::sense(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr){
 
-  // connecting I2C to LEFT PORT
+  // COM1 only
   sense_soft = new SlowSoftI2CMaster(D1_A, D1_B, true);
 
   sense_soft->i2c_init();
+  
+  // check ID
+  if (!sense_soft->i2c_start(ADXL343_ADDRESS<<1| I2C_READ | (ADXL3XX_REG_DATAX1<<8|ADXL3XX_REG_DATAX0&0x10000 ? 8 : 0))) return;
+  if (!sense_soft->i2c_write(ADXL3XX_REG_DEVID&0xFF)) return;
+  if(sense_soft->i2c_read(true)!=0xE5) return;
+  sense_soft->i2c_stop();
+  
+  // set data rate
+  if (!sense_soft->i2c_start(ADXL343_ADDRESS<<1 | I2C_WRITE)) return;
+  if (!sense_soft->i2c_write(ADXL3XX_REG_BW_RATE))            return;
+  if (!sense_soft->i2c_write(ADXL3XX_DATARATE_100_HZ))        return;
+  sense_soft->i2c_stop();
+  
+  // set range
+  if (!sense_soft->i2c_start(ADXL343_ADDRESS<<1 | I2C_WRITE)) return;
+  if (!sense_soft->i2c_write(ADXL343_MG2G_MULTIPLIER))        return;
+  if (!sense_soft->i2c_write(ADXL343_RANGE_4_G))              return;
+  sense_soft->i2c_stop();
 
-  if (!sense_soft->i2c_start(ADXL343_ADDRESS<<1| I2C_WRITE | (ADXL3XX_REG_DATAX1<<8|ADXL3XX_REG_DATAX0&0x10000 ? 8 : 0))) return;
+  // disable interrupt
+  if (!sense_soft->i2c_start(ADXL343_ADDRESS<<1 | I2C_WRITE)) return;
+  if (!sense_soft->i2c_write(ADXL3XX_REG_INT_ENABLE))         return;
+  if (!sense_soft->i2c_write(0))                              return;
+  sense_soft->i2c_stop();
 
-  // send the address
-  if (!sense_soft->i2c_write(ADXL3XX_REG_BW_RATE&0xFF)) return;
+  // disable interrupt
+  if (!sense_soft->i2c_start(ADXL343_ADDRESS<<1 | I2C_WRITE)) return;
+  if (!sense_soft->i2c_write(ADXL3XX_REG_THRESH_TAP))         return;
+  if (!sense_soft->i2c_write(20))                             return;
+  sense_soft->i2c_stop();
 
+  // enable measurements
+  if (!sense_soft->i2c_start(ADXL343_ADDRESS<<1 | I2C_WRITE)) return;
+  if (!sense_soft->i2c_write(ADXL3XX_REG_POWER_CTL))          return;
+  if (!sense_soft->i2c_write(0x08))                           return;
+  sense_soft->i2c_stop();
 
   delay(6);
-  // sense_accel = new Adafruit_ADXL343(12345);
-  // sense_accel->setRange(ADXL343_RANGE_2_G);
-  // sense_accel->setDataRate(ADXL343_DATARATE_1600_HZ);
-
-  // writeRegister(ADXL3XX_REG_INT_ENABLE, 0);  // Disable interrupts to start
-  // writeRegister(ADXL3XX_REG_THRESH_TAP, 20); // 62.5 mg/LSB (so 0xFF = 16 g)
-  // writeRegister(ADXL3XX_REG_DUR, 50);        // Max tap duration, 625 µs/LSB
-  // writeRegister(ADXL3XX_REG_LATENT,
-  //               0); // Tap latency, 1.25 ms/LSB, 0=no double tap
-  // writeRegister(ADXL3XX_REG_WINDOW,
-  //               0); // Waiting period,  1.25 ms/LSB, 0=no double tap
-  // writeRegister(ADXL3XX_REG_TAP_AXES, 0x7); // Enable the XYZ axis for tap
-
-  // // Enable measurements
-  // writeRegister(ADXL3XX_REG_POWER_CTL, 0x08);
 
 }
 
@@ -80,8 +95,6 @@ void sense::updateGame(int x)
 
   sense_soft->i2c_stop();
 
-
-
   return;
 }
 
@@ -90,9 +103,7 @@ int8_t sense::returnVal(void){
 }
 
 uint8_t sense::returnPos(void){
-
   return 0;
-
 }
 
 
