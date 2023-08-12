@@ -2,7 +2,6 @@
 #define DIRECT_H
 
 #include <string.h>
-
 #include <modules.h>
 #include <menu.h>
 #include <strip.h>
@@ -18,17 +17,14 @@ class direct: public _affector
 {
 
     private:
-    
-        int8_t portNum = -1; //used to save the port number that this object is instantiated on.
         
+        int8_t portNum = -1; //used to save the port number that this object is instantiated on.
         int8_t direct_pin1;
         int8_t direct_pin2;
-
         bool prevAVal;
         bool prevBVal;
         bool pinAVal;
         bool pinBVal;
-
         int8_t quadratureLookupTable[16] = {0,0,0,-1,0,0,1,0,0,1,0,0,-1,0,0,0};
         float overallRate = 0;
         float movingAverage = 0; //holds the moving average for the production of the hand crank. 
@@ -39,14 +35,12 @@ class direct: public _affector
         int8_t direction = 0;
 
     public:
-
+        
         direct(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr);
-
         void direct::captureData(void) override;
         void direct::updateGame(int x) override;
         int8_t direct::returnVal(void) override;
         uint8_t direct::returnPos(void) override;
-        
         strip *_strip;
         oled *_oled;
         menu *_menu;

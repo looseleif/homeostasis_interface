@@ -18,9 +18,7 @@ class strip: public _device
 
         menu *_strip_menu_ptr;
         CRGB leds[NUM_LEDS];
-
         strip(menu *_menu_ptr);
-
         void setIntensity(int val);
         void setColor(int r, int g, int b);
         void sweepColor(int r, int g, int b, int rate);

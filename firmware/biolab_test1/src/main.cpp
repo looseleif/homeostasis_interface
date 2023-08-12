@@ -183,45 +183,26 @@ void setup()   {
   PORTD ^= (1 << PD5);
   DDRD |= (1 << PD6);
   PORTD ^= (1 << PD6); 
-
-  cli(); // DISABLE INTERRUPTS
-
-  // TIMER1 W/ INTERRUPT
-
+  cli();
   TCCR1A = 0; // set entire TCCR1A register to 0
   TCCR1B = 0; // same for TCCR1B
   TCNT1  = 0; //initialize counter value to 0
-  OCR1A = 2500;
-  // turn on CTC mode
+  OCR1A = 2500; // turn on CTC mode
   TCCR1B |= (1 << WGM12);
-  // Set CS10 and CS12 bits for 1024 prescaler
-  TCCR1B |= (1 << CS12) | (1 << CS10);  
-  // enable timer compare interrupt
-  TIMSK1 |= (1 << OCIE1A);
-
-  // TIMER2 W/ INTERRUPT
-
+  TCCR1B |= (1 << CS12) | (1 << CS10);  // Set CS10 and CS12 bits for 1024 prescaler
+  TIMSK1 |= (1 << OCIE1A);  // enable timer compare interrupt
   TCCR2A = 0; // set entire TCCR2A register to 0
   TCCR2B = 0; // same for TCCR2B
   TCNT2  = 0; //initialize counter value to 0
-  // set compare match register for 8khz increments
   OCR2A = 255;// = (16*10^6) / (8000*8) - 1 (must be <256)
-  // turn on CTC mode
-  TCCR2A |= (1 << WGM21);
-  // Set CS22 bit for 64 prescaler
-  TCCR2B |= (1 << CS22);   
-  // enable timer compare interrupt
-  TIMSK2 |= (1 << OCIE2A);
-	
-  // INITIALIZE INTERFACE DEVICES
-
-  createObject(menu_TYPE,0);
+  TCCR2A |= (1 << WGM21); // turn on CTC mode
+  TCCR2B |= (1 << CS22);  // Set CS22 bit for 64 prescaler
+  TIMSK2 |= (1 << OCIE2A);  // enable timer compare interrupt
+  createObject(menu_TYPE,0);  // INITIALIZE INTERFACE DEVICES
   createObject(oled_TYPE,0);
   createObject(strip_TYPE,0);
   createObject(manager_TYPE,0);
-
   // INTRO BOOT SEQUENCE
-
   _strip->setColor(0,0,0);
   _strip->setIntensity(0);
   _oled->clearAll();
@@ -239,24 +220,16 @@ void setup()   {
   _oled->pleaseWaitPrint();
   delay(100);
   _oled->clearAll();
-
-  sei(); // ENABLE INTERRUPTS
-
+  sei();
 }
 
 int main(){
-
   init();
   setup();
-
   while(true){
-
     // MENU STATE MACHINE
-
     if(_menu->system_state==game){
-      
       if(_menu->home_state){
-
         _oled->clearAll();
         _oled->clearAll();
         _strip->inverseSweep(10);
@@ -270,11 +243,8 @@ int main(){
         _menu->selected_demo = 0;
         _menu->selected_device = 0;
         D_index = 0;
-        
       }
-
       if(!(_menu->printed)){
-
         _oled->clearAll();
         _strip->setColor(100,0,0);
         _strip->setIntensity(75);
@@ -285,11 +255,8 @@ int main(){
         _menu->cursor_current = 0;
         _menu->cursor_prev = cursor_max;
         _menu->printed = true;
-
       }
-      
       if(!digitalRead(SELECT_PIN)){
-
         _manager->game_selected = _menu->cursor_current;
         cli();
         switch (_manager->game_selected)
@@ -318,24 +285,16 @@ int main(){
         _menu->cursor_current = 0;
         _menu->cursor_prev = cursor_max;
         delay(50);
-
       }
-
     }
-
     if(_menu->system_state==demo){
-
       if(!(_menu->printed)){
-        
         _oled->clearAll();
         _oled->printDemoMenu();
         _oled->printSelector(_menu->cursor_prev,_menu->cursor_current, false);
         _menu->printed = true;
-
       }
-      
       if(!digitalRead(SELECT_PIN)){
-
         _menu->selected_demo = _menu->cursor_current;
         _menu->system_state = device;
         _menu->printed = false;
@@ -348,24 +307,16 @@ int main(){
         _menu->cursor_current = 0;
         _menu->cursor_prev = cursor_max;
         delay(50);
-
       }
-
     }
-
     if(_menu->system_state==device){
-
       if(!(_menu->printed)){
-        
         _oled->clearAll();
         _oled->printDeviceMenu();
         _oled->printSelector(_menu->cursor_prev,_menu->cursor_current, false);
         _menu->printed = true;
-
       }
-
       if(!digitalRead(SELECT_PIN)){
-
           _menu->selected_device = _menu->cursor_current;
           _menu->printed = false;
           createObject(_menu->selected_demo, _menu->selected_device);
@@ -378,29 +329,19 @@ int main(){
           cursor_max = 1;
           _menu->cursor_current = 0;
           _menu->cursor_prev = cursor_max;
-
       }
-
     }
-
     if(_menu->system_state==addition){
-
       if(!(_menu->printed)){
-
         _oled->clearAll();
         _oled->printAdditionMenu();
         _oled->printSelector(_menu->cursor_prev,_menu->cursor_current, false);
         _menu->printed = true;
-
       }
-
       if(!digitalRead(SELECT_PIN)){
-
         _menu->printed = false;
         _oled->clearAll();
-
         if((_menu->cursor_current)){
-
             _menu->system_state = demo;
             cursor_max = 2;
             _menu->printed = false;
@@ -414,9 +355,7 @@ int main(){
             _menu->cursor_current = 0;
             _menu->cursor_prev = cursor_max;
             delay(50);
-
         } else {
-
           _oled->_screen->drawBitmap(10,10, images[_menu->selected_demo], 100, 100, WHITE);
           _oled->_screen->display();
           _menu->system_state = running;
@@ -424,80 +363,47 @@ int main(){
           _strip->setColor(20,20,20);
           _strip->setIntensity(50);
           delay(50);
-
         }
-
       }
-
     }
-
     if(_menu->system_state==running){
-
       if(_manager->crankFlag){
-
         for(int i = 0; i<D_index; i++){
-
           if(D_set[i]->current_affector==direct_affector){
-
             D_set[i]->updateGame(1);
             _manager->crankFlag = 0;
-
           }
-
         }
-
       }
 
       if(_manager->refreshFlag){
-        
         _strip->setColor(0,0,0);
-
         _manager->plotObjective();
-
         for(int i = 0; i<D_index; i++){
-
           D_set[i]->updateGame(0);
           D_set[i]->captureData();
           _manager->plotAffector(D_set[i]->returnPos(), i);
           _manager->checkInside(D_set[i]->returnPos());
-
         }
-
         _strip->setIntensity(75);
-
         _manager->refreshFlag = 0;
-
       }
-
       if(_manager->switchFlag){
-
         _manager->updateObjective();
         if(_manager->scoreFlag){
-
           _manager->score++;
-
         }
         _manager->scoreFlag = 0;
         _manager->switchFlag = 0;
-
       }
-
       if(_manager->gameFlag){
-
         _manager->gameFlag = 0;
-
         _manager->endGame();
-
         _menu->system_state = again;
-
       }
-
     }
-
     if(_menu->system_state==again){
-
       if(!(_menu->printed)){
-
         _strip->setColor(100,0,0);
         _strip->setIntensity(75);
         _oled->clearAll();
@@ -507,16 +413,11 @@ int main(){
         _menu->cursor_prev = cursor_max;
         _oled->printSelector(_menu->cursor_prev,_menu->cursor_current, false);
         _menu->printed = true;
-
       }
-
       if(!digitalRead(SELECT_PIN)){
-
         _menu->printed = false;
         _oled->clearAll();
-
         if((_menu->cursor_current)){
-
           _menu->system_state = game;
           cursor_max = 2;
           _menu->printed = false;
@@ -529,9 +430,7 @@ int main(){
           _menu->cursor_current = 0;
           _menu->cursor_prev = cursor_max;
           delay(50);
-
         } else {
-
           _oled->_screen->drawBitmap(10,10, images[_menu->selected_demo], 100, 100, WHITE);
           _oled->_screen->display();
           _menu->system_state = running;
@@ -539,15 +438,9 @@ int main(){
           _strip->setColor(20,20,20);
           _strip->setIntensity(50);
           delay(50);
-
         }
-
       }
-    
-    }
-    
+    }  
   }
-
   return 0;
-
 }

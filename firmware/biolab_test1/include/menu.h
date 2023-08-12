@@ -10,14 +10,12 @@
 #define RIGHT_PIN 11 //PD3
 #define SELECT_PIN 29 //PA5
 #define HOME_PIN 12 // PD4
-
 #define GRIP_DEMO 0
 #define DIRECT_DEMO 1
 #define FIXATE_DEMO 2
 #define SPEAK_DEMO 3
 #define HOLD_DEMO 4
 #define DEBUG_DEMO 5
-
 #define D1_DEVICE 0
 #define D2_DEVICE 1
 #define D3_DEVICE 2
@@ -45,7 +43,6 @@ class menu: public _device
     public:
 
         menu(void);
-
         SYSTEM system_state;
         DEMO demo_state;
         bool home_state;
@@ -54,8 +51,6 @@ class menu: public _device
         int8_t cursor_current;
         int8_t selected_demo;
         int8_t selected_device;
-
-
 
 };
 

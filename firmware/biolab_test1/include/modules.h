@@ -25,7 +25,6 @@ enum AFFECTOR : uint8_t {
   direct_affector,
   fixate_affector
 };
-
 class _device {
   
   private:
@@ -33,11 +32,8 @@ class _device {
   public:
     
     _device(){};
-
     void createObject(int objtype, int portnum);
-    
     virtual ~_device(){} // must have a virtualized destructor
-
     //these virtual functions will be overwritten by derived class objects. 
     virtual void calculateRate(int8_t modifier){}
 
@@ -48,12 +44,12 @@ class _affector: public _device
   public: 
 
     AFFECTOR current_affector;
-
     virtual ~_affector(){} //must have a virtualized destructor
     virtual void captureData(void);
     virtual void updateGame(int x);
     virtual int8_t returnVal(void);
     virtual uint8_t returnPos(void);
+    
 };
 
 

@@ -138,23 +138,17 @@ class sense: public _affector
     public:
 
         sense(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr);
-
         void sense::captureData(void) override;
         void sense::updateGame(int x) override;
         int8_t sense::returnVal(void) override;
         uint8_t sense::returnPos(void) override;
-        
         unsigned long _X;
         unsigned long _Y;
         unsigned long _Z;
-        
         int xval, yval, zval;
-
         strip *_strip;
         oled *_oled;
         menu *_menu;
-
-
 
 };
 
