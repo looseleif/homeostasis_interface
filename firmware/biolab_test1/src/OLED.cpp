@@ -1,27 +1,22 @@
 #include <oled.h>
 
 oled::oled(menu *ptr){
-
     _oled_menu_ptr = ptr;
     _screen = &screen;
     _screen->begin();
     _screen->clearDisplay();
     _screen->setRotation(0);
-
 }
 
 void oled::sendString(String toSend) {
-    
     _screen->setTextSize(2);
     _screen->setTextWrap(true);
     _screen->setTextColor(WHITE);
     _screen->setCursor(0,0);
-
     for(uint8_t i = 0; i<toSend.length(); i++){
         _screen->write(toSend[i]);
         _screen->display();
     }
-
 }
 
 void oled::bootingPrint(void) {
@@ -30,48 +25,37 @@ void oled::bootingPrint(void) {
     _screen->setTextWrap(true);
     _screen->setTextColor(WHITE);
     _screen->setCursor(0,0);
-
     String myString = "booting\ndevice";
-
     for(uint8_t i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);
         _screen->display();
     }
-
 }
 
 void oled::rebootingPrint(void) {
-_screen->setTextSize(2);
-_screen->setTextWrap(true);
-_screen->setTextColor(WHITE);
-_screen->setCursor(0,0);
-
-String myString = "reboot";
-
-for(uint8_t i = 0; i<myString.length(); i++){
-    _screen->write(myString[i]);
-    _screen->display();
-}
-
+    _screen->setTextSize(2);
+    _screen->setTextWrap(true);
+    _screen->setTextColor(WHITE);
+    _screen->setCursor(0,0);
+    String myString = "reboot";
+    for(uint8_t i = 0; i<myString.length(); i++){
+        _screen->write(myString[i]);
+        _screen->display();
+    }
 }
 
 void oled::pleaseWaitPrint(void) {
-
-        _screen->setTextSize(2);
-        _screen->setTextWrap(true);
-        _screen->setTextColor(WHITE);
-        _screen->setCursor(0,0);
-
-        String myString = "please\nwait";
-
-        for(uint8_t i = 0; i<myString.length(); i++){
-            _screen->write(myString[i]);
-        }
-
-        _screen->display();
-        delay(500);
-        this->clearAll();
-
+    _screen->setTextSize(2);
+    _screen->setTextWrap(true);
+    _screen->setTextColor(WHITE);
+    _screen->setCursor(0,0);
+    String myString = "please\nwait";
+    for(uint8_t i = 0; i<myString.length(); i++){
+        _screen->write(myString[i]);
+    }
+    _screen->display();
+    delay(500);
+    this->clearAll();
 }
 
 void oled::clearAll(){

@@ -15,23 +15,17 @@
 
 menu *_menu;
 manager *_manager;
-
 oled *_oled;
 strip *_strip;
-
 _affector *D1_ptr = NULL;
 _affector *D2_ptr = NULL;
 _affector *D3_ptr = NULL;
-
 int8_t D_index = 0;
-
 _affector *D_set[3] = {D1_ptr,D2_ptr,D3_ptr};
-
 int8_t cursor_max = 0;
 
 void createObject(int objtype, int portnum)
 {
-
   switch (objtype)
   {
   case menu_TYPE:
@@ -62,7 +56,6 @@ void createObject(int objtype, int portnum)
     _manager = new manager(_menu,_oled,_strip);
     break;
   }
-
 }
 
 void deleteObject(int objtype, int portnum)
@@ -72,113 +65,78 @@ void deleteObject(int objtype, int portnum)
 
 }
 
-// INTERRUPT SERVICE ROUTINES
-
 // MENU & GAME UPDATE
-
 ISR (TIMER1_COMPA_vect)
 {
-
   PORTD ^= (1 << PD5);
-
   _menu->cursor_prev = _menu->cursor_current;
-
   if(!digitalRead(HOME_PIN)){
 
     _menu->printed = false;
     _menu->system_state = game;
     _menu->demo_state = stopped;
     _menu->home_state = true;
-
   } else if(_menu->system_state==running){
-
   } else if(!digitalRead(DOWN_PIN)){
-
     _menu->cursor_current++;
     _menu->cursor_current%=(cursor_max+1);
     _oled->printSelector(_menu->cursor_prev,_menu->cursor_current, false);
-
   } else if(!digitalRead(UP_PIN)){
-
     if(_menu->cursor_current==0){
-
       _menu->cursor_current = cursor_max;
-
     } else {
     _menu->cursor_current--;
     }
     _oled->printSelector(_menu->cursor_prev,_menu->cursor_current, false);
-
   }
   
   if(_menu->system_state==running){
-    
     _manager->gameCount++;
     if(_manager->gameCount==45){
-
       _manager->gameCount = 0;
       _manager->gameFlag = 1;
-
     }
-
   }
-
 }
 
 // DEVICE & SWITCH UPDATE
-
 ISR (TIMER2_COMPA_vect)
 {
-
     _manager->refreshCount++;
     if(_manager->refreshCount==25){
-
       PORTD ^= (1 << PD6);
-
       _manager->switchCount++;
       _manager->refreshFlag = 1;
       _manager->refreshCount = 0;
-
     }
     if(_manager->switchCount==25+(rand()%55)){
       _manager->switchFlag = 1;
       _manager->switchCount = 0;
     }
-
 }
 
 // PORT PIN CHANGE
-
 ISR (PCINT0_vect)
 {
-
   PCIFR ^= (1 << PCIF0);
   _manager->crankFlag = 1;
-
 }
 
 ISR (PCINT1_vect)
 {
-
   PCIFR ^= (1 << PCIF0);
   _manager->crankFlag = 1;
-
 }
 
 ISR (PCINT2_vect)
 {
-
   PCIFR ^= (1 << PCIF0);
   _manager->crankFlag = 1;
-
 }
 
 // SETUP TIMERS + INTERRUPTS + OBJECTS
-
 void setup()   {
-
   // DEBUG LEDS
-
   DDRD |= (1 << PD5);
   PORTD ^= (1 << PD5);
   DDRD |= (1 << PD6);

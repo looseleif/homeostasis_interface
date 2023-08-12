@@ -78,36 +78,27 @@ void manager::plotObjective(void){
             }
             break;
     }
-    
-    
-
 }
 
 void manager::plotAffector(uint8_t pos, int dev){
-
     switch(dev){
         case 0: _strip->leds[pos%NUM_LEDS] = CRGB(0,50,50); break;
         case 1: _strip->leds[pos%NUM_LEDS] = CRGB(50,50,0); break;
         case 2: _strip->leds[pos%NUM_LEDS] = CRGB(0,50,50); break;
     }
-
 }
 
 void manager::endGame(void){
-
     _oled->clearAll();
     delay(500);
     _oled->printGameOver();
     _oled->clearAll();
     delay(500);
-    
     if(score>5){
         _oled->printWin();
     }else{
         _oled->printLose(); 
     }
-
     score = 0;
     delay(1500);
-
 }

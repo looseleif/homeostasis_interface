@@ -8,11 +8,9 @@ strip::strip(menu *ptr) {
 }
 
 void strip::setIntensity(int val){
-
     FastLED.setBrightness(val);
     FastLED.show();
     return;
-
 }
 
 void strip::setColor(int r, int g, int b){
@@ -26,83 +24,57 @@ void strip::setColor(int r, int g, int b){
 }
 
 void strip::sweepColor(int r, int g, int b, int rate){
-
   for(int i = 0; i<NUM_LEDS; i++){
-
     this->leds[i] = CRGB(r,g,b);
     FastLED.show();
     delay(rate);
-
   }
-
 }
 
 void strip::inverseSweep(int rate){
-
   for(int i = NUM_LEDS-1; i>=0; i--){
-
     this->leds[i] = CRGB(0,0,0);
     FastLED.show();
     delay(rate);
-
   }
-
 }
 
 void strip::lubDub(void){
-
   for(int i = 0; i<NUM_LEDS; i++){
-
     this->leds[i] = CRGB(111,0,0);
     delay(15);
-
   }
-
   FastLED.setBrightness(0);
   FastLED.show();
   delay(50);
-
   FastLED.setBrightness(50);
   FastLED.show();
   delay(200);
-
   FastLED.setBrightness(0);
   FastLED.show();
   delay(50);
-
   FastLED.setBrightness(50);
   FastLED.show();
   delay(200);
-
   FastLED.setBrightness(0);
   FastLED.show();
   delay(250);
-
   FastLED.setBrightness(50);
   FastLED.show();
   delay(200);
-
   FastLED.setBrightness(0);
   FastLED.show();
   delay(50);
-
   FastLED.setBrightness(50);
   FastLED.show();
   delay(200);
-
   FastLED.setBrightness(0);
   FastLED.show();
   delay(50);
-
   for(int i = 0; i<NUM_LEDS; i++){
-
     this->leds[i] = CRGB(0,0,0);
     delay(15);
-
   }
-
   FastLED.setBrightness(50);
-
   return;
-
 }
