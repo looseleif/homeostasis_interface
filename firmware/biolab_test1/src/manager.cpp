@@ -1,4 +1,4 @@
-#include <manager.h>>
+#include <manager.h>
 
 manager::manager(menu *menuptr, oled *oledptr, strip *stripptr){
   _menu = menuptr;
@@ -17,11 +17,10 @@ void manager::updateObjective(void){
             entered = 0;
             break;
         case(memory):
-            // need to have stages, building random string to copy, possibly indefinite
-            // linked list? yes
+
             break;
         case(chase):
-            poi = 30+((poi+speed)%30);
+            poi = 30+(((poi+(direction*speed))%30));
             poin = (poi-width);
             poip = (poi+width);
             break;
@@ -91,14 +90,31 @@ void manager::plotAffector(uint8_t pos, int dev){
 void manager::endGame(void){
     _oled->clearAll();
     delay(500);
+    cli();
+    OCR2A = 255;
+    sei();
     _oled->printGameOver();
     _oled->clearAll();
     delay(500);
-    if(score>5){
-        _oled->printWin();
-    }else{
-        _oled->printLose(); 
+    switch (game_selected){
+        case (zone):
+            if(score>5)
+                _oled->printWin();
+            break;
+        case (memory):
+            if(score>5)
+                _oled->printWin();
+            break;
+        case (chase):
+            if(score>50)
+                _oled->printWin();
+            break;        
+        default:
+            break; 
     }
     score = 0;
+    speed = 1;
+    width = 2;
+    direction = 1;
     delay(1500);
 }

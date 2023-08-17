@@ -7,16 +7,20 @@
 #include <strip.h>
 #include <oled.h>
 #include <math.h>
+#include <LinkedList.h>
 
 enum GAME : uint8_t {
   zone,
   memory,
   chase
 };
+
 class manager: public _device
 {
 
     private:
+
+      LinkedList<int*> patternPoints;
 
     public:
 
@@ -31,6 +35,7 @@ class manager: public _device
       menu *_menu;
       uint8_t game_selected;
       uint8_t speed = 1;
+      int8_t direction = 1;
       uint8_t refreshFlag = 0;
       uint8_t refreshCount = 0;
       uint8_t crankFlag = 0;

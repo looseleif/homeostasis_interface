@@ -71,7 +71,6 @@ ISR (TIMER1_COMPA_vect)
   PORTD ^= (1 << PD5);
   _menu->cursor_prev = _menu->cursor_current;
   if(!digitalRead(HOME_PIN)){
-
     _menu->printed = false;
     _menu->system_state = game;
     _menu->demo_state = stopped;
@@ -89,7 +88,6 @@ ISR (TIMER1_COMPA_vect)
     }
     _oled->printSelector(_menu->cursor_prev,_menu->cursor_current, false);
   }
-  
   if(_menu->system_state==running){
     _manager->gameCount++;
     if(_manager->gameCount==45){
@@ -216,22 +214,6 @@ int main(){
       }
       if(!digitalRead(SELECT_PIN)){
         _manager->game_selected = _menu->cursor_current;
-        cli();
-        switch (_manager->game_selected)
-        {
-        case (zone):
-          OCR2A = 255;
-          break;
-        case (memory):
-          OCR2A = 255;
-          break;
-        case (chase):
-          OCR2A = 25;
-          break;        
-        default:
-          break;
-        }
-        sei();
         _menu->system_state = demo;
         _menu->printed = false;
         _oled->clearAll();
@@ -320,6 +302,21 @@ int main(){
           _menu->demo_state = started;
           _strip->setColor(20,20,20);
           _strip->setIntensity(50);
+          cli();
+          switch (_manager->game_selected){
+            case (zone):
+              OCR2A = 255;
+              break;
+            case (memory):
+              OCR2A = 255;
+              break;
+            case (chase):
+              OCR2A = 25;
+              break;        
+            default:
+              break;
+          }
+          sei();
           delay(50);
         }
       }
@@ -333,7 +330,6 @@ int main(){
           }
         }
       }
-
       if(_manager->refreshFlag){
         _strip->setColor(0,0,0);
         _manager->plotObjective();
@@ -350,6 +346,15 @@ int main(){
         _manager->updateObjective();
         if(_manager->scoreFlag){
           _manager->score++;
+          if(_manager->score%10==0){
+            _manager->direction*=-1;
+            _manager->speed++;
+          }
+          if(_manager->score%35==0){
+            _manager->width=1;
+          } else if(_manager->score%50==0){
+            _manager->width=0;
+          }
         }
         _manager->scoreFlag = 0;
         _manager->switchFlag = 0;
@@ -391,6 +396,21 @@ int main(){
         } else {
           _oled->_screen->drawBitmap(10,10, images[_menu->selected_demo], 100, 100, WHITE);
           _oled->_screen->display();
+          cli();
+          switch (_manager->game_selected){
+            case (zone):
+              OCR2A = 255;
+              break;
+            case (memory):
+              OCR2A = 255;
+              break;
+            case (chase):
+              OCR2A = 25;
+              break;        
+            default:
+              break;
+          }
+          sei();
           _menu->system_state = running;
           _menu->demo_state = started;
           _strip->setColor(20,20,20);
