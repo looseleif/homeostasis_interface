@@ -5,6 +5,9 @@ manager::manager(menu *menuptr, oled *oledptr, strip *stripptr){
   _oled = oledptr;
   _strip = stripptr;
   width = 2;
+  patternPoints.add(5);
+  patternPoints.add(10);
+  patternPoints.add(15);
 }
 
 void manager::updateObjective(void){
@@ -17,7 +20,19 @@ void manager::updateObjective(void){
             entered = 0;
             break;
         case(memory):
-
+            if(patternFlag){
+                switch (patTurn){
+                    case cpuTurn:
+                        poi = 30+patternPoints.get(patternIndex);
+                        poin = (poi-width);
+                        poip = (poi+width);
+                        patternIndex++;
+                        break;
+                    default:
+                        break;
+                    }
+                    break;
+            }
             break;
         case(chase):
             poi = 30+(((poi+(direction*speed))%30));
@@ -70,7 +85,16 @@ void manager::plotObjective(void){
             }
             break;
         case(memory):
-            break;
+            switch (patTurn){
+                case cpuTurn:
+                    for(int i=poin; i<=poip; i++){
+                        _strip->leds[i%30] = CRGB(30,30,30);
+                    }
+                    break;
+                default:
+                    break;
+                }
+                break;
         case(chase):
             for(int i=poin; i<=poip; i++){
                 _strip->leds[i%30] = CRGB(100,0,0);

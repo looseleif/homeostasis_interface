@@ -102,14 +102,19 @@ ISR (TIMER2_COMPA_vect)
 {
     _manager->refreshCount++;
     if(_manager->refreshCount==25){
-      PORTD ^= (1 << PD6);
       _manager->switchCount++;
+      _manager->patternCount++;
       _manager->refreshFlag = 1;
       _manager->refreshCount = 0;
     }
     if(_manager->switchCount==25+(rand()%55)){
       _manager->switchFlag = 1;
       _manager->switchCount = 0;
+    }
+    if(_manager->patternCount==255&&_manager->game_selected==memory){
+      PORTD ^= (1 << PD6);
+      _manager->patternFlag = 1;
+      _manager->patternCount = 0;
     }
 }
 

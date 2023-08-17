@@ -15,12 +15,19 @@ enum GAME : uint8_t {
   chase
 };
 
+enum TURN : uint8_t {
+  cpuTurn,
+  preUserTurn,
+  userTurn,
+  postUserTurn
+};
+
 class manager: public _device
 {
 
     private:
 
-      LinkedList<int*> patternPoints;
+      LinkedList<int> patternPoints;
 
     public:
 
@@ -42,6 +49,9 @@ class manager: public _device
       uint8_t mod = 0;
       uint8_t switchFlag = 0;
       uint8_t switchCount = 0;
+      uint8_t patternFlag = 0;
+      uint8_t patternCount = 0;
+      uint8_t patternIndex = 0;
       uint8_t gameFlag = 0;
       uint8_t gameCount = 0;
       uint8_t poi;
@@ -52,6 +62,7 @@ class manager: public _device
       uint8_t exists = 1;
       uint8_t score = 0;
       uint8_t scoreFlag = 0;
+      TURN patTurn;
 
 };
 
