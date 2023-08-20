@@ -90,7 +90,7 @@ ISR (TIMER1_COMPA_vect)
   }
   if(_menu->system_state==running){
     _manager->gameCount++;
-    if(_manager->gameCount==45){
+    if(_manager->gameCount==_manager->gameTimeTotal){
       _manager->gameCount = 0;
       _manager->gameFlag = 1;
     }
@@ -111,7 +111,7 @@ ISR (TIMER2_COMPA_vect)
       _manager->switchFlag = 1;
       _manager->switchCount = 0;
     }
-    if(_manager->patternCount==255&&_manager->game_selected==memory){
+    if(_manager->patternCount==100&&_manager->game_selected==memory){
       PORTD ^= (1 << PD6);
       _manager->patternFlag = 1;
       _manager->patternCount = 0;

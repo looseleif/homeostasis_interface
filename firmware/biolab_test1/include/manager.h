@@ -41,6 +41,7 @@ class manager: public _device
       oled *_oled;
       menu *_menu;
       uint8_t game_selected;
+      uint8_t gameTimeTotal = 45;
       uint8_t speed = 1;
       int8_t direction = 1;
       uint8_t refreshFlag = 0;
@@ -52,12 +53,14 @@ class manager: public _device
       uint8_t patternFlag = 0;
       uint8_t patternCount = 0;
       uint8_t patternIndex = 0;
+      uint8_t patternUserIndex = 0;
+      uint8_t patternTime = 0;
       uint8_t gameFlag = 0;
       uint8_t gameCount = 0;
       uint8_t poi;
       uint8_t poin;
       uint8_t poip;
-      uint8_t width;
+      uint8_t width = 1;
       uint8_t entered = 0;
       uint8_t exists = 1;
       uint8_t score = 0;
