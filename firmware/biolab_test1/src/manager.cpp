@@ -4,7 +4,7 @@ manager::manager(menu *menuptr, oled *oledptr, strip *stripptr){
   _menu = menuptr;
   _oled = oledptr;
   _strip = stripptr;
-  patternPoints.add(rand()%30);
+  patternPoints.add(0);
 }
 
 void manager::updateObjective(void){
@@ -37,14 +37,19 @@ void manager::updateObjective(void){
                         poip = 0;
                         patternIndex = 0;
                         _strip->setColor(0,0,0);
-                        // _oled->printMemoryText
+                        _oled->_screen->drawBitmap(10,10, unoCard, 100, 100, WHITE);
+                        _oled->_screen->display();
                         patTurn = userTurn;
                         break;
                     case userTurn:
                         // dont need
                         break;
                     case postUserTurn:
-                        // print nice job!
+                        _oled->clearAll();
+                        _oled->_screen->drawBitmap(10,10, thumbsUp, 100, 100, WHITE);
+                        _oled->_screen->display();
+                        delay(300);
+                        _oled->clearAll();
                         gameCount = 0;
                         gameTimeTotal+= 15; //vulnerable
                         patternPoints.add(rand()%30);
@@ -78,15 +83,20 @@ void manager::checkInside(uint8_t pos){
             }
             break;
         case(memory):
+            uint8_t pointOfInterest = patternPoints.get(patternUserIndex);
             if(patTurn==userTurn){
-                if((pos+30)>=(patternPoints.get(patternUserIndex)+30)-width && (pos+30)<=(patternPoints.get(patternUserIndex)+30)+width){
+                if(pointOfInterest==0 && pos>=30-width){
                     patternTime++;
-                    if(patternTime>=10){
+                } else if(pointOfInterest==29 && pos<=width){
+                    patternTime++;
+                } else if((pos+30)>=(patternPoints.get(patternUserIndex)+30)-width && (pos+30)<=(patternPoints.get(patternUserIndex)+30)+width){
+                    patternTime++;
+                } 
+                if(patternTime>=10){
                         patternUserIndex++;
                         patternTime = 0;
-                    }
-                } else if (patternUserIndex==patternPoints.size()){
-                    // round complete!
+                }
+                if (patternUserIndex==patternPoints.size()){
                     patTurn = postUserTurn;
                 }
             }
@@ -130,7 +140,7 @@ void manager::plotObjective(void){
                     break;
                 case userTurn:
                     for(int i = patternUserIndex; i<patternPoints.size(); i++){
-                        for(int j=patternPoints.get(i)-width; j<=patternPoints.get(i)+width; j++){
+                        for(int j=(patternPoints.get(i)+30)-width; j<=(patternPoints.get(i)+30)+width; j++){
                             _strip->leds[j%30] = CRGB(30,30,30);
                         }
                     }
