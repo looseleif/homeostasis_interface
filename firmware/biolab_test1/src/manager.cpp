@@ -33,6 +33,8 @@ void manager::updateObjective(void){
                         patternIndex++;
                         break;
                     case preUserTurn:
+                        poin = 0;
+                        poip = 0;
                         patternIndex = 0;
                         _strip->setColor(0,0,0);
                         // _oled->printMemoryText
@@ -120,8 +122,10 @@ void manager::plotObjective(void){
         case(memory):
             switch (patTurn){
                 case cpuTurn:
-                    for(int i=poin; i<=poip; i++){
-                        _strip->leds[i%30] = CRGB(30,30,30);
+                    if(poin!=poip){
+                        for(int i=poin; i<=poip; i++){
+                            _strip->leds[i%30] = CRGB(30,30,30);
+                        }
                     }
                     break;
                 case userTurn:
