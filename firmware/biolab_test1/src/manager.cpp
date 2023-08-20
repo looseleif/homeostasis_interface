@@ -4,7 +4,7 @@ manager::manager(menu *menuptr, oled *oledptr, strip *stripptr){
   _menu = menuptr;
   _oled = oledptr;
   _strip = stripptr;
-  patternPoints.add(0);
+  patternPoints.add(rand()%30);
 }
 
 void manager::updateObjective(void){
@@ -73,12 +73,12 @@ void manager::updateObjective(void){
 void manager::checkInside(uint8_t pos){
     switch(game_selected){
         case(zone):
-            if((pos+30>=poin && pos+30<=poip) && entered){
+            if(((pos+30>=poin && pos+30<=poip)||(poi%30==0 && pos>=30-width)||(poi%30==29 && pos<=width)) && entered){
                 scoreFlag = 1;
                 entered = 0;
                 exists = 0;
             }
-            if((pos+30>=poin && pos+30<=poip) && !entered){
+            if(((pos+30>=poin && pos+30<=poip)||(poi%30==0 && pos>=30-width)||(poi%30==29 && pos<=width)) && !entered){
                 entered = 1;
             }
             break;
@@ -102,12 +102,7 @@ void manager::checkInside(uint8_t pos){
             }
             break;
         case(chase):
-            if((pos+30>=poin && pos+30<=poip) && entered){
-                scoreFlag = 1;
-                entered = 0;
-                exists = 0;
-            }
-            if((pos+30>=poin && pos+30<=poip)){
+            if(((pos+30>=poin && pos+30<=poip)||(poi%30==0 && pos>=30-width)||(poi%30==29 && pos<=width))){
                 scoreFlag = 1;
             }
             break;
