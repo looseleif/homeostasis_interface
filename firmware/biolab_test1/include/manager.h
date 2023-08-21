@@ -60,6 +60,7 @@ class manager: public _device
       uint8_t poi;
       uint8_t poin;
       uint8_t poip;
+      uint8_t pointOfInterest;
       uint8_t width = 1;
       uint8_t entered = 0;
       uint8_t exists = 1;

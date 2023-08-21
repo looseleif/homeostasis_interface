@@ -196,16 +196,26 @@ void oled::printWin(){
 }
 
 void oled::printLose(){
-    for(int i=0;i<2;i++){
-        _screen->setTextSize(2);
-        _screen->setTextWrap(true);
-        _screen->setTextColor(WHITE);
-        _screen->setCursor(0,0);
-    }
+    _screen->setTextSize(2);
+    _screen->setTextWrap(true);
+    _screen->setTextColor(WHITE);
+    _screen->setCursor(0,0);
     String myString = "YOU LOSE!";
     for(uint8_t i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);
     }
+    _screen->display();
+    delay(1000);
+    _screen->clearDisplay();
+}
+
+void oled::printNumber(int score){
+    _screen->setTextSize(2);
+    _screen->setTextWrap(true);
+    _screen->setTextColor(WHITE);
+    _screen->setCursor(0,3);
+    _screen->println("score:\n");
+    _screen->println(numberWords[score]);
     _screen->display();
     delay(1000);
     _screen->clearDisplay();

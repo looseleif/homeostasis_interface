@@ -57,8 +57,6 @@ void manager::updateObjective(void){
                         patternUserIndex = 0;
                         patTurn = cpuTurn;
                         break;
-                    default:
-                        break;
                 }
             }
             break;
@@ -83,7 +81,7 @@ void manager::checkInside(uint8_t pos){
             }
             break;
         case(memory):
-            uint8_t pointOfInterest = patternPoints.get(patternUserIndex);
+            pointOfInterest = patternPoints.get(patternUserIndex);
             if(patTurn==userTurn){
                 if(pointOfInterest==0 && pos>=30-width){
                     patternTime++;
@@ -98,11 +96,13 @@ void manager::checkInside(uint8_t pos){
                 }
                 if (patternUserIndex==patternPoints.size()){
                     patTurn = postUserTurn;
+                    scoreFlag = 1;
                 }
             }
             break;
         case(chase):
-            if(((pos+30>=poin && pos+30<=poip)||(poi%30==0 && pos>=30-width)||(poi%30==29 && pos<=width))){
+            PORTD ^= (1 << PD6);
+            if((pos+30>=poin && pos+30<=poip)||(poi%30==0 && pos>=30-width)||(poi%30==29 && pos<=width)){
                 scoreFlag = 1;
             }
             break;
@@ -143,7 +143,7 @@ void manager::plotObjective(void){
                 default:
                     break;
                 }
-                break;
+            break;
         case(chase):
             for(int i=poin; i<=poip; i++){
                 _strip->leds[i%30] = CRGB(100,0,0);
@@ -166,19 +166,28 @@ void manager::endGame(void){
     cli();
     OCR2A = 255;
     sei();
-    _oled->printGameOver();
+    delay(500);
     _oled->clearAll();
     delay(500);
     switch (game_selected){
         case (zone):
+            _oled->printNumber(score);
+            delay(500);
+            _oled->clearAll();
             if(score>5)
                 _oled->printWin();
             break;
         case (memory):
+            _oled->printNumber(score);
+            delay(500);
+            _oled->clearAll();
             if(score>5)
                 _oled->printWin();
             break;
         case (chase):
+            _oled->printNumber(score/10);
+            delay(500);
+            _oled->clearAll();
             if(score>50)
                 _oled->printWin();
             break;        

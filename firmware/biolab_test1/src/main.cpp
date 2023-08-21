@@ -112,7 +112,6 @@ ISR (TIMER2_COMPA_vect)
       _manager->switchCount = 0;
     }
     if(_manager->patternCount==100&&_manager->game_selected==memory){
-      PORTD ^= (1 << PD6);
       _manager->patternFlag = 1;
       _manager->patternCount = 0;
     }
@@ -159,6 +158,7 @@ void setup()   {
   TCCR2A |= (1 << WGM21); // turn on CTC mode
   TCCR2B |= (1 << CS22);  // Set CS22 bit for 64 prescaler
   TIMSK2 |= (1 << OCIE2A);  // enable timer compare interrupt
+  randomSeed(analogRead(0));
   createObject(menu_TYPE,0);  // INITIALIZE INTERFACE DEVICES
   createObject(oled_TYPE,0);
   createObject(strip_TYPE,0);
