@@ -72,6 +72,7 @@ void deleteObject(int objtype, int portnum)
 ISR (TIMER1_COMPA_vect)
 {
   PORTD ^= (1 << PD5);
+  PORTD ^= (1 << PD6);
   _menu->cursor_prev = _menu->cursor_current;
   if(!digitalRead(HOME_PIN)){
     _menu->printed = false;
@@ -103,7 +104,6 @@ ISR (TIMER1_COMPA_vect)
 // DEVICE & SWITCH UPDATE
 ISR (TIMER2_COMPA_vect)
 {
-  PORTD ^= (1 << PD6);
   _manager->refreshCount++;
   if(_manager->refreshCount==25){
     _manager->switchCount++;
@@ -144,6 +144,7 @@ ISR (PCINT2_vect)
 void setup()   {
   // DEBUG LEDS
   DDRD |= (1 << PD5);
+  PORTD ^= (1 << PD5);
   PORTD ^= (1 << PD5);
   DDRD |= (1 << PD6);
   PORTD ^= (1 << PD6); 
@@ -300,9 +301,9 @@ int main(){
             _oled->pleaseWaitPrint();
             _delay_ms(100);
             _oled->clearAll();
-            _strip->setColor(0,0,0);
+            _strip->setColor(100,30,0);
             _strip->setIntensity(75);
-            cursor_max = 1; // investigate this
+            cursor_max = 1;
             _menu->cursor_current = 0;
             _menu->cursor_prev = cursor_max;
             _delay_ms(50);
@@ -313,13 +314,12 @@ int main(){
           _menu->demo_state = started;
           _strip->setColor(20,20,20);
           _strip->setIntensity(50);
-          cli();
+          _delay_ms(500);
           switch (_manager->game_selected){
             case (zone):
               OCR2A = 255;
               break;
             case (memory):
-              _manager->gameTimeTotal = 15;
               OCR2A = 255;
               break;
             case (chase):
@@ -328,8 +328,7 @@ int main(){
             default:
               break;
           }
-          sei();
-          _delay_ms(50);
+          _oled->clearAll();
         }
       }
     }

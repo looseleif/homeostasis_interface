@@ -50,7 +50,7 @@ void manager::updateObjective(void){
                         _delay_ms(100);
                         _oled->clearAll();
                         gameCount = 0;
-                        gameTimeTotal+= 5;
+                        gameTimeTotal+= 3;
                         patternPoints.add(rand()%NUM_LEDS);
                         patternIndex = 0;
                         patternUserIndex = 0;
@@ -100,7 +100,6 @@ void manager::checkInside(uint8_t pos){
             }
             break;
         case(chase):
-            PORTD ^= (1 << PD6);
             if((pos+NUM_LEDS>=poin && pos+NUM_LEDS<=poip)||(poi%NUM_LEDS==0 && pos>=NUM_LEDS-width)||(poi%NUM_LEDS==29 && pos<=width)){
                 scoreFlag = 1;
             }
@@ -153,7 +152,7 @@ void manager::plotObjective(void){
 
 void manager::plotAffector(uint8_t pos, int dev){
     
-    if(patTurn!=cpuTurn){
+    if(patTurn!=cpuTurn || game_selected!=memory){
         switch(dev){
             case 0: _strip->leds[pos%NUM_LEDS] = CRGB(0,50,50); break;
             case 1: _strip->leds[pos%NUM_LEDS] = CRGB(50,50,0); break;
@@ -167,7 +166,7 @@ void manager::endGame(void){
     cli();
     OCR2A = 255;
     sei();
-    if(score>17)
+    if(score>17 && game_selected!=chase)
         score=17;
     switch (game_selected){
         case (zone):
@@ -188,7 +187,7 @@ void manager::endGame(void){
             _oled->printNumber(score/10);
             _delay_ms(500);
             _oled->clearAll();
-            if(score>50)
+            if(score>30)
                 _oled->printWin();
             break;        
         default:
