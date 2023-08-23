@@ -54,7 +54,7 @@ void oled::pleaseWaitPrint(void) {
         _screen->write(myString[i]);
     }
     _screen->display();
-    delay(500);
+    _delay_ms(500);
     this->clearAll();
 }
 
@@ -84,7 +84,7 @@ void oled::printDemoMenu(){
         _screen->setTextColor(WHITE);
         _screen->setCursor(0,0);
     }
-    String myString = "affector:\n\n[ ] sense\n[ ] direct\n[ ] fixate";
+    String myString = "affector:\n\n[ ] N/A\n[ ] direct\n[ ] fixate";
     for(uint8_t i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);
     }
@@ -191,7 +191,7 @@ void oled::printWin(){
         _screen->write(myString[i]);
     }
     _screen->display();
-    delay(1000);
+    _delay_ms(500);
     _screen->clearDisplay();
 }
 
@@ -205,7 +205,7 @@ void oled::printLose(){
         _screen->write(myString[i]);
     }
     _screen->display();
-    delay(1000);
+    _delay_ms(500);
     _screen->clearDisplay();
 }
 
@@ -217,6 +217,6 @@ void oled::printNumber(int score){
     _screen->println("score:\n");
     _screen->println(numberWords[score]);
     _screen->display();
-    delay(1000);
+    _delay_ms(500);
     _screen->clearDisplay();
 }

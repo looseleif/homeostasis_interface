@@ -37,9 +37,7 @@ enum SYSTEM : uint8_t {
 
 class menu: public _device 
 {
-
-    private:
-
+  
     public:
 
         menu(void);

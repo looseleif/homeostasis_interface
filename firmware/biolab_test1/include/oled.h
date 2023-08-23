@@ -507,7 +507,7 @@ static const unsigned char unoCard [] PROGMEM = {
 	0x00, 0x00, 0x00, 0x00
 };
 
-static const char * numberWords[] = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight","nine", "ten", "eleven", "twelve", "thirteen" };
+static const char * numberWords[] = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight","nine", "ten", "eleven", "twelve", "thirteen", "many", "a lot", "all"};
 
 class oled: public _device 
 {

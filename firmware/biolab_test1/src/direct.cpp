@@ -75,9 +75,9 @@ void direct::updateGame(int x)
       direction = 0;
     }
     if(pos>60){
-      pos = 30 + pos%30;
-    } else if (pos-1 < 30 && direction==-1){
-      pos = 60 - 1;
+      pos = NUM_LEDS + pos%NUM_LEDS;
+    } else if (pos-1 < NUM_LEDS && direction==-1){
+      pos = (2*NUM_LEDS) - 1;
     } else {
       pos += direction;
     }
@@ -96,7 +96,7 @@ int8_t direct::returnVal(void){
 }
 
 uint8_t direct::returnPos(void){
-  return pos%30;
+  return pos%NUM_LEDS;
 }
 
 

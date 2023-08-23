@@ -12,8 +12,6 @@
 class strip: public _device 
 {
 
-    private:
-
     public:
 
         menu *_strip_menu_ptr;

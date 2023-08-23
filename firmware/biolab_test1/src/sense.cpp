@@ -34,7 +34,7 @@ sense::sense(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr){
   if (!sense_soft->i2c_write(ADXL3XX_REG_POWER_CTL))          return;
   if (!sense_soft->i2c_write(0x08))                           return;
   sense_soft->i2c_stop();
-  delay(6);
+  _delay_ms(6);
 
 }
 
@@ -53,7 +53,7 @@ void sense::updateGame(int x)
   _X = 0x0000;
   _X &= (sense_soft->i2c_read(true))<<8;
   _X &= (sense_soft->i2c_read(true));
-  delay(6);
+  _delay_ms(6);
   if (!sense_soft->i2c_rep_start(ADXL343_ADDRESS<<1| I2C_READ | (ADXL3XX_REG_DATAY1<<8|ADXL3XX_REG_DATAY0&0x10000 ? 8 : 0))) return;
   // send the address
   if (!sense_soft->i2c_write(ADXL3XX_REG_DATAY1&0xFF)) return;
@@ -62,7 +62,7 @@ void sense::updateGame(int x)
   _Y = 0x0000;
   _Y &= (sense_soft->i2c_read(true))<<8;
   _Y &= (sense_soft->i2c_read(true));
-  delay(6);
+  _delay_ms(6);
   if (!sense_soft->i2c_rep_start(ADXL343_ADDRESS<<1| I2C_READ | (ADXL3XX_REG_DATAZ1<<8|ADXL3XX_REG_DATAZ0&0x10000 ? 8 : 0))) return;
   // send the address
   if (!sense_soft->i2c_write(ADXL3XX_REG_DATAZ1&0xFF)) return;
@@ -71,7 +71,7 @@ void sense::updateGame(int x)
   _Z = 0x0000;
   _Z &= (sense_soft->i2c_read(true))<<8;
   _Z &= (sense_soft->i2c_read(true));
-  delay(6);
+  _delay_ms(6);
   sense_soft->i2c_stop();
   return;
 }

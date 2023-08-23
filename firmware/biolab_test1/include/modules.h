@@ -33,8 +33,7 @@ class _device {
     
     _device(){};
     void createObject(int objtype, int portnum);
-    virtual ~_device(){} // must have a virtualized destructor
-    //these virtual functions will be overwritten by derived class objects. 
+    virtual ~_device(){}
     virtual void calculateRate(int8_t modifier){}
 
 };

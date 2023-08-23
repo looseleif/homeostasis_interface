@@ -33,5 +33,5 @@ int8_t fixate::returnVal(void){
 }
 
 uint8_t fixate::returnPos(void){
-  return pos%30;
+  return pos%NUM_LEDS;
 }

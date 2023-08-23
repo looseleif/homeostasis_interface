@@ -60,9 +60,12 @@ void createObject(int objtype, int portnum)
 
 void deleteObject(int objtype, int portnum)
 {
-
-  // implement destruction
-
+  for(int i = 0; i<D_index; i++){
+    delete D_set[i];
+  }
+  D1_ptr = NULL;
+  D2_ptr = NULL;
+  D3_ptr = NULL;
 }
 
 // MENU & GAME UPDATE
@@ -100,21 +103,22 @@ ISR (TIMER1_COMPA_vect)
 // DEVICE & SWITCH UPDATE
 ISR (TIMER2_COMPA_vect)
 {
-    _manager->refreshCount++;
-    if(_manager->refreshCount==25){
-      _manager->switchCount++;
-      _manager->patternCount++;
-      _manager->refreshFlag = 1;
-      _manager->refreshCount = 0;
-    }
-    if(_manager->switchCount==25+(rand()%55)){
-      _manager->switchFlag = 1;
-      _manager->switchCount = 0;
-    }
-    if(_manager->patternCount==100&&_manager->game_selected==memory){
-      _manager->patternFlag = 1;
-      _manager->patternCount = 0;
-    }
+  PORTD ^= (1 << PD6);
+  _manager->refreshCount++;
+  if(_manager->refreshCount==25){
+    _manager->switchCount++;
+    _manager->patternCount++;
+    _manager->refreshFlag = 1;
+    _manager->refreshCount = 0;
+  }
+  if(_manager->switchCount==25+(rand()%55)){
+    _manager->switchFlag = 1;
+    _manager->switchCount = 0;
+  }
+  if(_manager->patternCount==50&&_manager->game_selected==memory){
+    _manager->patternFlag = 1;
+    _manager->patternCount = 0;
+  }
 }
 
 // PORT PIN CHANGE
@@ -168,18 +172,18 @@ void setup()   {
   _strip->setIntensity(0);
   _oled->clearAll();
   _oled->bootingPrint();
-  delay(300);
+  _delay_ms(300);
   _oled->clearAll();
   _strip->lubDub();
-  delay(100);
+  _delay_ms(100);
   _strip->sweepColor(111,0,0,10);
   _oled->_screen->drawBitmap(10,10,images[1], 100, 100, WHITE);
   _oled->_screen->display();
-  delay(300);
+  _delay_ms(300);
   _strip->setColor(0,0,0);
   _oled->clearAll();
   _oled->pleaseWaitPrint();
-  delay(100);
+  _delay_ms(100);
   _oled->clearAll();
   sei();
 }
@@ -190,20 +194,22 @@ int main(){
   while(true){
     // MENU STATE MACHINE
     if(_menu->system_state==game){
+      for(int i = 0; i<D_index; i++){
+        deleteObject(i,0);
+      }
+      D_index = 0;
       if(_menu->home_state){
         _oled->clearAll();
-        _oled->clearAll();
         _strip->inverseSweep(10);
-        _delay_ms(1000);
+        _delay_ms(500);
         _strip->sweepColor(100,0,0,10);
         _delay_ms(50);
         _strip->setColor(100,0,0);
         _strip->setIntensity(75);
-        _delay_ms(1000);
         _menu->home_state = false;
         _menu->selected_demo = 0;
         _menu->selected_device = 0;
-        D_index = 0;
+        cursor_max = 2;
       }
       if(!(_menu->printed)){
         _oled->clearAll();
@@ -229,7 +235,7 @@ int main(){
         cursor_max = 2;
         _menu->cursor_current = 0;
         _menu->cursor_prev = cursor_max;
-        delay(50);
+        _delay_ms(50);
       }
     }
     if(_menu->system_state==demo){
@@ -251,7 +257,7 @@ int main(){
         cursor_max = 2;
         _menu->cursor_current = 0;
         _menu->cursor_prev = cursor_max;
-        delay(50);
+        _delay_ms(50);
       }
     }
     if(_menu->system_state==device){
@@ -268,7 +274,7 @@ int main(){
           _oled->clearAll();
           _strip->setColor(100,100,100);
           _strip->setIntensity(25);
-          delay(50);
+          _delay_ms(50);
           _oled->pleaseWaitPrint();
           _menu->system_state = addition;
           cursor_max = 1;
@@ -292,14 +298,14 @@ int main(){
             _menu->printed = false;
             _oled->clearAll();
             _oled->pleaseWaitPrint();
-            delay(100);
+            _delay_ms(100);
             _oled->clearAll();
             _strip->setColor(0,0,0);
             _strip->setIntensity(75);
             cursor_max = 1; // investigate this
             _menu->cursor_current = 0;
             _menu->cursor_prev = cursor_max;
-            delay(50);
+            _delay_ms(50);
         } else {
           _oled->_screen->drawBitmap(10,10, images[_menu->selected_demo], 100, 100, WHITE);
           _oled->_screen->display();
@@ -313,6 +319,7 @@ int main(){
               OCR2A = 255;
               break;
             case (memory):
+              _manager->gameTimeTotal = 15;
               OCR2A = 255;
               break;
             case (chase):
@@ -322,7 +329,7 @@ int main(){
               break;
           }
           sei();
-          delay(50);
+          _delay_ms(50);
         }
       }
     }
@@ -351,14 +358,16 @@ int main(){
         _manager->updateObjective();
         if(_manager->scoreFlag){
           _manager->score++;
-          if(_manager->score%10==0){
-            _manager->direction*=-1;
-            _manager->speed++;
-          }
-          if(_manager->score%35==0){
-            _manager->width=1;
-          } else if(_manager->score%50==0){
-            _manager->width=0;
+          if(_manager->game_selected==chase){
+            if(_manager->score%10==0){
+              _manager->direction*=-1;
+              _manager->speed++;
+            }
+            if(_manager->score%35==0){
+              _manager->width=1;
+            } else if(_manager->score%50==0){
+              _manager->width=0;
+            }
           }
         }
         _manager->scoreFlag = 0;
@@ -391,16 +400,18 @@ int main(){
           _menu->printed = false;
           _oled->clearAll();
           _oled->pleaseWaitPrint();
-          delay(100);
+          _delay_ms(50);
           _oled->clearAll();
           _strip->inverseSweep(10);
           cursor_max = 1;
           _menu->cursor_current = 0;
           _menu->cursor_prev = cursor_max;
-          delay(50);
+          _delay_ms(50);
         } else {
           _oled->_screen->drawBitmap(10,10, images[_menu->selected_demo], 100, 100, WHITE);
           _oled->_screen->display();
+          _delay_ms(500);
+          _oled->clearAll();
           cli();
           switch (_manager->game_selected){
             case (zone):
@@ -420,7 +431,7 @@ int main(){
           _menu->demo_state = started;
           _strip->setColor(20,20,20);
           _strip->setIntensity(50);
-          delay(50);
+          _delay_ms(50);
         }
       }
     }  

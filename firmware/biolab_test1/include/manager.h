@@ -28,6 +28,16 @@ class manager: public _device
     private:
 
       LinkedList<int> patternPoints;
+      uint8_t patternIndex = 0;
+      uint8_t patternUserIndex = 0;
+      uint8_t patternTime = 0;
+      uint8_t poi;
+      uint8_t poin;
+      uint8_t poip;
+      uint8_t pointOfInterest;
+      uint8_t entered = 0;
+      uint8_t exists = 1;
+      TURN patTurn;
 
     public:
 
@@ -52,22 +62,12 @@ class manager: public _device
       uint8_t switchCount = 0;
       uint8_t patternFlag = 0;
       uint8_t patternCount = 0;
-      uint8_t patternIndex = 0;
-      uint8_t patternUserIndex = 0;
-      uint8_t patternTime = 0;
       uint8_t gameFlag = 0;
       uint8_t gameCount = 0;
-      uint8_t poi;
-      uint8_t poin;
-      uint8_t poip;
-      uint8_t pointOfInterest;
-      uint8_t width = 1;
-      uint8_t entered = 0;
-      uint8_t exists = 1;
-      uint8_t score = 0;
       uint8_t scoreFlag = 0;
-      TURN patTurn;
-
+      uint8_t score = 0;
+      uint8_t width = 1;
+      
 };
 
 #endif
