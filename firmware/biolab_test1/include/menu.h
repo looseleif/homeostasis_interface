@@ -37,7 +37,7 @@ enum SYSTEM : uint8_t {
 
 class menu: public _device 
 {
-  
+
     public:
 
         menu(void);
@@ -45,10 +45,8 @@ class menu: public _device
         DEMO demo_state;
         bool home_state;
         bool printed;
-        int8_t cursor_prev;
-        int8_t cursor_current;
-        int8_t selected_demo;
-        int8_t selected_device;
+        int8_t cursor_prev, cursor_current, cursor_max;
+        int8_t selected_demo, selected_device;
 
 };
 

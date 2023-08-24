@@ -18,15 +18,11 @@ class fixate: public _affector
         strip *_strip;
         oled *_oled;
         menu *_menu;
-        int8_t portNum = -1; //used to save the port number that this object is instantiated on.
-        int8_t trigPin;
-        int8_t echoPin;
+        int8_t trigPin, echoPin;
         uint8_t pos;
         UltraSonicDistanceSensor *fixate_ultra;
-        bool prevAVal;
-        bool prevBVal;
-        bool pinAVal;
-        bool pinBVal;    
+        bool prevAVal, prevBVal;
+        bool pinAVal, pinBVal;
 
     public:
 

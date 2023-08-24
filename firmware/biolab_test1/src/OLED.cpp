@@ -77,7 +77,7 @@ void oled::printGameMenu(){
     _screen->display();
 }
 
-void oled::printDemoMenu(){
+void oled::printAffectorMenu(){
     for(int i=0;i<2;i++){
         _screen->setTextSize(2);
         _screen->setTextWrap(true);
@@ -91,7 +91,7 @@ void oled::printDemoMenu(){
     _screen->display();
 }
 
-void oled::printDeviceMenu(){
+void oled::printPortMenu(){
     for(int i=0;i<2;i++){
         _screen->setTextSize(2);
         _screen->setTextWrap(true);

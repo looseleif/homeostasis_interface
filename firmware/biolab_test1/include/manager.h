@@ -51,22 +51,16 @@ class manager: public _device
       oled *_oled;
       menu *_menu;
       uint8_t game_selected;
-      uint8_t gameTimeTotal = 45;
-      uint8_t speed = 1;
-      int8_t direction = 1;
-      uint8_t refreshFlag = 0;
-      uint8_t refreshCount = 0;
-      uint8_t crankFlag = 0;
-      uint8_t mod = 0;
-      uint8_t switchFlag = 0;
-      uint8_t switchCount = 0;
-      uint8_t patternFlag = 0;
-      uint8_t patternCount = 0;
-      uint8_t gameFlag = 0;
-      uint8_t gameCount = 0;
-      uint8_t scoreFlag = 0;
-      uint8_t score = 0;
-      uint8_t width = 1;
+      uint8_t gameTimeTotal;
+      int8_t direction;
+      uint8_t refreshFlag, refreshCount, crankFlag;
+      uint8_t switchFlag, switchCount;
+      uint8_t patternFlag, patternCount;
+      uint8_t gameFlag, gameCount;
+      uint8_t scoreFlag, score;
+      uint8_t width;
+      uint8_t speed;
+      uint8_t mod;
       
 };
 

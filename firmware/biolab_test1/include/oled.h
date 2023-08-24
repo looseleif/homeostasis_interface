@@ -527,8 +527,8 @@ class oled: public _device
         void pleaseWaitPrint(void);
         void clearAll(void);
         void printGameMenu(void);
-        void printDemoMenu(void);
-        void printDeviceMenu(void);
+        void printAffectorMenu(void);
+        void printPortMenu(void);
         void printAdditionMenu(void);
         void printAgainMenu(void);
         void printSelector(int prev, int next, bool clear);

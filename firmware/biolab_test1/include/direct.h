@@ -18,21 +18,14 @@ class direct: public _affector
 
     private:
         
-        int8_t portNum = -1; //used to save the port number that this object is instantiated on.
-        int8_t direct_pin1;
-        int8_t direct_pin2;
-        bool prevAVal;
-        bool prevBVal;
-        bool pinAVal;
-        bool pinBVal;
         int8_t quadratureLookupTable[16] = {0,0,0,-1,0,0,1,0,0,1,0,0,-1,0,0,0};
-        float overallRate = 0;
-        float movingAverage = 0; //holds the moving average for the production of the hand crank. 
-        int8_t crankSum = 0; //sums the number of valid pulses from the encoder
-        int8_t encoderPinA = -1; //stores object pin configuration
-        int8_t encoderPinB = -1; //stores object pin configuration
-        uint8_t pos = 0;
-        int8_t direction = 0;
+        int8_t portNum = -1; //used to save the port number that this object is instantiated on.
+        int8_t direct_pin1, direct_pin2;
+        bool prevAVal, prevBVal, pinAVal, pinBVal;
+        int8_t crankSum; //sums the number of valid pulses from the encoder
+        int8_t encoderPinA, encoderPinB; //stores object pin configuration
+        uint8_t pos;
+        int8_t direction;
 
     public:
         
