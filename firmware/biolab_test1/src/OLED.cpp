@@ -112,7 +112,7 @@ void oled::printAdditionMenu(){
         _screen->setTextColor(WHITE);
         _screen->setCursor(0,0);
     }
-    String myString = "ready?\n\n[ ] YES\n[ ] NO";
+    String myString = "more?\n\n[ ] YES\n[ ] NO";
     for(uint8_t i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);
     }
@@ -187,20 +187,6 @@ void oled::printWin(){
         _screen->setCursor(0,0);
     }
     String myString = "YOU WIN!";
-    for(uint8_t i = 0; i<myString.length(); i++){
-        _screen->write(myString[i]);
-    }
-    _screen->display();
-    _delay_ms(500);
-    _screen->clearDisplay();
-}
-
-void oled::printLose(){
-    _screen->setTextSize(2);
-    _screen->setTextWrap(true);
-    _screen->setTextColor(WHITE);
-    _screen->setCursor(0,0);
-    String myString = "YOU LOSE!";
     for(uint8_t i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);
     }

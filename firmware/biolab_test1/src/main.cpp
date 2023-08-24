@@ -192,7 +192,7 @@ void bootSequence(void){
   _strip->lubDub();
   _delay_ms(100);
   _strip->sweepColor(111,0,0,10);
-  _oled->_screen->drawBitmap(10,10,images[1], 100, 100, WHITE);
+  _oled->_screen->drawBitmap(10,10,heart, 100, 100, WHITE);
   _oled->_screen->display();
   _delay_ms(300);
   _strip->setColor(0,0,0);
@@ -271,7 +271,7 @@ int main(){
         _strip->setIntensity(50);
         _menu->home_state = false;
         _menu->selected_demo = 0;
-        _menu->selected_device = 0;
+        _menu->selected_port = 0;
         _menu->cursor_max = 2;
 
       }
@@ -301,6 +301,9 @@ int main(){
         _oled->clearAll();
         _strip->setColor(100,10,0);
         _strip->setIntensity(50);
+        _oled->_screen->drawBitmap(10,10, games[_manager->game_selected], 100, 100, WHITE);
+        _oled->_screen->display();
+        _delay_ms(500);
         _menu->cursor_max = 2;
         _menu->cursor_current = 0;
         _menu->cursor_prev = _menu->cursor_max;
@@ -331,6 +334,10 @@ int main(){
         _oled->clearAll();
         _strip->setColor(100,30,0);
         _strip->setIntensity(50);
+        _oled->_screen->drawBitmap(10,10, affectors[_menu->selected_demo], 100, 100, WHITE);
+        _oled->_screen->display();
+        _delay_ms(500);
+        _oled->clearAll();
         _menu->cursor_max = 2;
         _menu->cursor_current = 0;
         _menu->cursor_prev = _menu->cursor_max;
@@ -353,7 +360,7 @@ int main(){
 
       if(!digitalRead(SELECT_PIN)){
 
-        _menu->selected_device = _menu->cursor_current;
+        _menu->selected_port = _menu->cursor_current;
         _menu->printed = false;
         createObject(_menu->selected_demo);
         _oled->clearAll();
@@ -386,7 +393,7 @@ int main(){
         _oled->clearAll();
         _menu->printed = false;
         
-        if((_menu->cursor_current)){
+        if(!(_menu->cursor_current)){
 
           _menu->system_state = demo;
           _menu->cursor_max = 2;
@@ -404,8 +411,6 @@ int main(){
 
         } else {
 
-          _oled->_screen->drawBitmap(10,10, images[_menu->selected_demo], 100, 100, WHITE);
-          _oled->_screen->display();
           _menu->system_state = running;
           _menu->demo_state = started;
           _strip->setColor(20,20,20);
@@ -550,9 +555,6 @@ int main(){
 
         } else {
 
-          _oled->_screen->drawBitmap(10,10, images[_menu->selected_demo], 100, 100, WHITE);
-          _oled->_screen->display();
-          _delay_ms(500);
           _oled->clearAll();
 
           cli();

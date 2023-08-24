@@ -48,7 +48,11 @@ void manager::updateObjective(void){
             break;
         case(memory):
             if(patternFlag){
-
+                if(patTurn==cpuTurn&&patternPoints.size()==1){
+                    _oled->clearAll();
+                    _oled->_screen->drawBitmap(10,10, cpu, 100, 100, WHITE);
+                    _oled->_screen->display();
+                }
                 if(patTurn==cpuTurn&&((int)patternIndex==patternPoints.size())){
                     patTurn = preUserTurn;
                 } else if(patTurn==preUserTurn){
@@ -70,7 +74,8 @@ void manager::updateObjective(void){
                         poip = 0;
                         patternIndex = 0;
                         _strip->setColor(0,0,0);
-                        _oled->_screen->drawBitmap(10,10, unoCard, 100, 100, WHITE);
+                        _oled->clearAll();
+                        _oled->_screen->drawBitmap(10,10, user, 100, 100, WHITE);
                         _oled->_screen->display();
                         patTurn = userTurn;
                         break;
@@ -78,7 +83,7 @@ void manager::updateObjective(void){
                         break;
                     case postUserTurn:
                         _oled->clearAll();
-                        _oled->_screen->drawBitmap(10,10, thumbsUp, 100, 100, WHITE);
+                        _oled->_screen->drawBitmap(10,10, nice, 100, 100, WHITE);
                         _oled->_screen->display();
                         _delay_ms(100);
                         _oled->clearAll();
@@ -88,6 +93,9 @@ void manager::updateObjective(void){
                         patternIndex = 0;
                         patternUserIndex = 0;
                         patTurn = cpuTurn;
+                        _oled->clearAll();
+                        _oled->_screen->drawBitmap(10,10, cpu, 100, 100, WHITE);
+                        _oled->_screen->display();
                         break;
 
                 }

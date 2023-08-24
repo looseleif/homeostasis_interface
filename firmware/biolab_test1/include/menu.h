@@ -46,7 +46,7 @@ class menu: public _device
         bool home_state;
         bool printed;
         int8_t cursor_prev, cursor_current, cursor_max;
-        int8_t selected_demo, selected_device;
+        int8_t selected_demo, selected_port;
 
 };
 

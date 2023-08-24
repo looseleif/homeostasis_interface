@@ -10,17 +10,17 @@ fixate::fixate(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr
   // current position of fixate affector
   pos = 0;
 
-  if(_menu->selected_device==0){
+  if(_menu->selected_port==0){
 
       trigPin = D1_A;
       echoPin = D1_B;
 
-  } else if(_menu->selected_device==1){
+  } else if(_menu->selected_port==1){
 
       trigPin = D2_A;
       echoPin = D2_B;
 
-  } else if(_menu->selected_device==2){
+  } else if(_menu->selected_port==2){
 
       trigPin = D3_A;
       echoPin = D3_B;
