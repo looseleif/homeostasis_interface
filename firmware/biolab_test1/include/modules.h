@@ -1,6 +1,14 @@
 #ifndef MODULES_H
 #define MODULES_H
 
+/*
+*
+* This is the modules class. This is effectively a superclass for all
+* of the modular classes of this device. This covers modular constructors,
+* deconstructors, and affector specific functionality.
+*
+*/
+
 #include <stdint.h>
 
 //pin association

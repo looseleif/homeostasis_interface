@@ -1,6 +1,14 @@
 #ifndef OLED_H
 #define OLED_H
 
+/*
+*
+* This is the driver (or better put, the wrapper) for the Adafruit SH110X series 
+* of monochrome OLED. Most of the functions in this class are meant to assist
+* in our device's application specific tasks.
+*
+*/
+
 #include <modules.h>
 #include <menu.h>
 #include <strip.h>

@@ -1,6 +1,17 @@
 #ifndef MENU_H
 #define MENU_H
 
+/*
+*
+* This is the class for the menu, it is what controls the setup flow when
+* first starting the device. Most of all information held in the menu
+* class is displayed through the OLED display. The implementation is
+* basically a state machine that is usually linear, but we allow for 
+* additional affectors which returns the affector selection page, as well as after completing a game, which will reset
+* the user to the game selection page.
+*
+*/
+
 #include <modules.h>
 #include <Arduino.h>
 

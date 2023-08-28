@@ -1,6 +1,16 @@
 #ifndef MANAGER_H
 #define MANAGER_H
 
+/*
+*
+* This is the manager class used as the game manager for this device. This
+* is where affector and game specific features are stored (direction for the direct
+* affector, speed for the chase game) With use of a variety of state variables, the
+* games are able to be treated very similar at the low level, this will hopefully
+* benefit future developers to extend the game options!
+*
+*/
+
 #include <Arduino.h>
 #include <modules.h>
 #include <menu.h>

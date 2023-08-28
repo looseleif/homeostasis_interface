@@ -1,6 +1,20 @@
 #ifndef DIRECT_H
 #define DIRECT_H
 
+/*
+*
+* This is the driver for the direct affector, a crankshaft that uses a (quadrature) rotary encoder to transmits its
+* rotation direction (CW/CCW) to our microcontroller. There are a few ways to read the data from a rotary
+* encoder (RE), the one used in this instance is a quadrature lookup table, we use a single interrupt to measure
+* one of RE pins states, then immidately read the other pin, continuously performing these actions allows you to
+* build a series of pin states, from this series you can use an established quadrature table (or make your own)
+* to determine the direction the affector is being rotated.
+*
+* This article was a great resource for how to work with rotary encoders:
+* https://docs.nanoframework.net/devicesdetails/RotaryEncoder/README.html
+*
+*/
+
 #include <string.h>
 #include <modules.h>
 #include <menu.h>

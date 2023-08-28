@@ -1,6 +1,14 @@
 #ifndef STRIP_H
 #define STRIP_H
 
+/*
+*
+* This is the driver (or better put, the wrapper) for a variety of available 
+* programable LED strips. Most of the functions in this class are meant to assist
+* in our device's application specific tasks.
+*
+*/
+
 #include <modules.h>
 #include <menu.h>
 #include <strip.h>

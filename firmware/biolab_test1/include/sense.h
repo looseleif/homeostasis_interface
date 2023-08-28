@@ -1,6 +1,13 @@
 #ifndef CONDUCT_H
 #define CONDUCT_H
 
+/*
+*
+* This is the incomplete driver for the sense affector, a Adafruit ADXL343 accelerometer
+* that will be used as another physical interface for playing the game demos.
+*
+*/
+
 #include <string.h>
 
 #include <modules.h>
