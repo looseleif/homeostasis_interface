@@ -272,7 +272,7 @@ void manager::endGame(void){
             _delay_ms(500);
             _oled->clearAll();
             
-            if(score>30)
+            if(score>40)
                 _oled->printWin();
 
             break;        

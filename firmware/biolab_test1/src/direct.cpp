@@ -1,4 +1,4 @@
-#include <direct.h>>
+#include <direct.h>
 
 direct::direct(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr){
   

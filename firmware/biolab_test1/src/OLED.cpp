@@ -32,12 +32,12 @@ void oled::bootingPrint(void) {
     }
 }
 
-void oled::rebootingPrint(void) {
+void oled::resettingPrint(void) {
     _screen->setTextSize(2);
     _screen->setTextWrap(true);
     _screen->setTextColor(WHITE);
     _screen->setCursor(0,0);
-    String myString = "reboot";
+    String myString = "resetting\ndevice";
     for(uint8_t i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);
         _screen->display();
@@ -52,10 +52,26 @@ void oled::pleaseWaitPrint(void) {
     String myString = "please\nwait";
     for(uint8_t i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);
+        _screen->display();
     }
-    _screen->display();
     _delay_ms(500);
     this->clearAll();
+}
+
+void oled::goingHomePrint() {
+
+    _screen->setTextSize(2);
+    _screen->setTextWrap(true);
+    _screen->setTextColor(WHITE);
+    _screen->setCursor(0,0);
+    String myString = "going home";
+    for(uint8_t i = 0; i<myString.length(); i++){
+        _screen->write(myString[i]);
+        _screen->display();
+    }
+    _delay_ms(500);
+    this->clearAll();
+
 }
 
 void oled::clearAll(){
@@ -73,8 +89,8 @@ void oled::printGameMenu(){
     String myString = "game:\n\n[ ] zone\n[ ] memory[ ] chase\n";
     for(uint8_t i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);
+        _screen->display();
     }
-    _screen->display();
 }
 
 void oled::printAffectorMenu(){
@@ -87,8 +103,8 @@ void oled::printAffectorMenu(){
     String myString = "affector:\n\n[ ] N/A\n[ ] direct\n[ ] fixate";
     for(uint8_t i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);
+        _screen->display();
     }
-    _screen->display();
 }
 
 void oled::printPortMenu(){
@@ -101,8 +117,8 @@ void oled::printPortMenu(){
     String myString = "port:\n\n[ ] LEFT\n[ ] MIDDLE\n[ ] RIGHT";
     for(uint8_t i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);
+        _screen->display();
     }
-    _screen->display();
 }
 
 void oled::printAdditionMenu(){
@@ -115,9 +131,8 @@ void oled::printAdditionMenu(){
     String myString = "more?\n\n[ ] YES\n[ ] NO";
     for(uint8_t i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);
+        _screen->display();
     }
-    _screen->display();
-
 }
 
 void oled::printAgainMenu(){
@@ -130,8 +145,9 @@ void oled::printAgainMenu(){
     String myString = "again?\n\n[ ] YES\n[ ] NO";
     for(uint8_t i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);
+        _screen->display();
     }
-    _screen->display();
+
 }
 
 void oled::printSelector(int prev, int next, bool clear){
@@ -146,8 +162,8 @@ void oled::printSelector(int prev, int next, bool clear){
     myString+=" x ";
     for(int i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);
+        _screen->display();
     }
-    _screen->display();
     if(!clear){
         _screen->setTextSize(2);
         _screen->setTextWrap(true);
@@ -156,12 +172,13 @@ void oled::printSelector(int prev, int next, bool clear){
         myString = "\n\n";
         for(int i = 0; i<next; i++){
             myString += "\n";
+            _screen->display();
         }
         myString+="[x]";
         for(int i = 0; i<myString.length(); i++){
             _screen->write(myString[i]);
+            _screen->display();
         }
-        _screen->display();
     }
 }
 
@@ -175,8 +192,8 @@ void oled::printGameOver(){
     String myString = "GAME\nOVER";
     for(uint8_t i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);
+        _screen->display();
     }
-    _screen->display();
 }
 
 void oled::printWin(){
@@ -189,8 +206,8 @@ void oled::printWin(){
     String myString = "YOU WIN!";
     for(uint8_t i = 0; i<myString.length(); i++){
         _screen->write(myString[i]);
+        _screen->display();
     }
-    _screen->display();
     _delay_ms(500);
     _screen->clearDisplay();
 }

@@ -88,6 +88,7 @@ ISR (TIMER1_COMPA_vect)
     _menu->system_state = game;
     _menu->demo_state = stopped;
     _menu->home_state = true;
+
   } else if(_menu->system_state==running){
   } else if(!digitalRead(DOWN_PIN)){
 
@@ -254,17 +255,21 @@ int main(){
     
     if(_menu->system_state==game){
       
-      for(int i = 0; i<D_index; i++){
-        deleteObject(i);
-      }
+      deleteObject(0);
 
       D_index = 0;
 
       if(_menu->home_state){
 
+        cli();
+        TCNT1  = 2250;
+        sei();
         _oled->clearAll();
         _strip->inverseSweep(10);
         _delay_ms(500);
+        _oled->goingHomePrint();
+        delay(500);
+        _oled->clearAll();
         _strip->sweepColor(100,0,0,10);
         _delay_ms(50);
         _strip->setColor(100,0,0);
@@ -404,7 +409,7 @@ int main(){
           _oled->clearAll();
           _strip->setColor(100,30,0);
           _strip->setIntensity(50);
-          _menu->cursor_max = 1;
+          _menu->cursor_max = 2;
           _menu->cursor_current = 0;
           _menu->cursor_prev = _menu->cursor_max;
           _delay_ms(50);
@@ -544,11 +549,10 @@ int main(){
           _menu->cursor_max = 2;
           _menu->printed = false;
           _oled->clearAll();
-          _oled->pleaseWaitPrint();
-          _delay_ms(50);
+          _oled->resettingPrint();
+          _delay_ms(250);
           _oled->clearAll();
           _strip->inverseSweep(10);
-          _menu->cursor_max = 1;
           _menu->cursor_current = 0;
           _menu->cursor_prev = _menu->cursor_max;
           _delay_ms(50);

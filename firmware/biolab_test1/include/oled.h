@@ -912,8 +912,9 @@ class oled: public _device
         void sendBitmap(const uint8_t *bitmap, uint8_t w, uint8_t h);
         void sendString(String toSend);
         void bootingPrint(void);
-        void rebootingPrint(void);
+        void resettingPrint(void);
         void pleaseWaitPrint(void);
+		void goingHomePrint(void);
         void clearAll(void);
         void printGameMenu(void);
         void printAffectorMenu(void);
