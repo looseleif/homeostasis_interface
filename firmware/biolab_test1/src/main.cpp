@@ -428,6 +428,7 @@ int main(){
             
             case (zone):
               _oled->_screen->drawBitmap(10,10, games[0], 100, 100, WHITE);
+              _oled->_screen->display();
               OCR2A = 255;
               break;
             case (memory):
@@ -435,6 +436,7 @@ int main(){
               break;
             case (chase):
               _oled->_screen->drawBitmap(10,10, games[2], 100, 100, WHITE);
+              _oled->_screen->display();
               OCR2A = 25;
               break;        
             default:
