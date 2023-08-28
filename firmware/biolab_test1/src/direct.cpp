@@ -13,7 +13,7 @@ direct::direct(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr
   encoderPinB = -1; // stores object pin configuration
   
   // position of direct affector
-  pos = 0;
+  pos = rand()%NUM_LEDS;
   
   // indicates affector rotation state
   direction = 0;

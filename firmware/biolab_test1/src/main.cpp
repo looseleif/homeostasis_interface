@@ -299,7 +299,7 @@ int main(){
       if(!digitalRead(SELECT_PIN)){
 
         _manager->game_selected = _menu->cursor_current;
-        _menu->system_state = demo;
+        _menu->system_state = affector;
         _menu->printed = false;
         _oled->clearAll();
         _oled->pleaseWaitPrint();
@@ -318,7 +318,7 @@ int main(){
 
     }
 
-    if(_menu->system_state==demo){
+    if(_menu->system_state==affector){
 
       if(!(_menu->printed)){
 
@@ -332,7 +332,7 @@ int main(){
       if(!digitalRead(SELECT_PIN)){
 
         _menu->selected_demo = _menu->cursor_current;
-        _menu->system_state = device;
+        _menu->system_state = port;
         _menu->printed = false;
         _oled->clearAll();
         _oled->pleaseWaitPrint();
@@ -352,7 +352,7 @@ int main(){
 
     }
 
-    if(_menu->system_state==device){
+    if(_menu->system_state==port){
 
       if(!(_menu->printed)){
 
@@ -369,7 +369,7 @@ int main(){
         _menu->printed = false;
         createObject(_menu->selected_demo);
         _oled->clearAll();
-        _strip->setColor(100,100,100);
+        _strip->setColor(50,50,50);
         _strip->setIntensity(50);
         _delay_ms(50);
         _oled->pleaseWaitPrint();
@@ -400,7 +400,7 @@ int main(){
         
         if(!(_menu->cursor_current)){
 
-          _menu->system_state = demo;
+          _menu->system_state = port;
           _menu->cursor_max = 2;
           _menu->printed = false;
           _oled->clearAll();
@@ -418,27 +418,29 @@ int main(){
 
           _menu->system_state = running;
           _menu->demo_state = started;
-          _strip->setColor(20,20,20);
+          _strip->setColor(50,50,50);
           _strip->setIntensity(50);
           _delay_ms(100);
+
+          _oled->clearAll();
 
           switch (_manager->game_selected){
             
             case (zone):
+              _oled->_screen->drawBitmap(10,10, games[0], 100, 100, WHITE);
               OCR2A = 255;
               break;
             case (memory):
               OCR2A = 255;
               break;
             case (chase):
+              _oled->_screen->drawBitmap(10,10, games[2], 100, 100, WHITE);
               OCR2A = 25;
               break;        
             default:
               break;
 
           }
-
-          _oled->clearAll();
 
         }
 
@@ -545,17 +547,20 @@ int main(){
 
         if((_menu->cursor_current)){
 
+
+          _oled->clearAll();
+          _strip->inverseSweep(10);
+          _oled->resettingPrint();
+          delay(250);
+          _oled->clearAll();
           _menu->system_state = game;
           _menu->cursor_max = 2;
           _menu->printed = false;
-          _oled->clearAll();
-          _oled->resettingPrint();
-          _delay_ms(250);
-          _oled->clearAll();
-          _strip->inverseSweep(10);
           _menu->cursor_current = 0;
           _menu->cursor_prev = _menu->cursor_max;
-          _delay_ms(50);
+          
+          _delay_ms(500);
+          _strip->sweepColor(100,0,0,10);
 
         } else {
 

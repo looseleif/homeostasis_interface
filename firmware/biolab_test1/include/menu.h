@@ -28,8 +28,8 @@ enum DEMO : uint8_t {
 
 enum SYSTEM : uint8_t {
   game,
-  demo,
-  device,
+  affector,
+  port,
   addition,
   running,
   again
