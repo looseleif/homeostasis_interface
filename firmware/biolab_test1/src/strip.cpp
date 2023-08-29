@@ -4,6 +4,7 @@ strip::strip(menu *ptr) {
 
     _strip_menu_ptr = ptr;
     FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, NUM_LEDS);
+    startIndex = startIndex + 1;
 
 }
 
@@ -102,5 +103,17 @@ void strip::lubDub(void){
   FastLED.setBrightness(50);
 
   return;
+
+}
+
+void strip::winAnimation(){
+
+  uint8_t brightness = 100;
+
+  for( int i = 0; i < NUM_LEDS; ++i) {
+        this->leds[i] = ColorFromPalette( currentPalette, startIndex, brightness, currentBlending);
+        startIndex += 3;
+        FastLED.show();
+  }
 
 }

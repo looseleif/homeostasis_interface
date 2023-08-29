@@ -255,6 +255,7 @@ void manager::endGame(void){
             _oled->clearAll();
 
             if(score>5)
+                _strip->winAnimation();
                 _oled->printWin();
 
             break;
@@ -264,6 +265,7 @@ void manager::endGame(void){
             _oled->clearAll();
 
             if(score>5)
+                _strip->winAnimation();
                 _oled->printWin();
 
             break;
@@ -273,6 +275,7 @@ void manager::endGame(void){
             _oled->clearAll();
             
             if(score>40)
+                _strip->winAnimation();
                 _oled->printWin();
 
             break;        

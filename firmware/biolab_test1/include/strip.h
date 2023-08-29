@@ -21,7 +21,11 @@ class strip: public _device
 {
 
     public:
-
+        CRGBPalette16 currentPalette;
+        TBlendType    currentBlending;
+        uint8_t startIndex = 0;
+        CRGBPalette16 myRedWhiteBluePalette;
+        const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
         menu *_strip_menu_ptr;
         CRGB leds[NUM_LEDS];
         strip(menu *_menu_ptr);
@@ -30,6 +34,7 @@ class strip: public _device
         void sweepColor(int r, int g, int b, int rate);
         void inverseSweep(int rate);
         void lubDub(void);
+        void winAnimation(void);
 
 };
 

@@ -400,7 +400,7 @@ int main(){
         
         if(!(_menu->cursor_current)){
 
-          _menu->system_state = port;
+          _menu->system_state = affector;
           _menu->cursor_max = 2;
           _menu->printed = false;
           _oled->clearAll();
