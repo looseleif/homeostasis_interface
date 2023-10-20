@@ -14,9 +14,5 @@ menu::menu(void){
     home_state = false;
 
     printed = false;
-    
-    cursor_prev = 2;
-    cursor_current = 0;
-    cursor_max = 0;
 
 }

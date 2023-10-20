@@ -49,9 +49,8 @@ void manager::updateObjective(void){
         case(memory):
             if(patternFlag){
                 if(patTurn==cpuTurn&&patternPoints.size()==1){
-                    _oled->clearAll();
-                    _oled->_screen->drawBitmap(10,10, cpu, 100, 100, WHITE);
-                    _oled->_screen->display();
+                    _oled->turnPrint(0);
+                    _oled->clear();
                 }
                 if(patTurn==cpuTurn&&((int)patternIndex==patternPoints.size())){
                     patTurn = preUserTurn;
@@ -74,28 +73,22 @@ void manager::updateObjective(void){
                         poip = 0;
                         patternIndex = 0;
                         _strip->setColor(0,0,0);
-                        _oled->clearAll();
-                        _oled->_screen->drawBitmap(10,10, user, 100, 100, WHITE);
-                        _oled->_screen->display();
+                        _oled->turnPrint(1);
+                        _oled->clear();
                         patTurn = userTurn;
                         break;
                     case userTurn:
                         break;
                     case postUserTurn:
-                        _oled->clearAll();
-                        _oled->_screen->drawBitmap(10,10, nice, 100, 100, WHITE);
-                        _oled->_screen->display();
-                        _delay_ms(100);
-                        _oled->clearAll();
+                        _oled->turnPrint(0);
+                        _oled->clear();
                         gameCount = 0;
                         gameTimeTotal+= 3;
                         patternPoints.add(rand()%NUM_LEDS);
                         patternIndex = 0;
                         patternUserIndex = 0;
                         patTurn = cpuTurn;
-                        _oled->clearAll();
-                        _oled->_screen->drawBitmap(10,10, cpu, 100, 100, WHITE);
-                        _oled->_screen->display();
+                        _oled->clear();
                         break;
 
                 }
@@ -236,7 +229,7 @@ void manager::plotAffector(uint8_t pos, int dev){
 
 void manager::endGame(void){
     
-    _oled->clearAll();
+    _oled->clear();
 
     cli();
 
@@ -252,32 +245,35 @@ void manager::endGame(void){
         case (zone):
             _oled->printNumber(score);
             _delay_ms(500);
-            _oled->clearAll();
+            _oled->clear();
 
-            if(score>5)
+            if(score>5){
                 _strip->winAnimation();
                 _oled->printWin();
-
+                _strip->inverseSweep(10);
+            }
             break;
         case (memory):
             _oled->printNumber(score);
             _delay_ms(500);
-            _oled->clearAll();
+            _oled->clear();
 
-            if(score>5)
+            if(score>5){
                 _strip->winAnimation();
                 _oled->printWin();
-
+                _strip->inverseSweep(10);
+            }
             break;
         case (chase):
             _oled->printNumber(score/10);
             _delay_ms(500);
-            _oled->clearAll();
+            _oled->clear();
             
-            if(score>40)
+            if(score>40){
                 _strip->winAnimation();
                 _oled->printWin();
-
+                _strip->inverseSweep(10);
+            }
             break;        
         default:
             break; 

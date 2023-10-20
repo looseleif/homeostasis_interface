@@ -20,9 +20,9 @@
 #define D3_B 19 //PC3
 
 //device types
-#define sense_TYPE 0
-#define direct_TYPE 1
-#define fixate_TYPE 2
+//#define sense_TYPE 0
+#define direct_TYPE 2
+#define fixate_TYPE 3
 #define menu_TYPE 5
 #define oled_TYPE 6
 #define strip_TYPE 7

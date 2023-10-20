@@ -1,225 +1,297 @@
 #include <oled.h>
 
 oled::oled(menu *ptr){
-    _oled_menu_ptr = ptr;
-    _screen = &screen;
-    _screen->begin();
-    _screen->clearDisplay();
-    _screen->setRotation(0);
-}
 
-void oled::sendString(String toSend) {
-    _screen->setTextSize(2);
-    _screen->setTextWrap(true);
-    _screen->setTextColor(WHITE);
-    _screen->setCursor(0,0);
-    for(uint8_t i = 0; i<toSend.length(); i++){
-        _screen->write(toSend[i]);
-        _screen->display();
-    }
+    _oled_menu_ptr = ptr;
+    ssd1327SPIInit(OLED_128x128, OLED_DC, OLED_CS, OLED_RST, 0, 0, 36000000);
 }
 
 void oled::bootingPrint(void) {
     
-    _screen->setTextSize(2);
-    _screen->setTextWrap(true);
-    _screen->setTextColor(WHITE);
-    _screen->setCursor(0,0);
-    String myString = "booting\ndevice";
-    for(uint8_t i = 0; i<myString.length(); i++){
-        _screen->write(myString[i]);
-        _screen->display();
+    
+    int num_words = 2;
+    char * words[num_words] = {"booting", "device"};
+    int letters[num_words] = {9, 8};
+    int j =0;
+
+    for(int i = 0; i<num_words; i++){
+        char * word = (char*)malloc(letters[i]);
+        for(j=0; j<letters[i]; j++){
+            strlcpy(word, words[i], j);
+            ssd1327WriteString(0,16*i, word, FONT_LARGE, 15, -1);
+            delay(50);
+
+        }
+        free(word);
+        
     }
+
+    delay(750);
+
 }
 
-void oled::resettingPrint(void) {
-    _screen->setTextSize(2);
-    _screen->setTextWrap(true);
-    _screen->setTextColor(WHITE);
-    _screen->setCursor(0,0);
-    String myString = "resetting\ndevice";
-    for(uint8_t i = 0; i<myString.length(); i++){
-        _screen->write(myString[i]);
-        _screen->display();
+void oled::resetPrint(void) {
+    
+    int num_words = 2;
+    char * words[num_words] = {"device", "reset"};
+    int letters[num_words] = {8, 7};
+    int j =0;
+
+    for(int i = 0; i<num_words; i++){
+        char * word = (char*)malloc(letters[i]);
+        for(j=0; j<letters[i]; j++){
+            strlcpy(word, words[i], j);
+            ssd1327WriteString(0,16*i, word, FONT_LARGE, 15, -1);
+            delay(50);
+
+        }
+        free(word);
+        
     }
+
+    // ssd1327WriteString(0,4, "device", FONT_LARGE, 15, -1);
+    // ssd1327WriteString(0,20, "reset", FONT_LARGE, 15, -1);
+    delay(750);
+
 }
 
 void oled::pleaseWaitPrint(void) {
-    _screen->setTextSize(2);
-    _screen->setTextWrap(true);
-    _screen->setTextColor(WHITE);
-    _screen->setCursor(0,0);
-    String myString = "please\nwait";
-    for(uint8_t i = 0; i<myString.length(); i++){
-        _screen->write(myString[i]);
-        _screen->display();
+
+    int num_words = 2;
+    char * words[num_words] = {"please", "wait"};
+    int letters[num_words] = {8, 6};
+    int j =0;
+
+    for(int i = 0; i<num_words; i++){
+        char * word = (char*)malloc(letters[i]);
+        for(j=0; j<letters[i]; j++){
+            strlcpy(word, words[i], j);
+            ssd1327WriteString(0,16*i, word, FONT_LARGE, 15, -1);
+            delay(50);
+
+        }
+        free(word);
+        
     }
-    _delay_ms(500);
-    this->clearAll();
+
+    // ssd1327WriteString(0,4, "please", FONT_LARGE, 15, -1);
+    // ssd1327WriteString(0,20, "wait", FONT_LARGE, 15, -1);
+    delay(500);
+
 }
 
 void oled::goingHomePrint() {
+    
+    int num_words = 2;
+    char * words[num_words] = {"going", "home"};
+    int letters[num_words] = {7, 6};
+    int j =0;
 
-    _screen->setTextSize(2);
-    _screen->setTextWrap(true);
-    _screen->setTextColor(WHITE);
-    _screen->setCursor(0,0);
-    String myString = "going home";
-    for(uint8_t i = 0; i<myString.length(); i++){
-        _screen->write(myString[i]);
-        _screen->display();
+    for(int i = 0; i<num_words; i++){
+        char * word = (char*)malloc(letters[i]);
+        for(j=0; j<letters[i]; j++){
+            strlcpy(word, words[i], j);
+            ssd1327WriteString(0,16*i, word, FONT_LARGE, 15, -1);
+            delay(50);
+
+        }
+        free(word);
+        
     }
-    _delay_ms(500);
-    this->clearAll();
+    delay(500);
 
 }
 
-void oled::clearAll(){
-    _screen->clearDisplay();
-    _screen->display();
+void oled::clear(){
+
+    ssd1327Fill(0x0);
+
 }
 
 void oled::printGameMenu(){
-    for(int i=0;i<2;i++){
-        _screen->setTextSize(2);
-        _screen->setTextWrap(true);
-        _screen->setTextColor(WHITE);
-        _screen->setCursor(0,0);
+
+    int num_words = 1;
+    char * words[num_words] = {"game:"};
+    int letters[num_words] = {7};
+    int j =0;
+
+    for(int i = 0; i<num_words; i++){
+        char * word = (char*)malloc(letters[i]);
+        for(j=0; j<letters[i]; j++){
+            strlcpy(word, words[i], j);
+            ssd1327WriteString(0,16*i, word, FONT_LARGE, 15, -1);
+            delay(50);
+
+        }
+        free(word);
+        
     }
-    String myString = "game:\n\n[ ] zone\n[ ] memory[ ] chase\n";
-    for(uint8_t i = 0; i<myString.length(); i++){
-        _screen->write(myString[i]);
-        _screen->display();
-    }
+    ssd1327WriteString(0,32, "^ ZONE", FONT_LARGE, 15, -1);
+    ssd1327WriteString(0,48, "< MEMORY", FONT_LARGE, 15, -1);
+    ssd1327WriteString(0,64, "> CHASE", FONT_LARGE, 15, -1);
+
 }
 
 void oled::printAffectorMenu(){
-    for(int i=0;i<2;i++){
-        _screen->setTextSize(2);
-        _screen->setTextWrap(true);
-        _screen->setTextColor(WHITE);
-        _screen->setCursor(0,0);
+
+    int num_words = 1;
+    char * words[num_words] = {"device:"};
+    int letters[num_words] = {9};
+    int j =0;
+
+    for(int i = 0; i<num_words; i++){
+        char * word = (char*)malloc(letters[i]);
+        for(j=0; j<letters[i]; j++){
+            strlcpy(word, words[i], j);
+            ssd1327WriteString(0,16*i, word, FONT_LARGE, 15, -1);
+            delay(50);
+
+        }
+        free(word);
+        
     }
-    String myString = "affector:\n\n[ ] N/A\n[ ] direct\n[ ] fixate";
-    for(uint8_t i = 0; i<myString.length(); i++){
-        _screen->write(myString[i]);
-        _screen->display();
-    }
+    delay(100);
+    ssd1327WriteString(0,32, "", FONT_LARGE, 15, -1);
+    ssd1327WriteString(0,48, "< DIRECT", FONT_LARGE, 15, -1);
+    ssd1327WriteString(0,64, "> FIXATE", FONT_LARGE, 15, -1);
+
 }
 
 void oled::printPortMenu(){
-    for(int i=0;i<2;i++){
-        _screen->setTextSize(2);
-        _screen->setTextWrap(true);
-        _screen->setTextColor(WHITE);
-        _screen->setCursor(0,0);
+    
+    int num_words = 1;
+    char * words[num_words] = {"port:"};
+    int letters[num_words] = {7};
+    int j =0;
+
+    for(int i = 0; i<num_words; i++){
+        char * word = (char*)malloc(letters[i]);
+        for(j=0; j<letters[i]; j++){
+            strlcpy(word, words[i], j);
+            ssd1327WriteString(0,16*i, word, FONT_LARGE, 15, -1);
+            delay(50);
+
+        }
+        free(word);
+        
     }
-    String myString = "port:\n\n[ ] LEFT\n[ ] MIDDLE\n[ ] RIGHT";
-    for(uint8_t i = 0; i<myString.length(); i++){
-        _screen->write(myString[i]);
-        _screen->display();
-    }
+    delay(100);
+    ssd1327WriteString(0,32, "^ MIDDLE", FONT_LARGE, 15, -1);
+    ssd1327WriteString(0,48, "< LEFT", FONT_LARGE, 15, -1);
+    ssd1327WriteString(0,64, "> RIGHT", FONT_LARGE, 15, -1);
+
 }
 
 void oled::printAdditionMenu(){
-    for(int i=0;i<1;i++){
-        _screen->setTextSize(2);
-        _screen->setTextWrap(true);
-        _screen->setTextColor(WHITE);
-        _screen->setCursor(0,0);
+    
+    int num_words = 1;
+    char * words[num_words] = {"append?"};
+    int letters[num_words] = {9};
+    int j =0;
+
+    for(int i = 0; i<num_words; i++){
+        char * word = (char*)malloc(letters[i]);
+        for(j=0; j<letters[i]; j++){
+            strlcpy(word, words[i], j);
+            ssd1327WriteString(0,16*i, word, FONT_LARGE, 15, -1);
+            delay(50);
+
+        }
+        free(word);
+        
     }
-    String myString = "more?\n\n[ ] YES\n[ ] NO";
-    for(uint8_t i = 0; i<myString.length(); i++){
-        _screen->write(myString[i]);
-        _screen->display();
+    delay(100);
+    ssd1327WriteString(0,32, "", FONT_LARGE, 15, -1);
+    ssd1327WriteString(0,48, "< YES", FONT_LARGE, 15, -1);
+    ssd1327WriteString(0,64, "> NO", FONT_LARGE, 15, -1);
+
+}
+
+void oled::playingInfo(int game){
+
+    int num_words = 1;
+    char * words[num_words] = {"info:"};
+    int letters[num_words] = {7};
+    int j =0;
+
+    for(int i = 0; i<num_words; i++){
+        char * word = (char*)malloc(letters[i]);
+        for(j=0; j<letters[i]; j++){
+            strlcpy(word, words[i], j);
+            ssd1327WriteString(0,16*i, word, FONT_LARGE, 15, -1);
+            delay(50);
+
+        }
+        free(word);
+        
     }
+    delay(100);
+
+    switch (game)
+    {
+    case 1:
+        ssd1327WriteString(0,32, "ZONE", FONT_LARGE, 15, -1);
+        break;
+    case 2:
+        ssd1327WriteString(0,32, "MEMORY", FONT_LARGE, 15, -1);
+        break;
+    case 3:
+        ssd1327WriteString(0,32, "CHASE", FONT_LARGE, 15, -1);
+        break;        
+    default:
+        break;
+    }
+
+}
+
+void oled::turnPrint(int turn){
+    
+    switch (turn)
+    {
+    case 0:
+        ssd1327WriteString(0,4, "turn:", FONT_LARGE, 15, -1);
+        ssd1327WriteString(0,32, "CPU", FONT_LARGE, 15, -1);
+        delay(750);
+        break;
+    case 1:
+        ssd1327WriteString(0,4, "turn:", FONT_LARGE, 15, -1);
+        ssd1327WriteString(0,32, "USER", FONT_LARGE, 15, -1);
+        delay(750);
+        break;
+    default:
+        break;
+    }
+
 }
 
 void oled::printAgainMenu(){
-    for(int i=0;i<1;i++){
-        _screen->setTextSize(2);
-        _screen->setTextWrap(true);
-        _screen->setTextColor(WHITE);
-        _screen->setCursor(0,0);
-    }
-    String myString = "again?\n\n[ ] YES\n[ ] NO";
-    for(uint8_t i = 0; i<myString.length(); i++){
-        _screen->write(myString[i]);
-        _screen->display();
-    }
+    
+    ssd1327WriteString(0,4, "retry?", FONT_LARGE, 15, -1);
+    ssd1327WriteString(0,32, "", FONT_LARGE, 15, -1);
+    ssd1327WriteString(0,48, "< YES", FONT_LARGE, 15, -1);
+    ssd1327WriteString(0,64, "> NO", FONT_LARGE, 15, -1);
 
-}
-
-void oled::printSelector(int prev, int next, bool clear){
-    _screen->setTextSize(2);
-    _screen->setTextWrap(true);
-    _screen->setTextColor(BLACK);
-    _screen->setCursor(0,0);
-    String myString = "\n\n";
-    for(int i = 0; i<prev; i++){
-        myString += "\n";
-    }
-    myString+=" x ";
-    for(int i = 0; i<myString.length(); i++){
-        _screen->write(myString[i]);
-        _screen->display();
-    }
-    if(!clear){
-        _screen->setTextSize(2);
-        _screen->setTextWrap(true);
-        _screen->setTextColor(WHITE);
-        _screen->setCursor(0,0);
-        myString = "\n\n";
-        for(int i = 0; i<next; i++){
-            myString += "\n";
-            _screen->display();
-        }
-        myString+="[x]";
-        for(int i = 0; i<myString.length(); i++){
-            _screen->write(myString[i]);
-            _screen->display();
-        }
-    }
 }
 
 void oled::printGameOver(){
-    for(int i=0;i<2;i++){
-        _screen->setTextSize(2);
-        _screen->setTextWrap(true);
-        _screen->setTextColor(WHITE);
-        _screen->setCursor(0,0);
-    }
-    String myString = "GAME\nOVER";
-    for(uint8_t i = 0; i<myString.length(); i++){
-        _screen->write(myString[i]);
-        _screen->display();
-    }
+    
+    ssd1327WriteString(0,4, "game", FONT_LARGE, 15, -1);
+    ssd1327WriteString(0,20, "over", FONT_LARGE, 15, -1);
+    delay(750);
+
 }
 
 void oled::printWin(){
-    for(int i=0;i<2;i++){
-        _screen->setTextSize(2);
-        _screen->setTextWrap(true);
-        _screen->setTextColor(WHITE);
-        _screen->setCursor(0,0);
-    }
-    String myString = "YOU WIN!";
-    for(uint8_t i = 0; i<myString.length(); i++){
-        _screen->write(myString[i]);
-        _screen->display();
-    }
-    _delay_ms(500);
-    _screen->clearDisplay();
+    
+    ssd1327WriteString(0,50, "you win!", FONT_LARGE, 15, -1);
+    delay(750);
+    
 }
 
 void oled::printNumber(int score){
-    _screen->setTextSize(2);
-    _screen->setTextWrap(true);
-    _screen->setTextColor(WHITE);
-    _screen->setCursor(0,3);
-    _screen->println("score:\n");
-    _screen->println(numberWords[score]);
-    _screen->display();
-    _delay_ms(500);
-    _screen->clearDisplay();
+
+    ssd1327WriteString(0,5, "score:", FONT_LARGE, 15, -1);
+    ssd1327WriteString(0,37, (char *)numberWords[score], FONT_LARGE, 15, -1);
+    delay(1000);
+
 }

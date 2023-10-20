@@ -38,11 +38,11 @@ void createObject(int objtype)
     case strip_TYPE:
       _strip = new strip(_menu);
       break;
-    case sense_TYPE:
-      D_set[D_index] = new sense(D_index,_menu,_oled,_strip);
-      D_set[D_index]->current_affector = sense_affector;
-      D_index++;
-      break;
+    // case sense_TYPE:
+    //   D_set[D_index] = new sense(D_index,_menu,_oled,_strip);
+    //   D_set[D_index]->current_affector = sense_affector;
+    //   D_index++;
+    //   break;
     case direct_TYPE:
       D_set[D_index] = new direct(D_index,_menu,_oled,_strip);
       D_set[D_index]->current_affector = direct_affector;
@@ -81,7 +81,7 @@ ISR (TIMER1_COMPA_vect)
   PORTD ^= (1 << PD5);
   PORTD ^= (1 << PD6);
 
-  _menu->cursor_prev = _menu->cursor_current;
+  //_menu->cursor_prev = _menu->cursor_current;
   
   if(!digitalRead(HOME_PIN)){
     _menu->printed = false;
@@ -90,25 +90,21 @@ ISR (TIMER1_COMPA_vect)
     _menu->home_state = true;
 
   } else if(_menu->system_state==running){
-  } else if(!digitalRead(DOWN_PIN)){
-
-    _menu->cursor_current++;
-    _menu->cursor_current%=(_menu->cursor_max+1);
-    _oled->printSelector(_menu->cursor_prev,_menu->cursor_current, false);
-
   } else if(!digitalRead(UP_PIN)){
 
-    if(_menu->cursor_current==0){
+    _menu->selection = 1;
 
-      _menu->cursor_current = _menu->cursor_max;
+  } else if(!digitalRead(LEFT_PIN)){
 
-    } else {
+    _menu->selection = 2;
 
-      _menu->cursor_current--;
+  }else if(!digitalRead(RIGHT_PIN)){
 
-    }
+    _menu->selection = 3;
 
-    _oled->printSelector(_menu->cursor_prev,_menu->cursor_current, false);
+  } else if(!digitalRead(DOWN_PIN)){
+
+    _menu->selection = 4;
 
   }
   if(_menu->system_state==running){
@@ -186,21 +182,18 @@ void bootSequence(void){
 
   _strip->setColor(0,0,0);
   _strip->setIntensity(0);
-  _oled->clearAll();
+  _oled->clear();
   _oled->bootingPrint();
   _delay_ms(300);
-  _oled->clearAll();
+  _oled->clear();
   _strip->lubDub();
   _delay_ms(100);
   _strip->sweepColor(111,0,0,10);
-  _oled->_screen->drawBitmap(10,10,heart, 100, 100, WHITE);
-  _oled->_screen->display();
-  _delay_ms(300);
   _strip->setColor(0,0,0);
-  _oled->clearAll();
+  _oled->clear();
   _oled->pleaseWaitPrint();
-  _delay_ms(100);
-  _oled->clearAll();
+  _delay_ms(500);
+  _oled->clear();
 
 }
 
@@ -264,12 +257,11 @@ int main(){
         cli();
         TCNT1  = 2250;
         sei();
-        _oled->clearAll();
+        _oled->clear();
         _strip->inverseSweep(10);
-        _delay_ms(500);
         _oled->goingHomePrint();
-        delay(500);
-        _oled->clearAll();
+        _delay_ms(500);
+        _oled->clear();
         _strip->sweepColor(100,0,0,10);
         _delay_ms(50);
         _strip->setColor(100,0,0);
@@ -277,42 +269,53 @@ int main(){
         _menu->home_state = false;
         _menu->selected_demo = 0;
         _menu->selected_port = 0;
-        _menu->cursor_max = 2;
+        _menu->selection = 0;
+        _manager->gameTimeTotal = 45;
+        _manager->direction = 1;
+        _manager->refreshFlag = 0;
+        _manager->refreshCount = 0;
+        _manager->crankFlag = 0;
+        _manager->switchFlag = 0;
+        _manager->switchCount = 0;
+        _manager->patternFlag = 0;
+        _manager->patternCount = 0;
+        _manager->gameFlag = 0;
+        _manager->gameCount = 0;
+        _manager->scoreFlag = 0;
+        _manager->score = 0;
+        _manager->width = 1;
+        _manager->speed = 1;
+        _manager->mod = 0;
 
       }
 
       if(!(_menu->printed)){
 
-        _oled->clearAll();
+        _oled->clear();
         _strip->setColor(100,0,0);
         _strip->setIntensity(50);
         _menu->system_state = game;
         _oled->printGameMenu();
-        _oled->printSelector(_menu->cursor_prev,_menu->cursor_current, false);
-        _menu->cursor_max = 2;
-        _menu->cursor_current = 0;
-        _menu->cursor_prev = _menu->cursor_max;
+        _menu->selection = 0;
         _menu->printed = true;
 
       }
 
-      if(!digitalRead(SELECT_PIN)){
+      // ZONE || MEMORY || CHASE || N/A
+      if(_menu->selection == 1 || _menu->selection == 2 || _menu->selection == 3){
 
-        _manager->game_selected = _menu->cursor_current;
+        _manager->game_selected = _menu->selection;
         _menu->system_state = affector;
         _menu->printed = false;
-        _oled->clearAll();
+        _oled->clear();
         _oled->pleaseWaitPrint();
-        _oled->clearAll();
+        _delay_ms(250);
+        _oled->clear();
+        _delay_ms(500);
         _strip->setColor(100,10,0);
         _strip->setIntensity(50);
-        _oled->_screen->drawBitmap(10,10, games[_manager->game_selected], 100, 100, WHITE);
-        _oled->_screen->display();
+        _menu->selection = 0;
         _delay_ms(500);
-        _menu->cursor_max = 2;
-        _menu->cursor_current = 0;
-        _menu->cursor_prev = _menu->cursor_max;
-        _delay_ms(50);
 
       }
 
@@ -322,31 +325,26 @@ int main(){
 
       if(!(_menu->printed)){
 
-        _oled->clearAll();
+        _oled->clear();
         _oled->printAffectorMenu();
-        _oled->printSelector(_menu->cursor_prev,_menu->cursor_current, false);
         _menu->printed = true;
 
       }
 
-      if(!digitalRead(SELECT_PIN)){
+      // N/A || DIRECT || FIXATE || N/A
+      if(_menu->selection == 2 || _menu->selection == 3){
 
-        _menu->selected_demo = _menu->cursor_current;
+        _menu->selected_demo = _menu->selection;
         _menu->system_state = port;
         _menu->printed = false;
-        _oled->clearAll();
+        _oled->clear();
         _oled->pleaseWaitPrint();
-        _oled->clearAll();
+        _delay_ms(500);
+        _oled->clear();
         _strip->setColor(100,30,0);
         _strip->setIntensity(50);
-        _oled->_screen->drawBitmap(10,10, affectors[_menu->selected_demo], 100, 100, WHITE);
-        _oled->_screen->display();
         _delay_ms(500);
-        _oled->clearAll();
-        _menu->cursor_max = 2;
-        _menu->cursor_current = 0;
-        _menu->cursor_prev = _menu->cursor_max;
-        _delay_ms(50);
+        _menu->selection = 0;
 
       }
 
@@ -356,27 +354,25 @@ int main(){
 
       if(!(_menu->printed)){
 
-        _oled->clearAll();
+        _oled->clear();
         _oled->printPortMenu();
-        _oled->printSelector(_menu->cursor_prev,_menu->cursor_current, false);
         _menu->printed = true;
 
       }
 
-      if(!digitalRead(SELECT_PIN)){
+      // MID || LEFT || RIGHT || N/A
+      if(_menu->selection == 1 || _menu->selection == 2 || _menu->selection == 3){
 
-        _menu->selected_port = _menu->cursor_current;
+        _menu->selected_port = _menu->selection;
         _menu->printed = false;
         createObject(_menu->selected_demo);
-        _oled->clearAll();
+        _oled->clear();
         _strip->setColor(50,50,50);
         _strip->setIntensity(50);
         _delay_ms(50);
         _oled->pleaseWaitPrint();
         _menu->system_state = addition;
-        _menu->cursor_max = 1;
-        _menu->cursor_current = 0;
-        _menu->cursor_prev = _menu->cursor_max;
+        _menu->selection = 0;
 
       }
 
@@ -386,35 +382,33 @@ int main(){
 
       if(!(_menu->printed)){
 
-        _oled->clearAll();
+        _oled->clear();
         _oled->printAdditionMenu();
-        _oled->printSelector(_menu->cursor_prev,_menu->cursor_current, false);
         _menu->printed = true;
 
       }
 
-      if(!digitalRead(SELECT_PIN)){
+      if(_menu->selection){
         
-        _oled->clearAll();
+        _oled->clear();
         _menu->printed = false;
         
-        if(!(_menu->cursor_current)){
+        //LEFT BUTTON (YES)
+        if(_menu->selection == 2){
 
           _menu->system_state = affector;
-          _menu->cursor_max = 2;
           _menu->printed = false;
-          _oled->clearAll();
+          _oled->clear();
           _oled->pleaseWaitPrint();
           _delay_ms(100);
-          _oled->clearAll();
+          _oled->clear();
           _strip->setColor(100,30,0);
           _strip->setIntensity(50);
-          _menu->cursor_max = 2;
-          _menu->cursor_current = 0;
-          _menu->cursor_prev = _menu->cursor_max;
+          _menu->selection = 0;
           _delay_ms(50);
 
-        } else {
+        // RIGHT BUTTON (NO)
+        } else if(_menu->selection == 3) {
 
           _menu->system_state = running;
           _menu->demo_state = started;
@@ -422,21 +416,22 @@ int main(){
           _strip->setIntensity(50);
           _delay_ms(100);
 
-          _oled->clearAll();
+          _oled->clear();
+
+          _oled->playingInfo(_manager->game_selected);
+          _delay_ms(1000);
+          _oled->clear();
+          _strip->inverseSweep(10);
 
           switch (_manager->game_selected){
-            
+
             case (zone):
-              _oled->_screen->drawBitmap(10,10, games[0], 100, 100, WHITE);
-              _oled->_screen->display();
               OCR2A = 255;
               break;
             case (memory):
               OCR2A = 255;
               break;
             case (chase):
-              _oled->_screen->drawBitmap(10,10, games[2], 100, 100, WHITE);
-              _oled->_screen->display();
               OCR2A = 25;
               break;        
             default:
@@ -521,6 +516,7 @@ int main(){
         _manager->gameFlag = 0;
         _manager->endGame();
         _menu->system_state = again;
+        _strip->sweepColor(100,0,0,10);
 
       }
 
@@ -532,41 +528,36 @@ int main(){
 
         _strip->setColor(100,0,0);
         _strip->setIntensity(50);
-        _oled->clearAll();
+        _oled->clear();
         _oled->printAgainMenu();
-        _menu->cursor_max = 1;
-        _menu->cursor_current = 0;
-        _menu->cursor_prev = _menu->cursor_max;
-        _oled->printSelector(_menu->cursor_prev,_menu->cursor_current, false);
+        _menu->selection = 0;
         _menu->printed = true;
 
       }
 
-      if(!digitalRead(SELECT_PIN)){
+      if(_menu->selection){
 
         _menu->printed = false;
-        _oled->clearAll();
+        _oled->clear();
 
-        if((_menu->cursor_current)){
+        // RIGHT BUTTON (NO)
+        if((_menu->selection == 3)){
 
-
-          _oled->clearAll();
+          _oled->clear();
           _strip->inverseSweep(10);
-          _oled->resettingPrint();
+          _oled->resetPrint();
           delay(250);
-          _oled->clearAll();
+          _oled->clear();
           _menu->system_state = game;
-          _menu->cursor_max = 2;
+          _menu->selection = 0;
           _menu->printed = false;
-          _menu->cursor_current = 0;
-          _menu->cursor_prev = _menu->cursor_max;
-          
           _delay_ms(500);
           _strip->sweepColor(100,0,0,10);
 
-        } else {
+        // LEFT BUTTON (YES)
+        } else if(_menu->selection == 2) {
 
-          _oled->clearAll();
+          _oled->clear();
 
           cli();
 

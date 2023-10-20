@@ -106,14 +106,27 @@ void strip::lubDub(void){
 
 }
 
-void strip::winAnimation(){
+void strip::winAnimation(void){
 
-  uint8_t brightness = 100;
+  int wheelPos;
 
-  for( int i = 0; i < NUM_LEDS; ++i) {
-        this->leds[i] = ColorFromPalette( currentPalette, startIndex, brightness, currentBlending);
-        startIndex += 3;
-        FastLED.show();
+  for(int i = 0; i<255; i++){
+
+    wheelPos = 255 - i;
+    if(wheelPos < 85) {
+      setColor(255 - wheelPos * 3, 0, wheelPos * 3);
+    }
+    if(wheelPos < 170) {
+      wheelPos -= 85;
+      setColor(0, wheelPos * 3, 255 - wheelPos * 3);
+    } else {
+    wheelPos -= 170;
+    setColor(wheelPos * 3, 255 - wheelPos * 3, 0);
+    }
+
+    setIntensity(25);
+    delay(3);
+
   }
 
 }

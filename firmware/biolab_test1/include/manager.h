@@ -20,9 +20,11 @@
 #include <LinkedList.h>
 
 enum GAME : uint8_t {
+  PLACEHOLDER_0,
   zone,
   memory,
-  chase
+  chase,
+  PLACEHOLDER_4
 };
 
 enum TURN : uint8_t {

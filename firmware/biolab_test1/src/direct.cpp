@@ -18,7 +18,7 @@ direct::direct(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr
   // indicates affector rotation state
   direction = 0;
   
-  if(_menu->selected_port==0){
+  if(_menu->selected_port==2){ // LEFT "USB" PORT
     
     cli();
 
@@ -41,7 +41,7 @@ direct::direct(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr
     direct_pin1 = D1_A;
     direct_pin2 = D1_B;
 
-  } else if(_menu->selected_port==1){
+  } else if(_menu->selected_port==1){ // MIDDLE "USB" PORT
     
     cli();
 
@@ -64,7 +64,7 @@ direct::direct(const uint8_t port, menu *menuptr, oled *oledptr, strip *stripptr
     direct_pin1 = D2_A;
     direct_pin2 = D2_B;
 
-  } else if(_menu->selected_port==2){
+  } else if(_menu->selected_port==3){ // RIGHT "USB" PORT
     
     cli();
 
